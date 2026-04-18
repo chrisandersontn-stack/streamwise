@@ -54,6 +54,7 @@ export type Option = {
   notes: string;
   source: string;
   sourceUrl?: string;
+  affiliateUrl?: string;
   requires?: Requirement[];
   includedWith?: IncludedWith;
   category: OptionCategory;

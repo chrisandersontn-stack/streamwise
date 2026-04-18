@@ -13,6 +13,7 @@ import {
 } from "./streamwise-data";
 import { calculateCombos } from "./streamwise-logic";
 import { getSupabaseBrowserClient } from "@/lib/client/supabase-browser";
+import { resolveOutboundSourceUrl } from "@/lib/affiliate/outbound-url";
 
 type RankingMode = "starting" | "ongoing";
 type Combo = ReturnType<typeof calculateCombos>[number];
@@ -247,9 +248,14 @@ function getComboConfidence(combo: Combo): ConfidenceLevel {
 
 function renderSourceLink(item: Option) {
   if (item.sourceUrl) {
+    const outbound = resolveOutboundSourceUrl({
+      sourceUrl: item.sourceUrl,
+      affiliateUrl: item.affiliateUrl,
+    });
+
     return (
       <a
-        href={item.sourceUrl}
+        href={outbound.href}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
@@ -258,6 +264,8 @@ function renderSourceLink(item: Option) {
             optionName: item.name,
             provider: getItemProviderKey(item) ?? "direct",
             sourceUrl: item.sourceUrl,
+            resolvedUrl: outbound.href,
+            linkKind: outbound.kind,
           };
 
           try {
@@ -266,6 +274,8 @@ function renderSourceLink(item: Option) {
               optionName: payload.optionName,
               provider: payload.provider,
               sourceUrl: payload.sourceUrl ?? "",
+              resolvedUrl: payload.resolvedUrl,
+              linkKind: payload.linkKind,
             });
             const ok = navigator.sendBeacon("/api/track-click", params);
             if (ok) return;

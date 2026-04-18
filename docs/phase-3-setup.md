@@ -16,6 +16,14 @@ NEXT_PUBLIC_AUTH_REDIRECT_URL=http://localhost:3000
 # PostHog (optional analytics provider)
 POSTHOG_API_KEY=phc_...
 POSTHOG_HOST=https://app.posthog.com
+
+# Affiliate helpers (optional; US-first, fast to wire)
+# Amazon Associates: adds ?tag=... to outbound amazon.com links from your catalog.
+NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG=yourstore-20
+
+# Walmart: append tracking query params to walmart.com links.
+# Example format: affiliateId=YOUR_ID (can include multiple key=value pairs)
+NEXT_PUBLIC_WALMART_AFFILIATE_QUERY=affiliateId=YOUR_ID
 ```
 
 ## Required Supabase tables (minimum)

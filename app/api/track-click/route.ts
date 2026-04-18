@@ -8,6 +8,8 @@ type ClickEvent = {
   optionName?: string;
   provider?: string;
   sourceUrl?: string;
+  resolvedUrl?: string;
+  linkKind?: string;
 };
 
 function parseClickEvent(request: NextRequest, body: unknown): ClickEvent | null {
@@ -46,6 +48,8 @@ function parseClickEvent(request: NextRequest, body: unknown): ClickEvent | null
       optionName: body.get("optionName")?.toString(),
       provider: body.get("provider")?.toString(),
       sourceUrl: body.get("sourceUrl")?.toString(),
+      resolvedUrl: body.get("resolvedUrl")?.toString(),
+      linkKind: body.get("linkKind")?.toString(),
     };
   }
 
@@ -90,6 +94,8 @@ export async function POST(request: NextRequest) {
     optionName: payload.optionName ?? null,
     provider: payload.provider ?? null,
     sourceUrl: payload.sourceUrl ?? null,
+    resolvedUrl: payload.resolvedUrl ?? null,
+    linkKind: payload.linkKind ?? null,
     referrer: request.headers.get("referer"),
     userAgent: request.headers.get("user-agent"),
   });
@@ -104,6 +110,8 @@ export async function POST(request: NextRequest) {
         optionName: payload.optionName ?? null,
         provider: payload.provider ?? null,
         sourceUrl: payload.sourceUrl ?? null,
+        resolvedUrl: payload.resolvedUrl ?? null,
+        linkKind: payload.linkKind ?? null,
         referrer: request.headers.get("referer"),
       },
     });
