@@ -261,10 +261,13 @@ function renderSourceLink(item: Option) {
           };
 
           try {
-            const blob = new Blob([JSON.stringify(payload)], {
-              type: "application/json",
+            const params = new URLSearchParams({
+              optionId: payload.optionId,
+              optionName: payload.optionName,
+              provider: payload.provider,
+              sourceUrl: payload.sourceUrl ?? "",
             });
-            const ok = navigator.sendBeacon("/api/track-click", blob);
+            const ok = navigator.sendBeacon("/api/track-click", params);
             if (ok) return;
           } catch {
             // Fall back to fetch below.
