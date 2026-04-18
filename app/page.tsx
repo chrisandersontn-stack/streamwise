@@ -253,15 +253,27 @@ function renderSourceLink(item: Option) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
+          const payload = {
+            optionId: item.id,
+            optionName: item.name,
+            provider: getItemProviderKey(item) ?? "direct",
+            sourceUrl: item.sourceUrl,
+          };
+
+          try {
+            const blob = new Blob([JSON.stringify(payload)], {
+              type: "application/json",
+            });
+            const ok = navigator.sendBeacon("/api/track-click", blob);
+            if (ok) return;
+          } catch {
+            // Fall back to fetch below.
+          }
+
           void fetch("/api/track-click", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              optionId: item.id,
-              optionName: item.name,
-              provider: getItemProviderKey(item) ?? "direct",
-              sourceUrl: item.sourceUrl,
-            }),
+            body: JSON.stringify(payload),
             keepalive: true,
           }).catch(() => undefined);
         }}

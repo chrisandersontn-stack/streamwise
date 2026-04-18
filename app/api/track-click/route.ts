@@ -10,6 +10,11 @@ type ClickEvent = {
   sourceUrl?: string;
 };
 
+export async function GET() {
+  // Simple health response so opening the URL in a browser isn't "blank".
+  return NextResponse.json({ ok: true, endpoint: "track-click" });
+}
+
 export async function POST(request: NextRequest) {
   let payload: ClickEvent = {};
 
