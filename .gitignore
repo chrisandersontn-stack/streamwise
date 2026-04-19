@@ -35,6 +35,12 @@ yarn-error.log*
 /data/events.ndjson
 /data/preferences.json
 
+# Catalog round-trip (generated CSVs + local snapshots; keep out of git if you prefer)
+/data/catalog-sheet-export/
+/catalog-merged.json
+/catalog-before.json
+/catalog-after.json
+
 # vercel
 .vercel
 

@@ -1,0 +1,57 @@
+name: URL watch
+
+on:
+  schedule:
+    # Every Monday 16:00 UTC (~11am US Eastern, depending on DST)
+    - cron: "0 16 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run URL watch
+        id: watch
+        env:
+          URL_WATCH_USER_AGENT: ${{ secrets.URL_WATCH_USER_AGENT }}
+        run: |
+          set +e
+          node scripts/watch-urls.mjs --report url-watch-report.md
+          ec=$?
+          echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
+          if [ "$ec" -eq 2 ]; then
+            exit 1
+          fi
+          exit 0
+
+      - name: Open issue when page fingerprints changed
+        if: steps.watch.outputs.exit_code == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "URL watch: monitored pricing pages changed" \
+            --body-file url-watch-report.md
+
+      - name: Commit baseline updates (new ids or changed fingerprints)
+        if: steps.watch.outputs.exit_code == '0' || steps.watch.outputs.exit_code == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/url-watch-baseline.json
+          if git diff --staged --quiet; then
+            echo "No baseline file changes."
+          else
+            git commit -m "chore(url-watch): update page fingerprints"
+            git push
+          fi

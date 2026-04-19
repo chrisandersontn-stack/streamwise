@@ -1,0 +1,193 @@
+[
+  {
+    "id": "opt-amcplus_direct",
+    "url": "https://support.amcplus.com/kb/guide/en/price-change-cenwVPBMYg/Steps/5010804",
+    "label": "AMC+ Monthly with Ads"
+  },
+  {
+    "id": "opt-apple_direct",
+    "url": "https://tv.apple.com/",
+    "label": "Apple TV+"
+  },
+  {
+    "id": "opt-apple_one_individual",
+    "url": "https://www.apple.com/apple-one/",
+    "label": "Apple One Individual"
+  },
+  {
+    "id": "opt-crunchyroll_direct",
+    "url": "https://www.crunchyroll.com/premium",
+    "label": "Crunchyroll Fan"
+  },
+  {
+    "id": "opt-discoveryplus_direct",
+    "url": "https://help.discoveryplus.com/hc/en-us/articles/360058773493-discovery-plans-and-prices",
+    "label": "discovery+"
+  },
+  {
+    "id": "opt-disney_direct",
+    "url": "https://www.disneyplus.com/welcome/disney-bundle-duo",
+    "label": "Disney+ (With Ads)"
+  },
+  {
+    "id": "opt-disney_hulu_bundle",
+    "url": "https://www.hulu.com/disney-hulu-bundle",
+    "label": "Disney+, Hulu Bundle"
+  },
+  {
+    "id": "opt-disney_hulu_bundle_promo",
+    "url": "https://help.hulu.com/article/hulu-offer-2026",
+    "label": "Disney+, Hulu Bundle promo"
+  },
+  {
+    "id": "opt-disney_hulu_espn_unlimited_bundle",
+    "url": "https://www.hulu.com/disney-hulu-espn-unlimited-bundle",
+    "label": "Disney+, Hulu, ESPN Unlimited Bundle"
+  },
+  {
+    "id": "opt-disney_hulu_max_bundle",
+    "url": "https://help.max.com/us/answer/detail/000002578",
+    "label": "Disney+, Hulu, HBO Max Bundle"
+  },
+  {
+    "id": "opt-espn_select_direct",
+    "url": "https://support.espn.com/hc/en-us/articles/40375475974036-ESPN-Select-or-Unlimited-Plans-and-Prices",
+    "label": "ESPN Select",
+    "skipAutomation": true
+  },
+  {
+    "id": "opt-fubo_promo",
+    "url": "https://www.fubo.tv/welcome/channels",
+    "label": "Fubo promo plan"
+  },
+  {
+    "id": "opt-hulu_direct",
+    "url": "https://www.hulu.com/premium-no-ads",
+    "label": "Hulu (With Ads)"
+  },
+  {
+    "id": "opt-hulu_live_tv_direct",
+    "url": "https://www.hulu.com/live-tv",
+    "label": "Hulu + Live TV"
+  },
+  {
+    "id": "opt-instacart_peacock",
+    "url": "https://www.instacart.com/instacart-plus",
+    "label": "Peacock Premium included with Instacart+"
+  },
+  {
+    "id": "opt-max_direct",
+    "url": "https://help.max.com/us/Answer/Detail/000002524",
+    "label": "Max Basic with Ads"
+  },
+  {
+    "id": "opt-netflix_direct",
+    "url": "https://help.netflix.com/en/node/24926",
+    "label": "Netflix Standard with Ads"
+  },
+  {
+    "id": "opt-paramount_direct",
+    "url": "https://www.paramountplus.com/",
+    "label": "Paramount+ Essential"
+  },
+  {
+    "id": "opt-peacock_direct",
+    "url": "https://www.peacocktv.com/sports",
+    "label": "Peacock Premium"
+  },
+  {
+    "id": "opt-philo_bundle_plus",
+    "url": "https://help.philo.com/account-billing/packages/",
+    "label": "Philo Bundle+"
+  },
+  {
+    "id": "opt-philo_essential_direct",
+    "url": "https://help.philo.com/account-billing/packages/",
+    "label": "Philo Essential"
+  },
+  {
+    "id": "opt-prime_membership_video",
+    "url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+    "label": "Prime Video via Amazon Prime"
+  },
+  {
+    "id": "opt-prime_video_direct",
+    "url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+    "label": "Prime Video standalone"
+  },
+  {
+    "id": "opt-sling_blue_direct",
+    "url": "https://www.sling.com/service/compare-plans",
+    "label": "Sling Blue"
+  },
+  {
+    "id": "opt-sling_orange_blue_promo",
+    "url": "https://www.sling.com/channels",
+    "label": "Sling Orange & Blue promo"
+  },
+  {
+    "id": "opt-sling_orange_direct",
+    "url": "https://www.sling.com/service/compare-plans",
+    "label": "Sling Orange"
+  },
+  {
+    "id": "opt-starz_direct",
+    "url": "https://www.starz.com/us/en/buy",
+    "label": "STARZ standard monthly plan"
+  },
+  {
+    "id": "opt-starz_promo",
+    "url": "https://www.starz.com/us/en/buy",
+    "label": "STARZ limited-time offer"
+  },
+  {
+    "id": "opt-tmobile_apple_tv_discount",
+    "url": "https://www.t-mobile.com/tv-streaming/apple-tv-plus-deal/faq",
+    "label": "T-Mobile Apple TV benefit"
+  },
+  {
+    "id": "opt-tmobile_netflix_on_us",
+    "url": "https://www.t-mobile.com/tv-streaming/netflix-on-us",
+    "label": "T-Mobile Netflix On Us"
+  },
+  {
+    "id": "opt-verizon_disney_bundle",
+    "url": "https://www.verizon.com/support/disney-bundle-perk-faqs/",
+    "label": "Verizon Disney+, Hulu, ESPN+ perk"
+  },
+  {
+    "id": "opt-verizon_netflix_max_current",
+    "url": "https://www.verizon.com/support/netflix-max-perk-faqs/",
+    "label": "Verizon Netflix + Max perk"
+  },
+  {
+    "id": "opt-verizon_netflix_max_future",
+    "url": "https://www.verizon.com/support/netflix-max-perk-faqs/",
+    "label": "Verizon Netflix + Max perk"
+  },
+  {
+    "id": "opt-walmart_paramount",
+    "url": "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
+    "label": "Paramount+ Essential included with Walmart+"
+  },
+  {
+    "id": "opt-walmart_peacock",
+    "url": "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
+    "label": "Peacock Premium included with Walmart+"
+  },
+  {
+    "id": "opt-xfinity_streamsaver",
+    "url": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+    "label": "Xfinity StreamSaver"
+  },
+  {
+    "id": "opt-youtube_tv_direct",
+    "url": "https://tv.youtube.com/welcome/",
+    "label": "YouTube TV Base Plan"
+  },
+  {
+    "id": "opt-youtube_tv_promo",
+    "url": "https://tv.youtube.com/welcome/",
+    "label": "YouTube TV Base Plan promo"
+  }
+]

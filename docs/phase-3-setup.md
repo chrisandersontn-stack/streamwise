@@ -56,5 +56,5 @@ create table if not exists catalog_snapshots (
 - `POST /api/auth/magic-link` - send Supabase magic link email
 - `GET /api/auth/user` - validates bearer token and returns user id
 - `GET|PUT /api/profile/preferences` - token-aware preference storage
-- `GET|PUT /api/catalog` - hosted catalog read/update
+- `GET|PUT /api/catalog` - hosted catalog read/update (see `docs/pricing-data-process.md` for sourcing and refresh workflow)
 - `POST /api/track-click` - analytics event capture (Supabase + PostHog + fallback)

@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "catalog:diff": "node scripts/catalog-diff.mjs",
+    "catalog:sheet:generate": "node scripts/generate-catalog-sheet-csvs.mjs",
+    "catalog:sheet:apply": "node scripts/apply-catalog-sheet-csvs.mjs",
+    "catalog:url-watch": "node scripts/watch-urls.mjs",
+    "catalog:url-watch:generate-list": "node scripts/generate-url-watch-list.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.3",
