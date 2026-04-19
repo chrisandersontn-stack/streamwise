@@ -2,6 +2,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import type { Session } from "@supabase/supabase-js";
 
 import {
@@ -31,6 +32,35 @@ type ProviderKey =
   | "amazon"
   | "hulu"
   | "philo";
+
+function renderPricingRealityNote() {
+  return (
+    <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+      <div className="font-semibold">Before you rely on a total</div>
+      <ul className="mt-2 list-disc space-y-1 pl-5">
+        <li>Promotional pricing changes often and may require specific signup flows.</li>
+        <li>Eligibility varies by account, region, existing subscriptions, and fine print.</li>
+        <li>Retail totals and “best” picks are only as current as the pricing dataset.</li>
+      </ul>
+    </div>
+  );
+}
+
+function renderCommissionInline() {
+  return (
+    <p className="mt-1 text-xs text-slate-500">
+      We may earn a commission when you purchase or subscribe through qualifying
+      outbound links.{" "}
+      <Link
+        className="font-medium text-slate-700 underline underline-offset-2 hover:text-slate-900"
+        href="/affiliate-disclosure"
+      >
+        Affiliate disclosure
+      </Link>
+      .
+    </p>
+  );
+}
 
 type CatalogResponse = {
   services: Service[];
@@ -373,6 +403,7 @@ function renderOptionMeta(item: Option) {
       <div className="mt-1 text-sm text-slate-600">
         Source: {renderSourceLink(item)}
       </div>
+      {renderCommissionInline()}
 
       {item.priceStatus && (
         <div className="mt-1 text-sm text-slate-600">
@@ -1694,7 +1725,7 @@ export default function Page() {
         <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Prototype
+              Streaming savings planner
             </div>
             <h1 className="text-4xl font-bold tracking-tight">StreamWise</h1>
             <p className="mt-2 max-w-3xl text-base text-slate-600">
@@ -1705,15 +1736,53 @@ export default function Page() {
 
           <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
             <div className="text-xs uppercase tracking-wide text-slate-500">
-              Version 1 goal
+              What we optimize for
             </div>
             <div className="text-sm font-medium">Simple. Accurate. Fast.</div>
           </div>
         </div>
 
+        <div className="mb-6 rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+          <div className="text-sm font-semibold text-slate-900">
+            Disclosures
+          </div>
+          <div className="mt-2 space-y-2 text-sm text-slate-700">
+            <p>
+              StreamWise is an independent comparison tool. Results depend on
+              your selections and the pricing dataset, and offers can change at
+              any time.
+            </p>
+            <p>
+              We may earn a commission when you purchase or subscribe through
+              qualifying outbound links. Read the{" "}
+              <Link
+                className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+                href="/affiliate-disclosure"
+              >
+                affiliate disclosure
+              </Link>
+              , plus{" "}
+              <Link
+                className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+                href="/privacy"
+              >
+                privacy
+              </Link>{" "}
+              and{" "}
+              <Link
+                className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+                href="/terms"
+              >
+                terms
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+
         <div className="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="text-sm font-semibold text-slate-800">
-            Account (Phase 3 auth scaffold)
+            Account
           </div>
           <div className="mt-2 text-sm text-slate-600">
             Sign in with a magic link to sync preferences to your account.
@@ -1967,6 +2036,8 @@ export default function Page() {
               {renderRankingModeToggle(rankingMode, setRankingMode)}
             </div>
 
+            {!!selected.length && renderPricingRealityNote()}
+
             {!selected.length ? (
               <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5">
                 <p className="text-sm font-medium text-slate-700">
@@ -2049,6 +2120,8 @@ export default function Page() {
               ? "Grouped by strategy using lowest ongoing monthly cost."
               : "Grouped by strategy using lowest starting monthly cost."}
           </div>
+
+          {!!selected.length && renderPricingRealityNote()}
 
           {displayCombos.length ? (
             <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -2193,28 +2266,32 @@ export default function Page() {
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="text-lg font-semibold">Important warning</h3>
+            <h3 className="text-lg font-semibold">Pricing limitations</h3>
             <p className="mt-2 text-sm text-slate-600">
-              Bundles, promos, and carrier perks change often. The product only
-              works if pricing data stays current, complete, and well sourced.
+              Promotions, bundles, and carrier perks change frequently. Always
+              verify eligibility, regional restrictions, and checkout totals on the
+              official offer pages linked from each option.
             </p>
           </div>
         </div>
 
         <footer className="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-500">
           <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <a className="underline underline-offset-2 hover:text-slate-700" href="/privacy">
+            <Link className="underline underline-offset-2 hover:text-slate-700" href="/about">
+              About
+            </Link>
+            <Link className="underline underline-offset-2 hover:text-slate-700" href="/privacy">
               Privacy
-            </a>
-            <a className="underline underline-offset-2 hover:text-slate-700" href="/terms">
+            </Link>
+            <Link className="underline underline-offset-2 hover:text-slate-700" href="/terms">
               Terms
-            </a>
-            <a
+            </Link>
+            <Link
               className="underline underline-offset-2 hover:text-slate-700"
               href="/affiliate-disclosure"
             >
               Affiliate disclosure
-            </a>
+            </Link>
           </div>
         </footer>
       </div>
