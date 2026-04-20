@@ -2,18 +2,18 @@
   "version": 1,
   "entries": {
     "opt-amcplus_direct": {
-      "hash": "f66c36a9bfc71aef9e10365af65369ffebcb6938bc1067c790954a791fa5de80",
+      "hash": "7cbb194c074dd2bf941455bbcd772fd49d1261ea3432ffed5b5d28129b5d8c67",
       "url": "https://support.amcplus.com/kb/guide/en/price-change-cenwVPBMYg/Steps/5010804",
       "label": "AMC+ Monthly with Ads",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 186039
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 186067
     },
     "opt-apple_direct": {
-      "hash": "647ba7ab685bf6f9c9820e3b36a8353b071e212076ee15ed802ab192b818f9d9",
+      "hash": "b4a90f034ebc73e277d468b7437ed8d7c4c5729e2e3d5b5d7b34051b5487c4be",
       "url": "https://tv.apple.com/",
       "label": "Apple TV+",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 875555
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 860618
     },
     "opt-apple_one_individual": {
       "hash": "e2aba2ea5da8c0bda277675548bdc9afcba84e8d113697660f8393373cef605a",
@@ -23,10 +23,10 @@
       "byteLength": 163548
     },
     "opt-crunchyroll_direct": {
-      "hash": "dc07f3c6b9dac58a51bb0d8b5ce1d980824e6d7527450303e412ecae8fd078e6",
+      "hash": "62b422e8fe7074e97a688e5d1eda4e86e4813fa67ce81179dd6185b90514ee0a",
       "url": "https://www.crunchyroll.com/premium",
       "label": "Crunchyroll Fan",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
       "byteLength": 7777
     },
     "opt-discoveryplus_direct": {
@@ -37,95 +37,95 @@
       "byteLength": 29468
     },
     "opt-disney_direct": {
-      "hash": "fe5cc2d502a5b4a8723173793d9fd435449d198c65f2d837f70a9b0af8827f31",
+      "hash": "7fd1504ef54666fac02d140a0eb5bae3d95ab55507cafa57017c315ba003f249",
       "url": "https://www.disneyplus.com/welcome/disney-bundle-duo",
       "label": "Disney+ (With Ads)",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 1316132
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 1316412
     },
     "opt-disney_hulu_bundle": {
-      "hash": "96f81d6eca6ecbb2780bcf06565aa8d4c78f8161ca393e71be9d57507ebcf02b",
+      "hash": "f4b775c78439fcc2feff22858fb2c5f82490dd7e1f86f6059951cf6c8f741678",
       "url": "https://www.hulu.com/disney-hulu-bundle",
       "label": "Disney+, Hulu Bundle",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 409134
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 409167
     },
     "opt-disney_hulu_bundle_promo": {
-      "hash": "4b6c741520a8c78c7ae6c35a406aaa1b1171c6b778e7529c215d949d024f4229",
+      "hash": "5f6462846ac882cf43117dc93c987e3ea4a0ade151a15f0cbc2e93a4e2c72b8a",
       "url": "https://help.hulu.com/article/hulu-offer-2026",
       "label": "Disney+, Hulu Bundle promo",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
       "byteLength": 79824
     },
     "opt-disney_hulu_espn_unlimited_bundle": {
-      "hash": "3e4ad68695f0652027c44eb43980e764c910237d4d9c49337687f1e8832233c1",
+      "hash": "615b487ba05f730f504edbf7c9c72fdfd61f633120ea4ec2dab5d6b4d7643428",
       "url": "https://www.hulu.com/disney-hulu-espn-unlimited-bundle",
       "label": "Disney+, Hulu, ESPN Unlimited Bundle",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 434319
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 434377
     },
     "opt-disney_hulu_max_bundle": {
-      "hash": "7582909538d5e48b3fb1427809c908d7b4cb4c3c69670476ffe3ba01bf17dd74",
+      "hash": "c85b84d582eedbcbdd46e6437eacfe52efb698b79c51274965822f1d310df3f0",
       "url": "https://help.max.com/us/answer/detail/000002578",
       "label": "Disney+, Hulu, HBO Max Bundle",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 81167
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 81176
     },
     "opt-fubo_promo": {
-      "hash": "dce65c67e9b4d19b56640e3db4cfdb831088ee6bcf1c58d0ecf5e6563164329b",
+      "hash": "1ccb6af719c255ae501f23a0da737315afd256ae2edec151591333b018a79783",
       "url": "https://www.fubo.tv/welcome/channels",
       "label": "Fubo promo plan",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 2675094
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 2667426
     },
     "opt-hulu_direct": {
-      "hash": "9918cc9fbe628f1a08b728c12e08b3901c295582a4d2916eab030dc0797604a5",
+      "hash": "ea661f09d150b2e2aa446abcf45a437c0dfedc86ed0db0c139bc6a0aa0755531",
       "url": "https://www.hulu.com/premium-no-ads",
       "label": "Hulu (With Ads)",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 1790915
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 1790021
     },
     "opt-hulu_live_tv_direct": {
-      "hash": "b5dc3ceea9da160bd4724b0e929deb39ca1243bd5412750cf2ea9034160ffe17",
+      "hash": "b708aff95301e1506602beb59132b095b8a3d72cd67b1bcf0b020f1a84f23a7d",
       "url": "https://www.hulu.com/live-tv",
       "label": "Hulu + Live TV",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 3300321
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 3298475
     },
     "opt-instacart_peacock": {
-      "hash": "eea7d54d61d132650c4c244e50dff830112c2f44bd35c54023f54880808dafb5",
+      "hash": "c01d86589e112b1357029401e0f7fe3ae8381fe54707c18361f0d29a7b72786c",
       "url": "https://www.instacart.com/instacart-plus",
       "label": "Peacock Premium included with Instacart+",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 935063
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 544381
     },
     "opt-max_direct": {
-      "hash": "9f82a263053365d29908010c4923d9b6bd189adab90662eb0440459a6566fb4a",
+      "hash": "f09ffa8c22d2109c292048f02e0d0fe1ee39e1055347e27eb29b245df98e5781",
       "url": "https://help.max.com/us/Answer/Detail/000002524",
       "label": "Max Basic with Ads",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 60381
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 60390
     },
     "opt-netflix_direct": {
-      "hash": "b490a162241a0e28f78377915f15a4cf7bcfe4a7efb638a65b4884323da780df",
+      "hash": "d99623f04e1f70ad77b52460cb022d4b75852fdbc87792c757002f2df3fe27de",
       "url": "https://help.netflix.com/en/node/24926",
       "label": "Netflix Standard with Ads",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 58694
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 58686
     },
     "opt-paramount_direct": {
-      "hash": "7fb5d110e687779ae579c030d27fa53d1bf4f9cb2afb5d421ddeccbcc20e65bb",
+      "hash": "d5d7ad1be5f0cd62c86e4eaf8b4053d421a276fae991e9d41b576a821a93d6ab",
       "url": "https://www.paramountplus.com/",
       "label": "Paramount+ Essential",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 359980
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 360112
     },
     "opt-peacock_direct": {
-      "hash": "dd6e3e7313c8add01d90a22ce04d5daa49817f7414977dd2feda43c1abbfd29f",
+      "hash": "0ac9f04827ce3c5a75782549960524fb240f9d64d57108a1f942310060a7bb96",
       "url": "https://www.peacocktv.com/sports",
       "label": "Peacock Premium",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 964133
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 963550
     },
     "opt-philo_bundle_plus": {
       "hash": "c19f09e6c01c0190aa666ed0f34328fd8a94ce14d088892833d996b7e366f7df",
@@ -163,74 +163,74 @@
       "byteLength": 97307
     },
     "opt-starz_direct": {
-      "hash": "6417cccfa8482eee99fbe2cd26429451d0663892032f6c0fffc368ab097dab5d",
+      "hash": "d65ae23f39d103c51ee14dda0c4ea8e2c74da09dbf2c998adf5aefce1b98ee2e",
       "url": "https://www.starz.com/us/en/buy",
       "label": "STARZ standard monthly plan",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
       "byteLength": 159097
     },
     "opt-starz_promo": {
-      "hash": "6417cccfa8482eee99fbe2cd26429451d0663892032f6c0fffc368ab097dab5d",
+      "hash": "d65ae23f39d103c51ee14dda0c4ea8e2c74da09dbf2c998adf5aefce1b98ee2e",
       "url": "https://www.starz.com/us/en/buy",
       "label": "STARZ limited-time offer",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
       "byteLength": 159097
     },
     "opt-tmobile_apple_tv_discount": {
-      "hash": "e5d7c7da2e8216bc5f2f8a275890aed4e62748101ce1c09341b1220d6aae8ce6",
+      "hash": "3b16d05e280ff45487bd139c5b05af502970d38ed7cce0e776d7ce820ea98c7c",
       "url": "https://www.t-mobile.com/tv-streaming/apple-tv-plus-deal/faq",
       "label": "T-Mobile Apple TV benefit",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 404513
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 404504
     },
     "opt-tmobile_netflix_on_us": {
-      "hash": "c995e8ce1dbfce48c7ec55bedadc774f9a7cc653c72a06b2bc6a0c6c78b80983",
+      "hash": "70a81e333e91297df10e4c9b3138971d201df2f217ec35bff2f38cf5b27f53da",
       "url": "https://www.t-mobile.com/tv-streaming/netflix-on-us",
       "label": "T-Mobile Netflix On Us",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 438457
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 438911
     },
     "opt-verizon_disney_bundle": {
-      "hash": "1718b714d1d795fd697fc3df5c3793883b0417728c6fdbc576092956feb31024",
+      "hash": "4adc65de13e69d36385118487939430a9bf06d0ef59b5dcc4aa6e40421cabba4",
       "url": "https://www.verizon.com/support/disney-bundle-perk-faqs/",
       "label": "Verizon Disney+, Hulu, ESPN+ perk",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 246718
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 246734
     },
     "opt-verizon_netflix_max_current": {
-      "hash": "08d0fee62ee416ee61c9fd5720440831edea8666d736350b084b3f539c736a08",
+      "hash": "5f68f1f14a74ee124649d5e3491d4f443bf6460dee4d61671d14dcf0692832c3",
       "url": "https://www.verizon.com/support/netflix-max-perk-faqs/",
       "label": "Verizon Netflix + Max perk",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 273255
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 273238
     },
     "opt-verizon_netflix_max_future": {
-      "hash": "08d0fee62ee416ee61c9fd5720440831edea8666d736350b084b3f539c736a08",
+      "hash": "5f68f1f14a74ee124649d5e3491d4f443bf6460dee4d61671d14dcf0692832c3",
       "url": "https://www.verizon.com/support/netflix-max-perk-faqs/",
       "label": "Verizon Netflix + Max perk",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 273255
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 273238
     },
     "opt-walmart_paramount": {
-      "hash": "a198c6bb8226a97dcc8b7999be04982444909a8e378289294e28f56963a7a945",
+      "hash": "7a80f7bcd32b944f904f35a14831466c6ae3c0d7f2cf2216fb74f3bae4053b14",
       "url": "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
       "label": "Paramount+ Essential included with Walmart+",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 238875
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 238876
     },
     "opt-walmart_peacock": {
-      "hash": "a198c6bb8226a97dcc8b7999be04982444909a8e378289294e28f56963a7a945",
+      "hash": "7a80f7bcd32b944f904f35a14831466c6ae3c0d7f2cf2216fb74f3bae4053b14",
       "url": "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
       "label": "Peacock Premium included with Walmart+",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 238875
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 238876
     },
     "opt-xfinity_streamsaver": {
-      "hash": "3c2d676b752fe770f0e938c4edca6a46b3680b34e21a739ed357aa3bdde7004a",
+      "hash": "6a358f85eec6142c622dac797ed6581a601465792c47f7ace0f49bc60beecb5e",
       "url": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
       "label": "Xfinity StreamSaver",
-      "fetchedAt": "2026-04-19T23:58:54.930Z",
-      "byteLength": 353933
+      "fetchedAt": "2026-04-20T19:44:44.461Z",
+      "byteLength": 353865
     },
     "opt-youtube_tv_direct": {
       "hash": "b72625ac128505e1b7d9300c0bd9f72e803b798127fe1a7d232540d669b5d831",
@@ -247,5 +247,5 @@
       "byteLength": 2298925
     }
   },
-  "updatedAt": "2026-04-19T23:58:54.930Z"
+  "updatedAt": "2026-04-20T19:44:44.461Z"
 }
