@@ -146,6 +146,134 @@ npm run catalog:diff -- catalog.before.json catalog.after.json
 
 Tracked fields include pricing and provenance fields such as `monthly`, `standardMonthly`, `priceStatus`, `lastChecked`, `sourceUrl`, `covers`, `requires`, and `notes`. See `scripts/catalog-diff.mjs` for the full list.
 
+### 8f) Source registry and automation coverage
+
+Track provider sources in `data/price-sources.csv` and generate automation metadata with:
+
+```bash
+npm run catalog:price-sources:build
+```
+
+This writes:
+
+- `data/price-source-registry.json` (normalized source records)
+- `data/price-source-automation-report.json` (automation tiers and manual-review coverage)
+
+Use automation tiers to decide workflow:
+
+- `api` / `html_scrape`: candidates for scheduled extraction adapters
+- `manual_review` / `manual_override`: require human verification before publish
+
+### 8g) Automated price-source checks (first adapter set)
+
+Current adapters include:
+
+- `netflix_signup`
+- `hulu_start`
+- `disneyplus_pricing`
+- `peacock_pricing`
+- `max_pricing`
+- `youtube_tv_pricing`
+- `sling_pricing`
+- `fubo_pricing`
+- `philo_pricing`
+- `walmart_plus` *(manual review adapter)*
+- `instacart_plus` *(manual review adapter)*
+- `verizon_unlimited_bundles` *(manual review adapter)*
+- `tmobile_offers` *(manual review adapter)*
+- `xfinity_offers` *(manual review adapter)*
+
+Run checks:
+
+```bash
+npm run catalog:price-sources:check
+```
+
+Run checks with fetch diagnostics (for failure triage):
+
+```bash
+npm run catalog:price-sources:check:debug
+```
+
+Run checks with optional browser fallback (Playwright), for JS-heavy pages that fail static fetch:
+
+```bash
+# one-time setup on your machine/runner:
+npx playwright install chromium
+
+# optional: restrict browser fallback to specific hosts
+PRICE_WATCH_BROWSER_HOSTS="www.netflix.com,signup.hulu.com" \
+npm run catalog:price-sources:check:browser
+```
+
+Browser fallback behavior:
+
+- Normal mode remains HTTP-first only (`catalog:price-sources:check`).
+- Browser mode is opt-in via `PRICE_WATCH_BROWSER_FETCH=1`.
+- Browser fetch only runs after HTTP retries fail, with strict navigation timeout.
+- If `PRICE_WATCH_BROWSER_HOSTS` is set, fallback is limited to those hosts.
+
+Run network preflight to separate adapter issues from environment/network failures:
+
+```bash
+npm run catalog:price-sources:network-check
+```
+
+Run full triage bundle (build + network + debug checks + manual issue body):
+
+```bash
+npm run catalog:price-sources:triage
+```
+
+Outputs:
+
+- `data/price-source-candidate-updates.json`
+- `price-source-check-report.md`
+- `price-source-manual-review-issue.md` (from manual review helper command below)
+- `data/price-source-network-health.json`
+- `price-source-network-health-report.md`
+- `price-source-triage-summary.md`
+
+Exit behavior:
+
+- `0`: no candidate price deltas detected
+- `1`: candidate deltas found **or** one or more source fetch failures (verification degraded)
+- `2`: script/config/fetch error
+
+`data/price-source-candidate-updates.json` now includes:
+
+- `verificationStatus` (`ok` or `degraded`)
+- `fetchFailureCount`
+- `fetchFailureBreakdown` (grouped by classified failure cause)
+- `checksDetectedCount` (how many adapters produced parsable checks)
+- `sourceVerificationStates` (per-source `verified_automated` / `verified_manual` / `failed_fetch` / `manual_required`)
+- `sourceVerificationStateCounts` (state totals)
+
+Automation:
+
+- GitHub workflow: `.github/workflows/price-source-watch.yml`
+- Runs weekly and on manual dispatch
+- Runs a network preflight first; if DNS is blocked, it opens an environment issue and skips adapter checks to avoid misleading "0 changes"
+- Uploads artifacts and opens issues for candidate deltas or degraded verification
+
+Generate a copy-ready manual review issue body (prioritized by source priority):
+
+```bash
+npm run catalog:price-sources:manual-review-issue
+```
+
+Record a manual verification event for hard providers:
+
+```bash
+npm run catalog:price-sources:record-manual -- --source walmart_plus --date 2026-04-28 --verifier "Chris" --notes "Verified in signed-in account flow"
+```
+
+Recommended manual-verification SLA for hard sources:
+
+- Weekly: `walmart_plus`, `instacart_plus`, `verizon_unlimited_bundles`, `tmobile_offers`, `xfinity_offers`
+- Record every completed review using `catalog:price-sources:record-manual`
+- Keep `verifiedOn` current so dashboards/reports can distinguish manual verification from failed automation
+
 ## 9) “We used ChatGPT before” cleanup plan
 
 Treat legacy data as **untrusted** until re-verified:

@@ -65,9 +65,21 @@ function applyServicePatches(catalog, rows) {
     if (!id) {
       continue;
     }
-    const target = byId.get(id);
+    let target = byId.get(id);
     if (!target) {
-      console.warn(`[services] Unknown id skipped: ${id}`);
+      const label = strOrUndefined(row.label);
+      const group = strOrUndefined(row.group);
+      const monthly = numOrUndefined(row.monthly);
+      if (!label || !group || monthly === undefined) {
+        console.warn(
+          `[services] Unknown id skipped (missing required fields label/group/monthly): ${id}`
+        );
+        continue;
+      }
+      const created = { id, label, group, monthly };
+      catalog.services.push(created);
+      byId.set(id, created);
+      console.warn(`[services] Added new id from sheet: ${id}`);
       continue;
     }
     if (strOrUndefined(row.label) !== undefined) {
@@ -90,10 +102,42 @@ function applyOptionPatches(catalog, rows) {
     if (!id) {
       continue;
     }
-    const target = byId.get(id);
+    let target = byId.get(id);
     if (!target) {
-      console.warn(`[options] Unknown id skipped: ${id}`);
-      continue;
+      const name = strOrUndefined(row.name);
+      const provider = strOrUndefined(row.provider);
+      const category = strOrUndefined(row.category);
+      const source = strOrUndefined(row.source);
+      const monthly = numOrUndefined(row.monthly);
+      const covers = pipeSplit(row.covers) ?? [];
+      if (
+        !name ||
+        !provider ||
+        !category ||
+        !source ||
+        monthly === undefined ||
+        covers.length === 0
+      ) {
+        console.warn(
+          `[options] Unknown id skipped (missing required fields name/provider/category/source/monthly/covers): ${id}`
+        );
+        continue;
+      }
+      const created = {
+        id,
+        name,
+        provider,
+        monthly,
+        covers,
+        notes: strOrUndefined(row.notes) ?? "",
+        source,
+        category,
+      };
+      catalog.options.push(created);
+      byId.set(id, created);
+      target = created;
+      console.warn(`[options] Added new id from sheet: ${id}`);
+      // Continue so optional fields below are applied to the new object.
     }
 
     const stringFields = [

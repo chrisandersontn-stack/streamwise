@@ -12,7 +12,7 @@ import {
   type Option,
   type Service,
 } from "./streamwise-data";
-import { calculateCombos } from "./streamwise-logic";
+import { calculateCombos, getComboAnnualTotal } from "./streamwise-logic";
 import { getSupabaseBrowserClient } from "@/lib/client/supabase-browser";
 import { resolveOutboundSourceUrl } from "@/lib/affiliate/outbound-url";
 
@@ -67,6 +67,33 @@ type CatalogResponse = {
   options: Option[];
 };
 
+type ConversionSummary = {
+  recommendationViews: number;
+  outboundClicks: number;
+  affiliateClicks: number;
+  sourceClicks: number;
+  clickThroughRate: number;
+  topClickedOptions: Array<{ optionName: string; clicks: number }>;
+};
+
+type DataHealthSummary = {
+  generatedAt: string | null;
+  sourcesTracked: number;
+  sourcesChecked: number;
+  sourcesWithDetectedChecks: number;
+  sourcesFailed: number;
+  sourcesManualReview: number;
+  manualVerificationsRecorded: number;
+  verificationStatus: string;
+  fetchFailureBreakdown: Record<string, number>;
+  oldestVerifiedProvider: {
+    provider: string;
+    sourceId: string;
+    date: string | null;
+  } | null;
+  nextScheduledCheckUtc: string;
+};
+
 type PreferencesPayload = {
   selectedServices: string[];
   hasVerizon: boolean;
@@ -78,6 +105,9 @@ type PreferencesPayload = {
 };
 
 const services = defaultServices;
+const serviceMonthlyByGroup = new Map(
+  services.map((service) => [service.group, service.monthly] as const)
+);
 
 function formatMoney(value: number) {
   if (typeof value !== "number" || Number.isNaN(value)) {
@@ -289,36 +319,7 @@ function renderSourceLink(item: Option) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
-          const payload = {
-            optionId: item.id,
-            optionName: item.name,
-            provider: getItemProviderKey(item) ?? "direct",
-            sourceUrl: item.sourceUrl,
-            resolvedUrl: outbound.href,
-            linkKind: outbound.kind,
-          };
-
-          try {
-            const params = new URLSearchParams({
-              optionId: payload.optionId,
-              optionName: payload.optionName,
-              provider: payload.provider,
-              sourceUrl: payload.sourceUrl ?? "",
-              resolvedUrl: payload.resolvedUrl,
-              linkKind: payload.linkKind,
-            });
-            const ok = navigator.sendBeacon("/api/track-click", params);
-            if (ok) return;
-          } catch {
-            // Fall back to fetch below.
-          }
-
-          void fetch("/api/track-click", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-            keepalive: true,
-          }).catch(() => undefined);
+          trackOutboundClick(item, outbound.href, outbound.kind);
         }}
         className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
       >
@@ -328,6 +329,191 @@ function renderSourceLink(item: Option) {
   }
 
   return item.source;
+}
+
+function trackOutboundClick(item: Option, resolvedUrl: string, linkKind: "affiliate" | "source") {
+  const payload = {
+    optionId: item.id,
+    optionName: item.name,
+    provider: getItemProviderKey(item) ?? "direct",
+    sourceUrl: item.sourceUrl,
+    resolvedUrl,
+    linkKind,
+  };
+
+  try {
+    const params = new URLSearchParams({
+      optionId: payload.optionId,
+      optionName: payload.optionName,
+      provider: payload.provider,
+      sourceUrl: payload.sourceUrl ?? "",
+      resolvedUrl: payload.resolvedUrl,
+      linkKind: payload.linkKind,
+    });
+    const ok = navigator.sendBeacon("/api/track-click", params);
+    if (ok) return;
+  } catch {
+    // Fall back to fetch below.
+  }
+
+  void fetch("/api/track-click", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  }).catch(() => undefined);
+}
+
+function trackUiEvent(
+  eventName: string,
+  properties: { recommendedId?: string; rankingMode?: RankingMode; selectedCount?: number }
+) {
+  const payload = {
+    optionId: `ui:${eventName}`,
+    optionName: properties.recommendedId ?? "",
+    provider: properties.rankingMode ?? "",
+    sourceUrl:
+      typeof properties.selectedCount === "number"
+        ? `selected_count:${properties.selectedCount}`
+        : "",
+    resolvedUrl: typeof window !== "undefined" ? window.location.pathname : "/",
+    linkKind: "ui_event",
+  };
+
+  try {
+    const params = new URLSearchParams({
+      optionId: payload.optionId,
+      optionName: payload.optionName,
+      provider: payload.provider,
+      sourceUrl: payload.sourceUrl,
+      resolvedUrl: payload.resolvedUrl,
+      linkKind: payload.linkKind,
+    });
+    const ok = navigator.sendBeacon("/api/track-click", params);
+    if (ok) return;
+  } catch {
+    // Fall back to fetch below.
+  }
+
+  void fetch("/api/track-click", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  }).catch(() => undefined);
+}
+
+function renderComboActionLinks(combo: Combo) {
+  const actionable = combo.chosen
+    .map((item) => {
+      if (!item.sourceUrl) return null;
+      const outbound = resolveOutboundSourceUrl({
+        sourceUrl: item.sourceUrl,
+        affiliateUrl: item.affiliateUrl,
+      });
+      return { item, outbound };
+    })
+    .filter((entry): entry is { item: Option; outbound: { href: string; kind: "affiliate" | "source" } } => Boolean(entry))
+    .slice(0, 3);
+
+  if (!actionable.length) {
+    return null;
+  }
+
+  return (
+    <div className="mt-3">
+      <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        Next steps
+      </div>
+      <div className="mt-1 text-xs text-slate-500">
+        Open offer/source takes you to the provider page in a new tab so you can verify
+        details and subscribe directly.
+      </div>
+      <div className="mt-1 text-xs text-slate-500">
+        Some links are affiliate-supported, but ranking is independent and based on cost
+        logic.
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {actionable.map(({ item, outbound }) => (
+          <a
+            key={`${combo.id}-${item.id}`}
+            href={outbound.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackOutboundClick(item, outbound.href, outbound.kind)}
+            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+          >
+            Open provider page: {item.name}{" "}
+            <span className="text-slate-500">
+              ({outbound.kind === "affiliate" ? "affiliate-supported" : "source link"})
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function renderPrimaryRecommendationCta(combo: Combo) {
+  const firstAction = combo.chosen
+    .map((item) => {
+      if (!item.sourceUrl) return null;
+      const outbound = resolveOutboundSourceUrl({
+        sourceUrl: item.sourceUrl,
+        affiliateUrl: item.affiliateUrl,
+      });
+      return { item, outbound };
+    })
+    .find(
+      (
+        entry
+      ): entry is { item: Option; outbound: { href: string; kind: "affiliate" | "source" } } =>
+        Boolean(entry)
+    );
+
+  if (!firstAction) return null;
+
+  return (
+    <a
+      href={firstAction.outbound.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() =>
+        trackOutboundClick(
+          firstAction.item,
+          firstAction.outbound.href,
+          firstAction.outbound.kind
+        )
+      }
+      className="mt-3 inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+    >
+      Start with this offer
+    </a>
+  );
+}
+
+function renderHowRecommendationsWork() {
+  return (
+    <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+      <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+        How recommendation ranking works
+      </summary>
+      <div className="mt-3 space-y-2 text-sm text-slate-700">
+        <p>
+          We rank paths by lowest <span className="font-semibold">12-month total</span>{" "}
+          first.
+        </p>
+        <p>
+          If totals tie, we break ties by ongoing monthly cost, then coverage, confidence,
+          and plan simplicity.
+        </p>
+        <p>
+          Affiliate-supported links never change ranking order; they only affect which
+          outbound URL opens when you click through.
+        </p>
+      </div>
+    </details>
+  );
 }
 
 function renderOptionHeader(item: Option) {
@@ -552,8 +738,7 @@ function getCoveredSelectedRetailValue(combo: Combo, selected: string[]) {
   let total = 0;
 
   coveredSelected.forEach((service) => {
-    const match = services.find((item) => item.group === service);
-    total += match?.monthly ?? 0;
+    total += serviceMonthlyByGroup.get(service) ?? 0;
   });
 
   return total;
@@ -561,39 +746,23 @@ function getCoveredSelectedRetailValue(combo: Combo, selected: string[]) {
 
 function getSelectedRetailAnnualValue(selected: string[]) {
   return selected.reduce((total, serviceName) => {
-    const match = services.find((item) => item.group === serviceName);
-    return total + (match?.monthly ?? 0) * 12;
+    return total + (serviceMonthlyByGroup.get(serviceName) ?? 0) * 12;
   }, 0);
 }
 
-function getItemOngoingCost(item: Option) {
-  if (
-    typeof item.standardMonthly === "number" &&
-    !Number.isNaN(item.standardMonthly)
-  ) {
-    return item.standardMonthly;
-  }
-
-  return getStartingCost(item);
-}
-
-function getItemAnnualCost(item: Option) {
-  const startingCost = getStartingCost(item);
-  const ongoingCost = getItemOngoingCost(item);
-  const introMonths = Math.max(0, Math.min(12, item.introLengthMonths ?? 0));
-
-  if (introMonths > 0 && ongoingCost !== startingCost) {
-    return startingCost * introMonths + ongoingCost * (12 - introMonths);
-  }
-
-  return startingCost * 12;
-}
-
 function getComboAnnualCost(combo: Combo) {
-  return combo.chosen.reduce((total, item) => total + getItemAnnualCost(item), 0);
+  if (typeof combo.annualTotal === "number" && Number.isFinite(combo.annualTotal)) {
+    return combo.annualTotal;
+  }
+
+  return getComboAnnualTotal(combo.chosen);
 }
 
 function getComboAnnualSavings(combo: Combo, selected: string[]) {
+  if (typeof combo.annualSavings === "number" && Number.isFinite(combo.annualSavings)) {
+    return combo.annualSavings;
+  }
+
   return getSelectedRetailAnnualValue(selected) - getComboAnnualCost(combo);
 }
 
@@ -710,43 +879,81 @@ function getBestForLabel(combo: Combo, selected: string[]) {
   return "Best overall value";
 }
 
-function renderComboBadges(combo: Combo, index: number, selected: string[]) {
+function renderComboBadges(
+  combo: Combo,
+  selected: string[],
+  cheapestId?: string,
+  recommendedId?: string
+) {
   const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
 
   return (
     <>
-      {index === 0 && (
-        <span className="rounded-full bg-slate-900 px-2 py-0.5 text-xs font-semibold text-white">
+      {cheapestId && combo.id === cheapestId && (
+        <span
+          aria-label="Cheapest combination"
+          title="Cheapest combination"
+          className="rounded-full bg-slate-900 px-2 py-0.5 text-xs font-semibold text-white"
+        >
           Cheapest
+        </span>
+      )}
+      {recommendedId && combo.id === recommendedId && (
+        <span
+          aria-label="Recommended combination"
+          title="Recommended combination"
+          className="rounded-full bg-emerald-700 px-2 py-0.5 text-xs font-semibold text-white"
+        >
+          Recommended
         </span>
       )}
 
       {combo.chosen.some((item) => item.category === "promo") && (
-        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+        <span
+          aria-label="Contains promotional pricing"
+          title="Contains promotional pricing"
+          className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700"
+        >
           Promo
         </span>
       )}
 
       {combo.chosen.some((item) => isIncludedPerk(item)) && (
-        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+        <span
+          aria-label="Includes a no extra cost perk"
+          title="Includes a no extra cost perk"
+          className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700"
+        >
           Includes $0 perk
         </span>
       )}
 
       {combo.chosen.some((item) => isPaidMembershipPath(item)) && (
-        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700">
+        <span
+          aria-label="Requires a paid membership path"
+          title="Requires a paid membership path"
+          className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700"
+        >
           Membership path
         </span>
       )}
 
       {combo.chosen.some((item) => item.category === "carrier") && (
-        <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-700">
+        <span
+          aria-label="Uses a telecom perk"
+          title="Uses a telecom perk"
+          className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-700"
+        >
           Telecom perk
         </span>
       )}
 
       {extraCoveredServices > 0 && (
-        <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">
+        <span
+          aria-label="Includes additional unselected services"
+          title="Includes additional unselected services"
+          className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700"
+        >
           Includes unselected service
         </span>
       )}
@@ -993,6 +1200,146 @@ function getTradeoffSummary(
   return `Compared with the next best option, this path ${differences.join(", ")}.`;
 }
 
+function getRecommendationRuleSummary(
+  recommended: Combo,
+  cheapest: Combo | undefined
+) {
+  const annualTotal = getComboAnnualCost(recommended);
+  const ongoingMonthly = recommended.ongoingTotal;
+
+  if (!cheapest || cheapest.id === recommended.id) {
+    return `Rule applied: this path has the lowest 12-month total at ${formatMoney(annualTotal)}.`;
+  }
+
+  const annualDelta = getComboAnnualCost(cheapest) - annualTotal;
+  const ongoingDelta = cheapest.ongoingTotal - ongoingMonthly;
+
+  if (annualDelta > 0.01) {
+    return `Rule applied: this path wins on 12-month total by ${formatMoney(annualDelta)} versus the cheapest-looking monthly option.`;
+  }
+
+  if (Math.abs(annualDelta) <= 0.01 && Math.abs(ongoingDelta) > 0.01) {
+    return ongoingDelta > 0
+      ? `Rule applied: 12-month totals tie, then tie-breaker picks the lower ongoing monthly cost by ${formatMoney(ongoingDelta)}/mo.`
+      : `Rule applied: 12-month totals tie, and this path is kept for stronger non-price tie-breakers (coverage/confidence/plan count).`;
+  }
+
+  return "Rule applied: 12-month totals tie, and this path wins secondary tie-breakers (coverage, confidence, and structure).";
+}
+
+function getRecommendationVerdict(
+  recommended: Combo,
+  cheapest: Combo | undefined
+) {
+  if (!cheapest || cheapest.id === recommended.id) {
+    return `Verdict: this path is both the lowest monthly-looking and lowest 12-month total at ${formatMoney(
+      getComboAnnualCost(recommended)
+    )}.`;
+  }
+
+  const annualDelta = getComboAnnualCost(cheapest) - getComboAnnualCost(recommended);
+  const monthlyDelta = recommended.total - cheapest.total;
+
+  if (annualDelta > 0.01 && monthlyDelta > 0.01) {
+    return `Verdict: chosen because it saves ${formatMoney(
+      annualDelta
+    )} over 12 months despite looking ${formatMoney(monthlyDelta)}/mo higher upfront.`;
+  }
+
+  if (annualDelta > 0.01 && monthlyDelta <= 0.01) {
+    return `Verdict: chosen because it saves ${formatMoney(
+      annualDelta
+    )} over 12 months and does not cost more upfront.`;
+  }
+
+  if (Math.abs(annualDelta) <= 0.01 && monthlyDelta > 0.01) {
+    return `Verdict: 12-month totals tie, so this path is recommended for stronger tie-breakers even though it starts ${formatMoney(
+      monthlyDelta
+    )}/mo higher.`;
+  }
+
+  return "Verdict: this path wins after applying 12-month-first ranking and secondary tie-breakers.";
+}
+
+function renderRecommendationProof(
+  recommended: Combo,
+  cheapest: Combo | undefined,
+  selected: string[]
+) {
+  const recommendedAnnual = getComboAnnualCost(recommended);
+  const recommendedStarting = recommended.total;
+  const recommendedOngoing = recommended.ongoingTotal;
+  const recommendedExtras = getExtraCoveredServiceCount(recommended, selected);
+  const recommendedConfidence = getConfidenceLabel(getComboConfidence(recommended));
+
+  if (!cheapest || cheapest.id === recommended.id) {
+    return (
+      <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-100">
+        <div className="font-semibold">Recommendation proof</div>
+        <div className="mt-1">No lower-monthly alternative beat this path on total 12-month spend.</div>
+        <div className="mt-2 text-slate-200">
+          12-month total: {formatMoney(recommendedAnnual)} · Starting:{" "}
+          {formatMoney(recommendedStarting)}/mo · Ongoing:{" "}
+          {formatMoney(recommendedOngoing)}/mo · Confidence: {recommendedConfidence}
+        </div>
+      </div>
+    );
+  }
+
+  const cheapestAnnual = getComboAnnualCost(cheapest);
+  const cheapestStarting = cheapest.total;
+  const cheapestOngoing = cheapest.ongoingTotal;
+  const cheapestExtras = getExtraCoveredServiceCount(cheapest, selected);
+  const cheapestConfidence = getConfidenceLabel(getComboConfidence(cheapest));
+  const annualDelta = cheapestAnnual - recommendedAnnual;
+  const startingDelta = cheapestStarting - recommendedStarting;
+  const ongoingDelta = cheapestOngoing - recommendedOngoing;
+
+  return (
+    <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-100">
+      <div className="font-semibold">Recommendation proof</div>
+      <div className="mt-1 text-slate-200">
+        Rule order: 12-month total first, then ongoing monthly, then coverage/confidence.
+      </div>
+      <div className="mt-2 space-y-1 text-slate-200">
+        <div>
+          12-month total: {formatMoney(recommendedAnnual)} (recommended) vs{" "}
+          {formatMoney(cheapestAnnual)} (cheapest){" "}
+          {Math.abs(annualDelta) <= 0.01
+            ? "-> tie"
+            : annualDelta > 0
+            ? `-> recommended saves ${formatMoney(annualDelta)}`
+            : `-> recommended costs ${formatMoney(Math.abs(annualDelta))} more`}
+        </div>
+        <div>
+          Ongoing monthly: {formatMoney(recommendedOngoing)}/mo vs{" "}
+          {formatMoney(cheapestOngoing)}/mo{" "}
+          {Math.abs(ongoingDelta) <= 0.01
+            ? "-> tie"
+            : ongoingDelta > 0
+            ? `-> recommended lower by ${formatMoney(ongoingDelta)}/mo`
+            : `-> recommended higher by ${formatMoney(Math.abs(ongoingDelta))}/mo`}
+        </div>
+        <div>
+          Starting monthly: {formatMoney(recommendedStarting)}/mo vs{" "}
+          {formatMoney(cheapestStarting)}/mo{" "}
+          {Math.abs(startingDelta) <= 0.01
+            ? "-> tie"
+            : startingDelta > 0
+            ? `-> recommended lower by ${formatMoney(startingDelta)}/mo`
+            : `-> recommended higher by ${formatMoney(Math.abs(startingDelta))}/mo`}
+        </div>
+        <div>
+          Extra services included: {recommendedExtras} vs {cheapestExtras}
+        </div>
+        <div>
+          Confidence: {recommendedConfidence} vs {cheapestConfidence}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function getConfidenceNote(combo: Combo) {
   const hasNeedsVerification = combo.chosen.some(
     (item) => item.priceStatus === "needs_verification"
@@ -1019,6 +1366,136 @@ function getConfidenceNote(combo: Combo) {
   }
 
   return "All prices in this result are modeled as current standard pricing.";
+}
+
+const STALE_PRICE_DATA_DAYS = 21;
+
+function toUtcDay(dateValue: string) {
+  const parsed = new Date(`${dateValue}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+  return parsed;
+}
+
+function formatDateIso(value: string | null) {
+  if (!value) return "Unknown";
+  const parsed = toUtcDay(value);
+  if (!parsed) return value;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function getFreshnessSummary(combo: Combo) {
+  const validDates = combo.chosen
+    .map((item) => item.lastChecked)
+    .filter((value): value is string => Boolean(value))
+    .map((value) => ({ raw: value, parsed: toUtcDay(value) }))
+    .filter(
+      (entry): entry is { raw: string; parsed: Date } =>
+        entry.parsed !== null
+    );
+
+  if (!validDates.length) {
+    return {
+      latest: null as string | null,
+      oldest: null as string | null,
+      staleAgeDays: null as number | null,
+      hasStaleData: true,
+    };
+  }
+
+  validDates.sort((a, b) => a.parsed.getTime() - b.parsed.getTime());
+
+  const oldest = validDates[0]?.raw ?? null;
+  const latest = validDates.at(-1)?.raw ?? null;
+  const today = new Date();
+  const todayUtc = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
+  );
+  const oldestParsed = validDates[0]?.parsed ?? null;
+  const staleAgeDays = oldestParsed
+    ? Math.floor((todayUtc.getTime() - oldestParsed.getTime()) / 86_400_000)
+    : null;
+
+  return {
+    latest,
+    oldest,
+    staleAgeDays,
+    hasStaleData:
+      staleAgeDays === null || staleAgeDays > STALE_PRICE_DATA_DAYS,
+  };
+}
+
+function getCatalogRefreshSummary(optionCatalog: Option[]) {
+  const validDates = optionCatalog
+    .map((item) => item.lastChecked)
+    .filter((value): value is string => Boolean(value))
+    .map((value) => ({ raw: value, parsed: toUtcDay(value) }))
+    .filter(
+      (entry): entry is { raw: string; parsed: Date } =>
+        entry.parsed !== null
+    );
+
+  if (!validDates.length) {
+    return { latest: null as string | null, oldest: null as string | null };
+  }
+
+  validDates.sort((a, b) => a.parsed.getTime() - b.parsed.getTime());
+
+  return {
+    latest: validDates.at(-1)?.raw ?? null,
+    oldest: validDates[0]?.raw ?? null,
+  };
+}
+
+function getDataFreshnessLabel(oldestDate: string | null) {
+  if (!oldestDate) {
+    return {
+      label: "Freshness unknown",
+      classes: "bg-amber-100 text-amber-900",
+    };
+  }
+
+  const parsed = toUtcDay(oldestDate);
+  if (!parsed) {
+    return {
+      label: "Freshness unknown",
+      classes: "bg-amber-100 text-amber-900",
+    };
+  }
+
+  const today = new Date();
+  const todayUtc = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
+  );
+  const ageDays = Math.floor((todayUtc.getTime() - parsed.getTime()) / 86_400_000);
+
+  if (ageDays <= 7) {
+    return {
+      label: "Prices checked within 7 days",
+      classes: "bg-emerald-100 text-emerald-900",
+    };
+  }
+
+  if (ageDays <= STALE_PRICE_DATA_DAYS) {
+    return {
+      label: `Some prices are ${ageDays} days old`,
+      classes: "bg-amber-100 text-amber-900",
+    };
+  }
+
+  return {
+    label: "Some prices may need review",
+    classes: "bg-rose-100 text-rose-900",
+  };
+}
+
+function getFreshnessConfidenceCopy(freshness: ReturnType<typeof getFreshnessSummary>) {
+  if (!freshness.hasStaleData) {
+    return "Prices were verified recently for this path.";
+  }
+
+  return `Most prices are still usable, but one or more entries may be older than ${STALE_PRICE_DATA_DAYS} days. Verify before subscribing.`;
 }
 
 function getBestComboRetailValue(combo: Combo, selected: string[]) {
@@ -1079,6 +1556,7 @@ function renderBestSummary(
   const rawRetailValue = getBestComboRetailValue(combo, selected);
   const confidenceLevel = getComboConfidence(combo);
   const confidenceNote = getConfidenceNote(combo);
+  const freshness = getFreshnessSummary(combo);
   const narrative = getWhyThisWins(combo, selected)[0] ?? "Best available path.";
   const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
   const annualDelta =
@@ -1088,13 +1566,23 @@ function renderBestSummary(
 
   return (
     <div className="mt-4 rounded-2xl bg-slate-900 p-5 text-white">
+      <div className="rounded-xl bg-emerald-500/20 px-3 py-2 text-sm font-semibold text-emerald-100">
+        Start here: this is the strongest value path based on 12-month total cost.
+      </div>
       <div className="text-sm uppercase tracking-wide text-slate-300">
         {rankingMode === "ongoing"
           ? "Recommended long-term path"
           : "Recommended current path"}
       </div>
+      <div className="mt-1 text-xs text-slate-300">
+        Recommendations prioritize 12-month total first.
+      </div>
+      <div className="mt-1 text-xs text-slate-300">
+        Rankings are neutral: affiliate links do not change recommendation order.
+      </div>
 
       <div className="mt-2 text-4xl font-bold">{formatMoney(primaryTotal)}/mo</div>
+      {renderPrimaryRecommendationCta(combo)}
 
       <div className="mt-2 flex flex-wrap gap-2">
         {renderStrategyBadge(getComboStrategy(combo))}
@@ -1129,8 +1617,33 @@ function renderBestSummary(
         {narrative}
       </div>
 
+      <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-100">
+        {getRecommendationRuleSummary(combo, cheapest)}
+      </div>
+
+      <div className="mt-3 rounded-xl bg-emerald-100 px-3 py-2 text-sm font-medium text-emerald-900">
+        {getRecommendationVerdict(combo, cheapest)}
+      </div>
+
+      {renderRecommendationProof(combo, cheapest, selected)}
+
       <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-200">
         {confidenceNote}
+      </div>
+
+      <div
+        className={`mt-3 rounded-xl px-3 py-2 text-sm ${
+          freshness.hasStaleData
+            ? "bg-amber-100 text-amber-900"
+            : "bg-emerald-100 text-emerald-900"
+        }`}
+      >
+        <div className="font-medium">Data freshness</div>
+        <div className="mt-1">
+          Latest checked: {formatDateIso(freshness.latest)} · Oldest checked:{" "}
+          {formatDateIso(freshness.oldest)}
+        </div>
+        <div className="mt-1">{getFreshnessConfidenceCopy(freshness)}</div>
       </div>
 
       <div className="mt-3 text-sm text-slate-300">
@@ -1157,6 +1670,8 @@ function renderBestSummary(
           {tradeoffSummary}
         </div>
       )}
+
+      {renderComboActionLinks(combo)}
     </div>
   );
 }
@@ -1170,6 +1685,7 @@ function renderCheapestCard(
   const confidence = getComboConfidence(combo);
   const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
   const annualDelta = getComboAnnualCost(recommended) - getComboAnnualCost(combo);
+  const freshness = getFreshnessSummary(combo);
 
   return (
     <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
@@ -1204,9 +1720,31 @@ function renderCheapestCard(
           : "Matches the recommended path over 12 months"}
       </div>
 
+      <div
+        className={`mt-3 rounded-xl px-3 py-2 text-sm ${
+          freshness.hasStaleData
+            ? "bg-amber-100 text-amber-900"
+            : "bg-emerald-100 text-emerald-900"
+        }`}
+      >
+        <div className="font-medium">Data freshness</div>
+        <div className="mt-1">
+          Latest checked: {formatDateIso(freshness.latest)} · Oldest checked:{" "}
+          {formatDateIso(freshness.oldest)}
+        </div>
+        {freshness.hasStaleData && (
+          <div className="mt-1">
+            One or more prices may be stale (older than {STALE_PRICE_DATA_DAYS}{" "}
+            days). Re-verify before relying on this path.
+          </div>
+        )}
+      </div>
+
       <div className="mt-3 text-sm text-slate-700">
         {combo.chosen.map((item) => item.name).join(" + ")}
       </div>
+
+      {renderComboActionLinks(combo)}
     </div>
   );
 }
@@ -1462,6 +2000,12 @@ export default function Page() {
   const [authEmail, setAuthEmail] = React.useState("");
   const [authMessage, setAuthMessage] = React.useState<string | null>(null);
   const [authSession, setAuthSession] = React.useState<Session | null>(null);
+  const lastRecommendationEventKeyRef = React.useRef<string | null>(null);
+  const [conversionSummary, setConversionSummary] =
+    React.useState<ConversionSummary | null>(null);
+  const [analyticsWindowDays, setAnalyticsWindowDays] = React.useState<1 | 7 | 30>(7);
+  const [dataHealthSummary, setDataHealthSummary] =
+    React.useState<DataHealthSummary | null>(null);
 
   const serviceCatalog = catalog?.services ?? defaultServices;
   const optionCatalog = catalog?.options ?? defaultOptions;
@@ -1718,6 +2262,58 @@ export default function Page() {
     () => getBestCombosByStrategy(combos, rankingMode),
     [combos, rankingMode]
   );
+  const catalogRefresh = React.useMemo(
+    () => getCatalogRefreshSummary(optionCatalog),
+    [optionCatalog]
+  );
+  const catalogFreshnessLabel = React.useMemo(
+    () => getDataFreshnessLabel(catalogRefresh.oldest),
+    [catalogRefresh.oldest]
+  );
+  const bestFreshness = React.useMemo(
+    () => (best ? getFreshnessSummary(best) : null),
+    [best]
+  );
+
+  React.useEffect(() => {
+    if (!best || !selected.length) return;
+
+    const eventKey = `${best.id}|${rankingMode}|${selected.slice().sort().join("|")}`;
+    if (lastRecommendationEventKeyRef.current === eventKey) {
+      return;
+    }
+
+    lastRecommendationEventKeyRef.current = eventKey;
+    trackUiEvent("recommendation_viewed", {
+      recommendedId: best.id,
+      rankingMode,
+      selectedCount: selected.length,
+    });
+  }, [best, rankingMode, selected]);
+
+  React.useEffect(() => {
+    if (process.env.NODE_ENV !== "development") return;
+
+    void fetch(`/api/analytics-summary?window=${analyticsWindowDays}`)
+      .then((res) => res.json())
+      .then((data: { summary?: ConversionSummary }) => {
+        if (data?.summary) {
+          setConversionSummary(data.summary);
+        }
+      })
+      .catch(() => undefined);
+  }, [best, analyticsWindowDays]);
+
+  React.useEffect(() => {
+    void fetch("/api/data-health-summary")
+      .then((res) => res.json())
+      .then((data: { summary?: DataHealthSummary }) => {
+        if (data?.summary) {
+          setDataHealthSummary(data.summary);
+        }
+      })
+      .catch(() => undefined);
+  }, [best]);
 
   return (
     <div className="min-h-screen bg-slate-50 p-6 text-slate-900">
@@ -1781,9 +2377,161 @@ export default function Page() {
         </div>
 
         <div className="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="text-sm font-semibold text-slate-800">
-            Account
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="text-sm font-semibold text-slate-800">Last data refresh</div>
+            <span
+              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${catalogFreshnessLabel.classes}`}
+            >
+              {catalogFreshnessLabel.label}
+            </span>
           </div>
+          <div className="mt-2 text-sm text-slate-600">
+            Latest checked: {formatDateIso(catalogRefresh.latest)} · Oldest checked:{" "}
+            {formatDateIso(catalogRefresh.oldest)}
+          </div>
+          <div className="mt-1 text-xs text-slate-500">
+            {dataHealthSummary?.verificationStatus === "degraded"
+              ? "Verification is currently degraded (automation fetch failures detected). Prices are based on last recorded verification and may need manual confirmation."
+              : "These are recorded catalog verification dates. Confirm with source pages before subscribing, especially for promos and provider-gated offers."}
+          </div>
+        </div>
+
+        {process.env.NODE_ENV === "development" && dataHealthSummary && (
+          <div className="mb-6 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-sm">
+            <div className="text-sm font-semibold text-indigo-900">Dev data health dashboard</div>
+            <div className="mt-2 grid gap-3 text-sm text-indigo-900 md:grid-cols-7">
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Tracked</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.sourcesTracked}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Checked</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.sourcesChecked}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Verified</div>
+                <div className="text-lg font-semibold">
+                  {dataHealthSummary.sourcesWithDetectedChecks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Failed</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.sourcesFailed}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Manual review</div>
+                <div className="text-lg font-semibold">
+                  {dataHealthSummary.sourcesManualReview}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Status</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.verificationStatus}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Manual verified</div>
+                <div className="text-lg font-semibold">
+                  {dataHealthSummary.manualVerificationsRecorded}
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 text-xs text-indigo-800">
+              Next scheduled check: {dataHealthSummary.nextScheduledCheckUtc}
+            </div>
+            <div className="mt-1 text-xs text-indigo-800">
+              Oldest verified provider:{" "}
+              {dataHealthSummary.oldestVerifiedProvider
+                ? `${dataHealthSummary.oldestVerifiedProvider.provider} (${dataHealthSummary.oldestVerifiedProvider.date ?? "unknown date"})`
+                : "Unknown"}
+            </div>
+          </div>
+        )}
+
+        {process.env.NODE_ENV === "development" && conversionSummary && (
+          <div className="mb-6 rounded-3xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="text-sm font-semibold text-violet-900">
+                Dev conversion dashboard
+              </div>
+              <div className="flex gap-2">
+                {[1, 7, 30].map((days) => (
+                  <button
+                    key={days}
+                    type="button"
+                    onClick={() => setAnalyticsWindowDays(days as 1 | 7 | 30)}
+                    className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
+                      analyticsWindowDays === days
+                        ? "bg-violet-900 text-white"
+                        : "border border-violet-300 bg-white text-violet-800 hover:bg-violet-100"
+                    }`}
+                    aria-pressed={analyticsWindowDays === days}
+                  >
+                    {days === 1 ? "24h" : `${days}d`}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mt-1 text-xs text-violet-700">
+              Window: last {analyticsWindowDays === 1 ? "24 hours" : `${analyticsWindowDays} days`}
+            </div>
+            <div className="mt-2 grid gap-3 text-sm text-violet-900 md:grid-cols-5">
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Recommendation views
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.recommendationViews}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Outbound clicks
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.outboundClicks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Affiliate clicks
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.affiliateClicks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Source clicks
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.sourceClicks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  CTR
+                </div>
+                <div className="text-lg font-semibold">
+                  {(conversionSummary.clickThroughRate * 100).toFixed(1)}%
+                </div>
+              </div>
+            </div>
+
+            {conversionSummary.topClickedOptions.length > 0 && (
+              <div className="mt-3 text-sm text-violet-900">
+                <span className="font-medium">Top clicked options:</span>{" "}
+                {conversionSummary.topClickedOptions
+                  .map((item) => `${item.optionName} (${item.clicks})`)
+                  .join(", ")}
+              </div>
+            )}
+          </div>
+        )}
+
+        <details className="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+            Save my preferences (optional)
+          </summary>
           <div className="mt-2 text-sm text-slate-600">
             Sign in with a magic link to sync preferences to your account.
           </div>
@@ -1816,7 +2564,7 @@ export default function Page() {
               : "Not signed in"}
           </div>
           {authMessage && <div className="mt-1 text-xs text-slate-600">{authMessage}</div>}
-        </div>
+        </details>
 
         <div className="mb-6 grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -2037,6 +2785,14 @@ export default function Page() {
             </div>
 
             {!!selected.length && renderPricingRealityNote()}
+            {renderHowRecommendationsWork()}
+
+            {bestFreshness?.hasStaleData && (
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                Freshness warning: one or more prices in the current recommended path may be
+                older than {STALE_PRICE_DATA_DAYS} days. Verify before subscribing.
+              </div>
+            )}
 
             {!selected.length ? (
               <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5">
@@ -2196,6 +2952,9 @@ export default function Page() {
             {rankingMode === "ongoing"
               ? "Sorted by lowest ongoing monthly cost first."
               : "Sorted by lowest starting monthly cost first."}
+            <span className="ml-2 text-slate-500">
+              Recommendation ranking remains 12-month total first.
+            </span>
           </div>
 
           <div className="mt-5 overflow-x-auto">
@@ -2212,18 +2971,20 @@ export default function Page() {
               </div>
 
               {displayCombos.length ? (
-                displayCombos.map((combo, index) => (
+                displayCombos.map((combo) => (
                   <div
                     key={combo.id}
                     className={`grid grid-cols-[1.4fr_0.95fr_0.6fr_0.7fr_0.8fr_0.8fr_0.8fr_0.8fr] gap-3 border-t px-4 py-4 text-sm ${
-                      index === 0
+                      combo.id === best?.id
+                        ? "border-emerald-600 bg-emerald-50/70"
+                        : combo.id === cheapest?.id
                         ? "border-slate-900 bg-slate-900/5"
                         : "border-slate-200"
                     }`}
                   >
                     <div>
                       <div className="flex flex-wrap items-start gap-2">
-                        {renderComboBadges(combo, index, selected)}
+                        {renderComboBadges(combo, selected, cheapest?.id, best?.id)}
                         <span>{combo.chosen.map((item) => item.name).join(" + ")}</span>
                       </div>
                       {renderComboMeta(combo)}

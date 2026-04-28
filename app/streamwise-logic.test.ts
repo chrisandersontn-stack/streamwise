@@ -130,4 +130,127 @@ describe("calculateCombos", () => {
     expect(withoutProvider[0]?.chosen.map((item) => item.id)).toEqual(["direct"]);
     expect(withProvider[0]?.chosen.map((item) => item.id)).toEqual(["tmobile_free"]);
   });
+
+  it("prioritizes lower 12-month total when monthly totals tie", () => {
+    const localOptions: Option[] = [
+      makeOption({
+        id: "promo_1_month",
+        monthly: 5,
+        standardMonthly: 15,
+        introLengthMonths: 1,
+        covers: ["Netflix"],
+        category: "promo",
+        mutuallyExclusiveGroup: "netflix_access",
+      }),
+      makeOption({
+        id: "promo_3_month",
+        monthly: 5,
+        standardMonthly: 15,
+        introLengthMonths: 3,
+        covers: ["Netflix"],
+        category: "promo",
+        mutuallyExclusiveGroup: "netflix_access",
+      }),
+    ];
+
+    const results = calculateCombos(
+      localOptions,
+      ["Netflix"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      new Date("2026-04-10T00:00:00Z")
+    );
+
+    expect(results[0]?.chosen.map((item) => item.id)).toEqual(["promo_3_month"]);
+    expect(results[0]?.annualTotal).toBe(150);
+    expect(results[1]?.annualTotal).toBe(170);
+  });
+
+  it("caps introLengthMonths above 12 when computing annual totals", () => {
+    const localOptions: Option[] = [
+      makeOption({
+        id: "over_cap_intro",
+        monthly: 5,
+        standardMonthly: 20,
+        introLengthMonths: 18,
+        covers: ["Netflix"],
+      }),
+    ];
+
+    const results = calculateCombos(
+      localOptions,
+      ["Netflix"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      new Date("2026-04-10T00:00:00Z")
+    );
+
+    expect(results[0]?.annualTotal).toBe(60);
+  });
+
+  it("treats equal standard and starting monthly as flat annual pricing", () => {
+    const localOptions: Option[] = [
+      makeOption({
+        id: "flat_price",
+        monthly: 12,
+        standardMonthly: 12,
+        introLengthMonths: 4,
+        covers: ["Netflix"],
+      }),
+    ];
+
+    const results = calculateCombos(
+      localOptions,
+      ["Netflix"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      new Date("2026-04-10T00:00:00Z")
+    );
+
+    expect(results[0]?.annualTotal).toBe(144);
+  });
+
+  it("uses monthly totals as tie-breaker when annual totals are equal", () => {
+    const localOptions: Option[] = [
+      makeOption({
+        id: "steady_10",
+        monthly: 10,
+        covers: ["Netflix"],
+        mutuallyExclusiveGroup: "netflix_access",
+      }),
+      makeOption({
+        id: "promo_then_14",
+        monthly: 8,
+        standardMonthly: 12,
+        introLengthMonths: 6,
+        covers: ["Netflix"],
+        category: "promo",
+        mutuallyExclusiveGroup: "netflix_access",
+      }),
+    ];
+
+    const results = calculateCombos(
+      localOptions,
+      ["Netflix"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      new Date("2026-04-10T00:00:00Z")
+    );
+
+    expect(results[0]?.annualTotal).toBe(120);
+    expect(results[1]?.annualTotal).toBe(120);
+    expect(results[0]?.chosen.map((item) => item.id)).toEqual(["promo_then_14"]);
+  });
 });

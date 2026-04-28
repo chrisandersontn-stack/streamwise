@@ -2,6 +2,15 @@
 
 This workflow helps you notice when **official pricing / plan pages change**, so you can re-verify your catalog. It does **not** extract prices automatically.
 
+## Printable guides (save as PDF)
+
+Open these in your browser, then **File → Print → Save as PDF**:
+
+- `docs/pdf/streamwise-url-watch-weekly-routine.html`
+- `docs/pdf/streamwise-url-watch-tuning-the-list.html`
+
+Source Markdown (optional): `docs/streamwise-url-watch-weekly-routine.md`, `docs/streamwise-url-watch-tuning-the-list.md`.
+
 ## What it does
 
 1. Reads `data/url-watch-list.json` (a list of `{ id, url, label }` entries).

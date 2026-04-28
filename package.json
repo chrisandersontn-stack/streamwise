@@ -12,7 +12,15 @@
     "catalog:sheet:generate": "node scripts/generate-catalog-sheet-csvs.mjs",
     "catalog:sheet:apply": "node scripts/apply-catalog-sheet-csvs.mjs",
     "catalog:url-watch": "node scripts/watch-urls.mjs",
-    "catalog:url-watch:generate-list": "node scripts/generate-url-watch-list.mjs"
+    "catalog:url-watch:generate-list": "node scripts/generate-url-watch-list.mjs",
+    "catalog:price-sources:build": "node scripts/build-price-source-registry.mjs data/price-sources.csv",
+    "catalog:price-sources:network-check": "node scripts/check-price-source-network.mjs --registry data/price-source-registry.json --output data/price-source-network-health.json --report price-source-network-health-report.md",
+    "catalog:price-sources:check": "node scripts/run-price-source-checks.mjs --registry data/price-source-registry.json --output data/price-source-candidate-updates.json --report price-source-check-report.md",
+    "catalog:price-sources:check:debug": "node scripts/run-price-source-checks.mjs --registry data/price-source-registry.json --output data/price-source-candidate-updates.json --report price-source-check-report.md --debug-fetch",
+    "catalog:price-sources:check:browser": "PRICE_WATCH_BROWSER_FETCH=1 node scripts/run-price-source-checks.mjs --registry data/price-source-registry.json --output data/price-source-candidate-updates.json --report price-source-check-report.md --debug-fetch",
+    "catalog:price-sources:manual-review-issue": "node scripts/generate-manual-review-issue.mjs --checks data/price-source-candidate-updates.json --registry data/price-source-registry.json --output price-source-manual-review-issue.md",
+    "catalog:price-sources:record-manual": "node scripts/record-manual-price-verification.mjs",
+    "catalog:price-sources:triage": "node scripts/run-price-source-triage.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.3",
@@ -28,6 +36,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
+    "playwright": "^1.59.1",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.4"

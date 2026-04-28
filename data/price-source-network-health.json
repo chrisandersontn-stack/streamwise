@@ -1,0 +1,285 @@
+{
+  "generatedAt": "2026-04-28T20:50:30.489Z",
+  "summary": {
+    "checkedHosts": 17,
+    "dnsOk": 0,
+    "dnsFailed": 17,
+    "httpOk": 0,
+    "httpFailed": 17,
+    "likelyEnvironmentDnsIssue": true
+  },
+  "results": [
+    {
+      "hostname": "www.netflix.com",
+      "url": "https://www.netflix.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 26,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.hulu.com",
+      "url": "https://www.hulu.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 2,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.disneyplus.com",
+      "url": "https://www.disneyplus.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.peacocktv.com",
+      "url": "https://www.peacocktv.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.max.com",
+      "url": "https://www.max.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.paramountplus.com",
+      "url": "https://www.paramountplus.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "tv.apple.com",
+      "url": "https://tv.apple.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.amazon.com",
+      "url": "https://www.amazon.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.walmart.com",
+      "url": "https://www.walmart.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.instacart.com",
+      "url": "https://www.instacart.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.verizon.com",
+      "url": "https://www.verizon.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 0,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.t-mobile.com",
+      "url": "https://www.t-mobile.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 0,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.xfinity.com",
+      "url": "https://www.xfinity.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "tv.youtube.com",
+      "url": "https://tv.youtube.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.sling.com",
+      "url": "https://www.sling.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 0,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.fubo.tv",
+      "url": "https://www.fubo.tv",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    },
+    {
+      "hostname": "www.philo.com",
+      "url": "https://www.philo.com",
+      "dns": {
+        "ok": false,
+        "ipv4Count": 0,
+        "ipv6Count": 0,
+        "error": "no_dns_records"
+      },
+      "http": {
+        "ok": false,
+        "status": 0,
+        "durationMs": 1,
+        "error": "fetch failed"
+      }
+    }
+  ]
+}
