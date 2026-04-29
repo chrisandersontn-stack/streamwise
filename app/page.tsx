@@ -319,7 +319,11 @@ function renderSourceLink(item: Option) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
-          trackOutboundClick(item, outbound.href, outbound.kind);
+          trackOutboundClick(
+            item,
+            outbound.href,
+            normalizeOutboundLinkKindForTracking(outbound.kind)
+          );
         }}
         className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
       >
@@ -329,6 +333,18 @@ function renderSourceLink(item: Option) {
   }
 
   return item.source;
+}
+
+type OutboundResolvedKind = ReturnType<typeof resolveOutboundSourceUrl>["kind"];
+
+function normalizeOutboundLinkKindForTracking(
+  kind: OutboundResolvedKind
+): "affiliate" | "source" {
+  return kind === "official" ? "source" : "affiliate";
+}
+
+function isAffiliateSupportedOutboundKind(kind: OutboundResolvedKind) {
+  return kind !== "official";
 }
 
 function trackOutboundClick(item: Option, resolvedUrl: string, linkKind: "affiliate" | "source") {
@@ -413,7 +429,10 @@ function renderComboActionLinks(combo: Combo) {
       });
       return { item, outbound };
     })
-    .filter((entry): entry is { item: Option; outbound: { href: string; kind: "affiliate" | "source" } } => Boolean(entry))
+    .filter(
+      (entry): entry is { item: Option; outbound: ReturnType<typeof resolveOutboundSourceUrl> } =>
+        Boolean(entry)
+    )
     .slice(0, 3);
 
   if (!actionable.length) {
@@ -440,12 +459,22 @@ function renderComboActionLinks(combo: Combo) {
             href={outbound.href}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackOutboundClick(item, outbound.href, outbound.kind)}
+            onClick={() =>
+              trackOutboundClick(
+                item,
+                outbound.href,
+                normalizeOutboundLinkKindForTracking(outbound.kind)
+              )
+            }
             className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
           >
             Open provider page: {item.name}{" "}
             <span className="text-slate-500">
-              ({outbound.kind === "affiliate" ? "affiliate-supported" : "source link"})
+              (
+              {isAffiliateSupportedOutboundKind(outbound.kind)
+                ? "affiliate-supported"
+                : "source link"}
+              )
             </span>
           </a>
         ))}
@@ -467,7 +496,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
     .find(
       (
         entry
-      ): entry is { item: Option; outbound: { href: string; kind: "affiliate" | "source" } } =>
+      ): entry is { item: Option; outbound: ReturnType<typeof resolveOutboundSourceUrl> } =>
         Boolean(entry)
     );
 
@@ -482,7 +511,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
         trackOutboundClick(
           firstAction.item,
           firstAction.outbound.href,
-          firstAction.outbound.kind
+          normalizeOutboundLinkKindForTracking(firstAction.outbound.kind)
         )
       }
       className="mt-3 inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
