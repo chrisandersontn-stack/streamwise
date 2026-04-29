@@ -319,7 +319,11 @@ function renderSourceLink(item: Option) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
-          trackOutboundClick(item, outbound.href, outbound.kind);
+          trackOutboundClick(
+            item,
+            outbound.href,
+            normalizeOutboundLinkKindForTracking(outbound.kind)
+          );
         }}
         className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
       >
@@ -346,6 +350,19 @@ function trackOutboundClick(
         ? linkKind
         : "affiliate";
 
+type OutboundResolvedKind = ReturnType<typeof resolveOutboundSourceUrl>["kind"];
+
+function normalizeOutboundLinkKindForTracking(
+  kind: OutboundResolvedKind
+): "affiliate" | "source" {
+  return kind === "official" ? "source" : "affiliate";
+}
+
+function isAffiliateSupportedOutboundKind(kind: OutboundResolvedKind) {
+  return kind !== "official";
+}
+
+function trackOutboundClick(item: Option, resolvedUrl: string, linkKind: "affiliate" | "source") {
   const payload = {
     optionId: item.id,
     optionName: item.name,
@@ -457,12 +474,23 @@ function renderComboActionLinks(combo: Combo) {
             href={outbound.href}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackOutboundClick(item, outbound.href, outbound.kind)}
+            onClick={() =>
+              trackOutboundClick(
+                item,
+                outbound.href,
+                normalizeOutboundLinkKindForTracking(outbound.kind)
+              )
+            }
             className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
           >
             Open provider page: {item.name}{" "}
             <span className="text-slate-500">
               ({outbound.kind === "official" ? "source link" : "affiliate-supported"})
+              (
+              {isAffiliateSupportedOutboundKind(outbound.kind)
+                ? "affiliate-supported"
+                : "source link"}
+              )
             </span>
           </a>
         ))}
@@ -499,7 +527,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
         trackOutboundClick(
           firstAction.item,
           firstAction.outbound.href,
-          firstAction.outbound.kind
+          normalizeOutboundLinkKindForTracking(firstAction.outbound.kind)
         )
       }
       className="mt-3 inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
