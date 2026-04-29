@@ -1,0 +1,168 @@
+{
+  "generatedAt": "2026-04-28T20:50:30.313Z",
+  "totalSources": 17,
+  "byTier": {
+    "html_scrape": 11,
+    "api": 1,
+    "manual_review": 5
+  },
+  "byPriority": {
+    "1": 11,
+    "2": 6
+  },
+  "providerSummaries": [
+    {
+      "sourceId": "netflix_signup",
+      "provider": "Netflix",
+      "priority": 1,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Multiple tiers vary by region"
+    },
+    {
+      "sourceId": "hulu_start",
+      "provider": "Hulu",
+      "priority": 1,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Bundles with Disney+ and ESPN+"
+    },
+    {
+      "sourceId": "disneyplus_pricing",
+      "provider": "Disney+",
+      "priority": 1,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Often bundled with Hulu"
+    },
+    {
+      "sourceId": "peacock_pricing",
+      "provider": "Peacock",
+      "priority": 1,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Included with Instacart+ in some cases"
+    },
+    {
+      "sourceId": "max_pricing",
+      "provider": "Max (HBO)",
+      "priority": 1,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Frequent promo pricing"
+    },
+    {
+      "sourceId": "paramountplus_pricing",
+      "provider": "Paramount+",
+      "priority": 2,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Often discounted via partners"
+    },
+    {
+      "sourceId": "appletv_pricing",
+      "provider": "Apple TV+",
+      "priority": 2,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Often bundled via Apple One"
+    },
+    {
+      "sourceId": "amazon_prime_video",
+      "provider": "Amazon Prime Video",
+      "priority": 1,
+      "automationTier": "api",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Price tied to Prime membership"
+    },
+    {
+      "sourceId": "walmart_plus",
+      "provider": "Walmart+",
+      "priority": 1,
+      "automationTier": "manual_review",
+      "coverageStatus": "manual_review",
+      "requiresManualReview": true,
+      "notes": "Includes streaming perks"
+    },
+    {
+      "sourceId": "instacart_plus",
+      "provider": "Instacart+",
+      "priority": 1,
+      "automationTier": "manual_review",
+      "coverageStatus": "manual_review",
+      "requiresManualReview": true,
+      "notes": "Peacock included benefit"
+    },
+    {
+      "sourceId": "verizon_unlimited_bundles",
+      "provider": "Verizon",
+      "priority": 1,
+      "automationTier": "manual_review",
+      "coverageStatus": "manual_review",
+      "requiresManualReview": true,
+      "notes": "Carrier-gated pricing"
+    },
+    {
+      "sourceId": "tmobile_offers",
+      "provider": "T-Mobile",
+      "priority": 1,
+      "automationTier": "manual_review",
+      "coverageStatus": "manual_review",
+      "requiresManualReview": true,
+      "notes": "Plan-dependent benefits"
+    },
+    {
+      "sourceId": "xfinity_offers",
+      "provider": "Xfinity",
+      "priority": 1,
+      "automationTier": "manual_review",
+      "coverageStatus": "manual_review",
+      "requiresManualReview": true,
+      "notes": "Includes Netflix/Peacock/Apple TV+"
+    },
+    {
+      "sourceId": "youtube_tv_pricing",
+      "provider": "YouTube TV",
+      "priority": 2,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Intro discounts common"
+    },
+    {
+      "sourceId": "sling_pricing",
+      "provider": "Sling TV",
+      "priority": 2,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Tiered packages"
+    },
+    {
+      "sourceId": "fubo_pricing",
+      "provider": "Fubo",
+      "priority": 2,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Sports-heavy bundles"
+    },
+    {
+      "sourceId": "philo_pricing",
+      "provider": "Philo",
+      "priority": 2,
+      "automationTier": "html_scrape",
+      "coverageStatus": "automatable",
+      "requiresManualReview": false,
+      "notes": "Low-cost live TV"
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+name: Price source watch
+
+on:
+  schedule:
+    # Every Tuesday 13:00 UTC (~9am US Eastern depending on DST)
+    - cron: "0 13 * * 2"
+  workflow_dispatch:
+    inputs:
+      use_browser_fallback:
+        description: "Enable Playwright fallback for JS-heavy pages"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      browser_hosts:
+        description: "Optional CSV host allowlist for browser fallback"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Build source registry
+        run: npm run catalog:price-sources:build
+
+      - name: Run network health preflight
+        id: network
+        env:
+          PRICE_WATCH_USER_AGENT: ${{ secrets.PRICE_WATCH_USER_AGENT }}
+        run: |
+          set +e
+          npm run catalog:price-sources:network-check
+          ec=$?
+          echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
+          if [ "$ec" -eq 2 ]; then
+            exit 1
+          fi
+          exit 0
+
+      - name: Classify network preflight
+        id: network_classify
+        run: |
+          node -e "const fs=require('node:fs'); const p='data/price-source-network-health.json'; if(!fs.existsSync(p)){console.log('likely_dns_issue=false'); console.log('dns_failed=0'); console.log('http_failed=0'); process.exit(0);} const n=JSON.parse(fs.readFileSync(p,'utf8')); const s=n.summary||{}; console.log('likely_dns_issue=' + (!!s.likelyEnvironmentDnsIssue)); console.log('dns_failed=' + (s.dnsFailed||0)); console.log('http_failed=' + (s.httpFailed||0));" >> "$GITHUB_OUTPUT"
+
+      - name: Run price source checks
+        if: steps.network_classify.outputs.likely_dns_issue != 'true'
+        id: check
+        env:
+          PRICE_WATCH_USER_AGENT: ${{ secrets.PRICE_WATCH_USER_AGENT }}
+          PRICE_WATCH_BROWSER_FETCH: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.use_browser_fallback == 'true' && '1' || '0' }}
+          PRICE_WATCH_BROWSER_HOSTS: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser_hosts || '' }}
+        run: |
+          set +e
+          if [ "${PRICE_WATCH_BROWSER_FETCH}" = "1" ]; then
+            npx playwright install chromium
+          fi
+          npm run catalog:price-sources:check
+          ec=$?
+          echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
+          if [ "$ec" -eq 2 ]; then
+            exit 1
+          fi
+          exit 0
+
+      - name: Open issue for environment network blocked
+        if: steps.network_classify.outputs.likely_dns_issue == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh issue list --state open --search "in:title Price source watch: environment network blocked (DNS resolution)" --json number --jq 'length > 0' | grep -q true; then
+            echo "Open environment-network issue already exists; skipping duplicate."
+            exit 0
+          fi
+          cat > price-source-network-blocked-issue.md <<'EOF'
+          ## Price source watch blocked by environment network resolution
+
+          Network preflight indicates this runner cannot resolve provider domains (DNS failure pattern).
+
+          ### Why this matters
+
+          - Adapter checks were skipped to avoid misleading "0 changes" output.
+          - This is an infrastructure/runtime issue, not a pricing parser result.
+
+          ### Evidence
+
+          See attached workflow artifacts:
+
+          - `data/price-source-network-health.json`
+          - `price-source-network-health-report.md`
+
+          ### Remediation
+
+          1. Confirm runner DNS/internet egress policy allows public domains.
+          2. Re-run workflow dispatch after network fix.
+          3. If needed, run on a self-hosted runner with known outbound connectivity.
+          EOF
+          gh issue create \
+            --title "Price source watch: environment network blocked (DNS resolution)" \
+            --body-file price-source-network-blocked-issue.md
+
+      - name: Upload check artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: price-source-watch
+          path: |
+            data/price-source-registry.json
+            data/price-source-automation-report.json
+            data/price-source-network-health.json
+            price-source-network-health-report.md
+            data/price-source-candidate-updates.json
+            price-source-check-report.md
+          if-no-files-found: warn
+
+      - name: Classify check outcome
+        if: steps.network_classify.outputs.likely_dns_issue != 'true' && steps.check.outputs.exit_code == '1'
+        id: classify
+        run: |
+          node -e "const fs=require('node:fs'); const p='data/price-source-candidate-updates.json'; if(!fs.existsSync(p)){console.log('has_changes=false'); console.log('has_fetch_failures=false'); process.exit(0);} const s=JSON.parse(fs.readFileSync(p,'utf8')); console.log('has_changes=' + ((s.changeCount||0)>0)); console.log('has_fetch_failures=' + ((s.fetchFailureCount||0)>0)); console.log('verification_status=' + (s.verificationStatus||'unknown'));" >> "$GITHUB_OUTPUT"
+
+      - name: Build issue body with status summary
+        if: steps.network_classify.outputs.likely_dns_issue != 'true' && steps.check.outputs.exit_code == '1'
+        run: |
+          node -e "const fs=require('node:fs');const p='data/price-source-candidate-updates.json';const n='data/price-source-network-health.json';let s={adaptersRun:0,checksDetectedCount:0,changeCount:0,unknownCount:0,manualReviewCount:0,fetchFailureCount:0,browserFallbackAttemptedCount:0,browserFallbackRecoveredCount:0,browserFallbackSkippedCount:0,verificationStatus:'unknown',generatedAt:new Date().toISOString()};let net={summary:{checkedHosts:0,dnsFailed:0,httpFailed:0,likelyEnvironmentDnsIssue:false}};if(fs.existsSync(p)){try{s=Object.assign(s,JSON.parse(fs.readFileSync(p,'utf8')));}catch{}}if(fs.existsSync(n)){try{net=Object.assign(net,JSON.parse(fs.readFileSync(n,'utf8')));}catch{}}const header=['## Price source watch status','','- Generated at: '+(s.generatedAt||'unknown'),'- Adapters run: '+(s.adaptersRun??0),'- Checks detected: '+(s.checksDetectedCount??0),'- Candidate changes: '+(s.changeCount??0),'- Unknown checks: '+(s.unknownCount??0),'- Manual review groups: '+(s.manualReviewCount??0),'- Fetch failures: '+(s.fetchFailureCount??0),'- Browser fallback attempted: '+(s.browserFallbackAttemptedCount??0),'- Browser fallback recovered: '+(s.browserFallbackRecoveredCount??0),'- Browser fallback skipped: '+(s.browserFallbackSkippedCount??0),'- Verification status: '+(s.verificationStatus||'unknown'),'','### Network preflight','- Hosts checked: '+(net.summary?.checkedHosts??0),'- DNS failures: '+(net.summary?.dnsFailed??0),'- HTTP failures: '+(net.summary?.httpFailed??0),'- Likely environment DNS issue: '+((net.summary?.likelyEnvironmentDnsIssue)?'yes':'no'),'','---','',''].join('\n');const reportPath='price-source-check-report.md';const networkPath='price-source-network-health-report.md';const report=fs.existsSync(reportPath)?fs.readFileSync(reportPath,'utf8'):'';const network=fs.existsSync(networkPath)?fs.readFileSync(networkPath,'utf8'):'';fs.writeFileSync('price-source-check-issue-body.md',header+report+'\n\n'+network,'utf8');"
+
+      - name: Open issue for candidate pricing changes
+        if: steps.network_classify.outputs.likely_dns_issue != 'true' && steps.check.outputs.exit_code == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ steps.classify.outputs.has_changes }}" != "true" ]; then
+            echo "No candidate price changes detected; skipping this issue type."
+            exit 0
+          fi
+          if gh issue list --state open --search "in:title Price source watch: candidate pricing changes detected" --json number --jq 'length > 0' | grep -q true; then
+            echo "Open candidate-change issue already exists; skipping duplicate."
+            exit 0
+          fi
+          gh issue create \
+            --title "Price source watch: candidate pricing changes detected" \
+            --body-file price-source-check-issue-body.md
+
+      - name: Open issue for verification degraded
+        if: steps.network_classify.outputs.likely_dns_issue != 'true' && steps.check.outputs.exit_code == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ steps.classify.outputs.has_fetch_failures }}" != "true" ]; then
+            echo "No fetch failures detected; skipping degraded verification issue."
+            exit 0
+          fi
+          if gh issue list --state open --search "in:title Price source watch: verification degraded (fetch failures)" --json number --jq 'length > 0' | grep -q true; then
+            echo "Open degraded-verification issue already exists; skipping duplicate."
+            exit 0
+          fi
+          gh issue create \
+            --title "Price source watch: verification degraded (fetch failures)" \
+            --body-file price-source-check-issue-body.md
+
