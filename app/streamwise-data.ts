@@ -653,7 +653,7 @@ export const options: Option[] = [
     notes:
       "Limited-time introductory price for the Disney+, Hulu Bundle, then renews at the current regular bundle rate.",
     source: "Hulu",
-    sourceUrl: "https://help.hulu.com/article/hulu-offer-2026",
+    sourceUrl: "https://www.hulu.com/disney-hulu-bundle",
     category: "promo",
     effectiveDate: "2026-03-05",
     expiresAt: "2026-12-31",

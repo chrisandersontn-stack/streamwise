@@ -335,6 +335,21 @@ function renderSourceLink(item: Option) {
   return item.source;
 }
 
+function trackOutboundClick(
+  item: Option,
+  resolvedUrl: string,
+  linkKind:
+    | "affiliate"
+    | "source"
+    | ReturnType<typeof resolveOutboundSourceUrl>["kind"]
+) {
+  const normalizedLinkKind =
+    linkKind === "official"
+      ? "source"
+      : linkKind === "affiliate" || linkKind === "source"
+        ? linkKind
+        : "affiliate";
+
 type OutboundResolvedKind = ReturnType<typeof resolveOutboundSourceUrl>["kind"];
 
 function normalizeOutboundLinkKindForTracking(
@@ -354,7 +369,7 @@ function trackOutboundClick(item: Option, resolvedUrl: string, linkKind: "affili
     provider: getItemProviderKey(item) ?? "direct",
     sourceUrl: item.sourceUrl,
     resolvedUrl,
-    linkKind,
+    linkKind: normalizedLinkKind,
   };
 
   try {
@@ -470,6 +485,7 @@ function renderComboActionLinks(combo: Combo) {
           >
             Open provider page: {item.name}{" "}
             <span className="text-slate-500">
+              ({outbound.kind === "official" ? "source link" : "affiliate-supported"})
               (
               {isAffiliateSupportedOutboundKind(outbound.kind)
                 ? "affiliate-supported"
