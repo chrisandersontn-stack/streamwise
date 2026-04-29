@@ -331,14 +331,28 @@ function renderSourceLink(item: Option) {
   return item.source;
 }
 
-function trackOutboundClick(item: Option, resolvedUrl: string, linkKind: "affiliate" | "source") {
+function trackOutboundClick(
+  item: Option,
+  resolvedUrl: string,
+  linkKind:
+    | "affiliate"
+    | "source"
+    | ReturnType<typeof resolveOutboundSourceUrl>["kind"]
+) {
+  const normalizedLinkKind =
+    linkKind === "official"
+      ? "source"
+      : linkKind === "affiliate" || linkKind === "source"
+        ? linkKind
+        : "affiliate";
+
   const payload = {
     optionId: item.id,
     optionName: item.name,
     provider: getItemProviderKey(item) ?? "direct",
     sourceUrl: item.sourceUrl,
     resolvedUrl,
-    linkKind,
+    linkKind: normalizedLinkKind,
   };
 
   try {
@@ -413,7 +427,10 @@ function renderComboActionLinks(combo: Combo) {
       });
       return { item, outbound };
     })
-    .filter((entry): entry is { item: Option; outbound: { href: string; kind: "affiliate" | "source" } } => Boolean(entry))
+    .filter(
+      (entry): entry is { item: Option; outbound: ReturnType<typeof resolveOutboundSourceUrl> } =>
+        Boolean(entry)
+    )
     .slice(0, 3);
 
   if (!actionable.length) {
@@ -445,7 +462,7 @@ function renderComboActionLinks(combo: Combo) {
           >
             Open provider page: {item.name}{" "}
             <span className="text-slate-500">
-              ({outbound.kind === "affiliate" ? "affiliate-supported" : "source link"})
+              ({outbound.kind === "official" ? "source link" : "affiliate-supported"})
             </span>
           </a>
         ))}
@@ -467,7 +484,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
     .find(
       (
         entry
-      ): entry is { item: Option; outbound: { href: string; kind: "affiliate" | "source" } } =>
+      ): entry is { item: Option; outbound: ReturnType<typeof resolveOutboundSourceUrl> } =>
         Boolean(entry)
     );
 
