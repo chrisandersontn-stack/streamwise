@@ -34,6 +34,19 @@ function appendWalmartAffiliate(url: string, affiliateParam: string) {
   }
 }
 
+function normalizeKnownBrokenSourceUrl(url: string) {
+  const normalized = url.trim();
+  const knownHuluFallback = "https://www.hulu.com/disney-hulu-bundle";
+  const knownBrokenHuluUrls = new Set([
+    "https://help.hulu.com/article/hulu-offer-2026",
+    "https://www.hulu.com/start",
+  ]);
+  if (knownBrokenHuluUrls.has(normalized)) {
+    return knownHuluFallback;
+  }
+  return normalized;
+}
+
 export function resolveOutboundSourceUrl(input: {
   sourceUrl?: string;
   affiliateUrl?: string;
@@ -42,7 +55,7 @@ export function resolveOutboundSourceUrl(input: {
     return { href: input.affiliateUrl, kind: "affiliate_override" };
   }
 
-  const sourceUrl = input.sourceUrl;
+  const sourceUrl = input.sourceUrl ? normalizeKnownBrokenSourceUrl(input.sourceUrl) : undefined;
   if (!sourceUrl) {
     return { href: "#", kind: "official" };
   }
