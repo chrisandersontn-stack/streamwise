@@ -1,4 +1,4 @@
-import { buildResult, fetchHtml, pickPriceByHints } from "./utils.mjs";
+import { buildResult, fetchHtml, pickBestPrice } from "./utils.mjs";
 
 export async function runHuluAdapter(source) {
   const fetched = await fetchHtml(source.pricingPageUrl);
@@ -13,12 +13,12 @@ export async function runHuluAdapter(source) {
     });
   }
 
-  const huluWithAds = pickPriceByHints(fetched.html, ["hulu (with ads)", "hulu"]);
-  const disneyBundle = pickPriceByHints(fetched.html, [
+  const huluWithAds = pickBestPrice(fetched.html, ["hulu (with ads)", "hulu"]);
+  const disneyBundle = pickBestPrice(fetched.html, [
     "disney+, hulu bundle",
     "duo basic",
   ]);
-  const disneyHuluEspn = pickPriceByHints(fetched.html, [
+  const disneyHuluEspn = pickBestPrice(fetched.html, [
     "disney+, hulu, espn",
     "trio basic",
   ]);

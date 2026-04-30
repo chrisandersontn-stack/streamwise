@@ -65,6 +65,9 @@ function renderCommissionInline() {
 type CatalogResponse = {
   services: Service[];
   options: Option[];
+  generatedAt?: string;
+  catalogUpdatedAt?: string | null;
+  catalogSource?: "supabase" | "file" | "defaults";
 };
 
 type ConversionSummary = {
@@ -115,6 +118,13 @@ function formatMoney(value: number) {
   }
 
   return `$${value.toFixed(2)}`;
+}
+
+function formatDateTime(value: string | null | undefined) {
+  if (!value) return "Unknown";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleString();
 }
 
 function formatPriceStatus(
@@ -319,7 +329,11 @@ function renderSourceLink(item: Option) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
-          trackOutboundClick(item, outbound.href, outbound.kind);
+          trackOutboundClick(
+            item,
+            outbound.href,
+            normalizeOutboundLinkKindForTracking(outbound.kind)
+          );
         }}
         className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
       >
@@ -329,6 +343,18 @@ function renderSourceLink(item: Option) {
   }
 
   return item.source;
+}
+
+type OutboundResolvedKind = ReturnType<typeof resolveOutboundSourceUrl>["kind"];
+
+function normalizeOutboundLinkKindForTracking(
+  kind: OutboundResolvedKind
+): "affiliate" | "source" {
+  return kind === "official" ? "source" : "affiliate";
+}
+
+function isAffiliateSupportedOutboundKind(kind: OutboundResolvedKind) {
+  return kind !== "official";
 }
 
 function trackOutboundClick(
@@ -457,12 +483,18 @@ function renderComboActionLinks(combo: Combo) {
             href={outbound.href}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackOutboundClick(item, outbound.href, outbound.kind)}
+            onClick={() =>
+              trackOutboundClick(
+                item,
+                outbound.href,
+                normalizeOutboundLinkKindForTracking(outbound.kind)
+              )
+            }
             className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
           >
             Open provider page: {item.name}{" "}
             <span className="text-slate-500">
-              ({outbound.kind === "official" ? "source link" : "affiliate-supported"})
+              ({isAffiliateSupportedOutboundKind(outbound.kind) ? "affiliate-supported" : "source link"})
             </span>
           </a>
         ))}
@@ -499,7 +531,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
         trackOutboundClick(
           firstAction.item,
           firstAction.outbound.href,
-          firstAction.outbound.kind
+          normalizeOutboundLinkKindForTracking(firstAction.outbound.kind)
         )
       }
       className="mt-3 inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
@@ -2032,7 +2064,7 @@ export default function Page() {
       .then((res) => res.json())
       .then((data: CatalogResponse) => {
         if (Array.isArray(data.services) && Array.isArray(data.options)) {
-          setCatalog({ services: data.services, options: data.options });
+          setCatalog(data);
         }
       })
       .catch(() => undefined);
@@ -2405,6 +2437,10 @@ export default function Page() {
           <div className="mt-2 text-sm text-slate-600">
             Latest checked: {formatDateIso(catalogRefresh.latest)} · Oldest checked:{" "}
             {formatDateIso(catalogRefresh.oldest)}
+          </div>
+          <div className="mt-1 text-sm text-slate-600">
+            Catalog updated: {formatDateTime(catalog?.catalogUpdatedAt ?? null)} · Source:{" "}
+            {catalog?.catalogSource ?? "defaults"}
           </div>
           <div className="mt-1 text-xs text-slate-500">
             {dataHealthSummary?.verificationStatus === "degraded"

@@ -12,6 +12,13 @@ type CatalogPayload = {
   options: Option[];
 };
 
+type CatalogSource = "supabase" | "file" | "defaults";
+
+type CatalogWithMetadata = CatalogPayload & {
+  catalogUpdatedAt: string | null;
+  catalogSource: CatalogSource;
+};
+
 const catalogPath = path.join(process.cwd(), "data", "catalog.json");
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -29,11 +36,16 @@ async function ensureCatalogDirectory() {
 }
 
 export async function getCatalog(): Promise<CatalogPayload> {
+  const withMeta = await getCatalogWithMetadata();
+  return { services: withMeta.services, options: withMeta.options };
+}
+
+export async function getCatalogWithMetadata(): Promise<CatalogWithMetadata> {
   const supabase = getSupabaseAdminClient();
   if (supabase) {
     const { data } = await supabase
       .from("catalog_snapshots")
-      .select("services, options")
+      .select("services, options, updated_at")
       .eq("is_active", true)
       .order("updated_at", { ascending: false })
       .limit(1)
@@ -43,6 +55,11 @@ export async function getCatalog(): Promise<CatalogPayload> {
       return {
         services: data.services as Service[],
         options: data.options as Option[],
+        catalogUpdatedAt:
+          typeof data.updated_at === "string" && data.updated_at
+            ? data.updated_at
+            : null,
+        catalogSource: "supabase",
       };
     }
   }
@@ -51,7 +68,13 @@ export async function getCatalog(): Promise<CatalogPayload> {
     const raw = await fs.readFile(catalogPath, "utf8");
     const parsed = JSON.parse(raw) as unknown;
     if (isValidCatalogPayload(parsed)) {
-      return parsed;
+      const fileStat = await fs.stat(catalogPath);
+      return {
+        services: parsed.services,
+        options: parsed.options,
+        catalogUpdatedAt: fileStat.mtime.toISOString(),
+        catalogSource: "file",
+      };
     }
   } catch {
     // fall through to defaults
@@ -60,6 +83,8 @@ export async function getCatalog(): Promise<CatalogPayload> {
   return {
     services: defaultServices,
     options: defaultOptions,
+    catalogUpdatedAt: null,
+    catalogSource: "defaults",
   };
 }
 

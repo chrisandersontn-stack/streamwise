@@ -1,4 +1,4 @@
-import { buildResult, fetchHtml, pickPriceByHints } from "./utils.mjs";
+import { buildResult, fetchHtml, pickBestPrice } from "./utils.mjs";
 
 export async function runMaxAdapter(source) {
   const fetched = await fetchHtml(source.pricingPageUrl);
@@ -13,7 +13,7 @@ export async function runMaxAdapter(source) {
     });
   }
 
-  const basicWithAds = pickPriceByHints(fetched.html, [
+  const basicWithAds = pickBestPrice(fetched.html, [
     "basic with ads",
     "with ads",
     "basic",
