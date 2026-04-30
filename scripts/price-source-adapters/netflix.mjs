@@ -1,4 +1,4 @@
-import { buildResult, fetchHtml, pickPriceByHints } from "./utils.mjs";
+import { buildResult, fetchHtml, pickBestPrice } from "./utils.mjs";
 
 export async function runNetflixAdapter(source) {
   const fetched = await fetchHtml(source.pricingPageUrl);
@@ -13,11 +13,11 @@ export async function runNetflixAdapter(source) {
     });
   }
 
-  const standardWithAds = pickPriceByHints(fetched.html, [
+  const standardWithAds = pickBestPrice(fetched.html, [
     "standard with ads",
     "standard",
   ]);
-  const premium = pickPriceByHints(fetched.html, ["premium"]);
+  const premium = pickBestPrice(fetched.html, ["premium"]);
 
   return buildResult({
     sourceId: source.sourceId,

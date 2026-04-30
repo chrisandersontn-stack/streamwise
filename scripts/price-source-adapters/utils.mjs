@@ -250,6 +250,84 @@ export function pickPriceByHints(html, hints) {
   return amounts[0] ?? null;
 }
 
+function safeJsonParse(value) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
+function flattenStructuredNodes(node, out) {
+  if (!node) return;
+  if (Array.isArray(node)) {
+    node.forEach((item) => flattenStructuredNodes(item, out));
+    return;
+  }
+  if (typeof node !== "object") return;
+  out.push(node);
+  Object.values(node).forEach((value) => flattenStructuredNodes(value, out));
+}
+
+export function pickPriceByStructuredData(html, hints) {
+  const normalizedHints = hints.map((hint) => hint.toLowerCase());
+  const scriptMatches = [
+    ...String(html).matchAll(
+      /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+    ),
+  ];
+  if (!scriptMatches.length) {
+    return null;
+  }
+
+  const nodes = [];
+  scriptMatches.forEach((match) => {
+    const parsed = safeJsonParse(match[1]?.trim() ?? "");
+    if (parsed) {
+      flattenStructuredNodes(parsed, nodes);
+    }
+  });
+
+  let fallback = null;
+  for (const node of nodes) {
+    if (!node || typeof node !== "object") continue;
+    const textBlob = [
+      node.name,
+      node.description,
+      node.planName,
+      node.title,
+      node.sku,
+      node.category,
+    ]
+      .filter(Boolean)
+      .map((value) => String(value).toLowerCase())
+      .join(" ");
+    const maybePriceRaw =
+      node.price ??
+      node.lowPrice ??
+      node.highPrice ??
+      node?.offers?.price ??
+      node?.offers?.lowPrice ??
+      node?.offers?.highPrice;
+    const maybePrice = Number.parseFloat(String(maybePriceRaw ?? ""));
+    if (!Number.isFinite(maybePrice)) continue;
+    if (!fallback) fallback = maybePrice;
+    if (normalizedHints.some((hint) => textBlob.includes(hint))) {
+      return maybePrice;
+    }
+  }
+
+  return fallback;
+}
+
+export function pickBestPrice(html, hints) {
+  const structured = pickPriceByStructuredData(html, hints);
+  if (typeof structured === "number" && Number.isFinite(structured)) {
+    return structured;
+  }
+  return pickPriceByHints(html, hints);
+}
+
 export function buildResult({
   sourceId,
   provider,

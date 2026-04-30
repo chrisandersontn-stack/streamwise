@@ -1,4 +1,4 @@
-import { buildResult, fetchHtml, pickPriceByHints } from "./utils.mjs";
+import { buildResult, fetchHtml, pickBestPrice } from "./utils.mjs";
 
 export async function runYoutubeTvAdapter(source) {
   const fetched = await fetchHtml(source.pricingPageUrl);
@@ -13,11 +13,11 @@ export async function runYoutubeTvAdapter(source) {
     });
   }
 
-  const basePlan = pickPriceByHints(fetched.html, [
+  const basePlan = pickBestPrice(fetched.html, [
     "base plan",
     "youtube tv",
   ]);
-  const promo = pickPriceByHints(fetched.html, [
+  const promo = pickBestPrice(fetched.html, [
     "introductory",
     "for the first",
     "new users",

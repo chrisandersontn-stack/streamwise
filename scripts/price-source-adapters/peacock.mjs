@@ -1,4 +1,4 @@
-import { buildResult, fetchHtml, pickPriceByHints } from "./utils.mjs";
+import { buildResult, fetchHtml, pickBestPrice } from "./utils.mjs";
 
 export async function runPeacockAdapter(source) {
   const fetched = await fetchHtml(source.pricingPageUrl);
@@ -13,7 +13,7 @@ export async function runPeacockAdapter(source) {
     });
   }
 
-  const premium = pickPriceByHints(fetched.html, [
+  const premium = pickBestPrice(fetched.html, [
     "peacock premium",
     "premium",
   ]);

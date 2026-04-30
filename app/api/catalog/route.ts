@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { getCatalog, saveCatalog } from "@/lib/server/catalog-store";
+import { getCatalogWithMetadata, saveCatalog } from "@/lib/server/catalog-store";
 
 export async function GET() {
-  const catalog = await getCatalog();
+  const catalog = await getCatalogWithMetadata();
 
   return NextResponse.json(
     {
