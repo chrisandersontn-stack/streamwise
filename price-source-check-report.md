@@ -1,6 +1,6 @@
 ## Price source check report
 
-Generated at: 2026-04-28T20:50:56.045Z
+Generated at: 2026-04-30T03:19:30.191Z
 Adapters run: 14
 Detected changes: 0
 Unknown checks (manual review): 0

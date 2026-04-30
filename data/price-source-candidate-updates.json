@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-28T20:50:56.045Z",
+  "generatedAt": "2026-04-30T03:19:30.191Z",
   "adaptersRun": 14,
   "checksDetectedCount": 0,
   "changeCount": 0,
@@ -391,7 +391,7 @@
       "sourceId": "netflix_signup",
       "provider": "Netflix",
       "url": "https://www.netflix.com/signup",
-      "checkedAt": "2026-04-28T20:50:32.463Z",
+      "checkedAt": "2026-04-30T03:19:06.657Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -407,7 +407,7 @@
       "sourceId": "hulu_start",
       "provider": "Hulu",
       "url": "https://www.hulu.com/start",
-      "checkedAt": "2026-04-28T20:50:34.281Z",
+      "checkedAt": "2026-04-30T03:19:08.465Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -423,7 +423,7 @@
       "sourceId": "disneyplus_pricing",
       "provider": "Disney+",
       "url": "https://www.disneyplus.com/",
-      "checkedAt": "2026-04-28T20:50:36.094Z",
+      "checkedAt": "2026-04-30T03:19:10.277Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -439,7 +439,7 @@
       "sourceId": "peacock_pricing",
       "provider": "Peacock",
       "url": "https://www.peacocktv.com/",
-      "checkedAt": "2026-04-28T20:50:37.906Z",
+      "checkedAt": "2026-04-30T03:19:12.086Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -455,7 +455,7 @@
       "sourceId": "max_pricing",
       "provider": "Max (HBO)",
       "url": "https://www.max.com/",
-      "checkedAt": "2026-04-28T20:50:39.716Z",
+      "checkedAt": "2026-04-30T03:19:13.896Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -471,7 +471,7 @@
       "sourceId": "walmart_plus",
       "provider": "Walmart+",
       "url": "https://www.walmart.com/plus",
-      "checkedAt": "2026-04-28T20:50:41.532Z",
+      "checkedAt": "2026-04-30T03:19:15.708Z",
       "checks": [],
       "notes": [
         "Walmart+ member benefits can change by account and campaign.",
@@ -492,7 +492,7 @@
       "sourceId": "instacart_plus",
       "provider": "Instacart+",
       "url": "https://www.instacart.com/plus",
-      "checkedAt": "2026-04-28T20:50:43.342Z",
+      "checkedAt": "2026-04-30T03:19:17.514Z",
       "checks": [],
       "notes": [
         "Instacart+ benefits and Peacock inclusion can vary by plan/region and campaign.",
@@ -513,7 +513,7 @@
       "sourceId": "verizon_unlimited_bundles",
       "provider": "Verizon",
       "url": "https://www.verizon.com/plans/unlimited/",
-      "checkedAt": "2026-04-28T20:50:45.157Z",
+      "checkedAt": "2026-04-30T03:19:19.327Z",
       "checks": [],
       "notes": [
         "Carrier-gated pricing often varies by plan eligibility and account state.",
@@ -534,7 +534,7 @@
       "sourceId": "tmobile_offers",
       "provider": "T-Mobile",
       "url": "https://www.t-mobile.com/offers",
-      "checkedAt": "2026-04-28T20:50:46.969Z",
+      "checkedAt": "2026-04-30T03:19:21.138Z",
       "checks": [],
       "notes": [
         "T-Mobile perks are highly plan-dependent and may require logged-in account context.",
@@ -555,7 +555,7 @@
       "sourceId": "xfinity_offers",
       "provider": "Xfinity",
       "url": "https://www.xfinity.com/learn/offers",
-      "checkedAt": "2026-04-28T20:50:48.779Z",
+      "checkedAt": "2026-04-30T03:19:22.947Z",
       "checks": [],
       "notes": [
         "Xfinity StreamSaver access can depend on account type and regional availability.",
@@ -576,7 +576,7 @@
       "sourceId": "youtube_tv_pricing",
       "provider": "YouTube TV",
       "url": "https://tv.youtube.com/",
-      "checkedAt": "2026-04-28T20:50:50.594Z",
+      "checkedAt": "2026-04-30T03:19:24.757Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -592,7 +592,7 @@
       "sourceId": "sling_pricing",
       "provider": "Sling TV",
       "url": "https://www.sling.com/",
-      "checkedAt": "2026-04-28T20:50:52.415Z",
+      "checkedAt": "2026-04-30T03:19:26.569Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -608,7 +608,7 @@
       "sourceId": "fubo_pricing",
       "provider": "Fubo",
       "url": "https://www.fubo.tv/",
-      "checkedAt": "2026-04-28T20:50:54.227Z",
+      "checkedAt": "2026-04-30T03:19:28.379Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
@@ -624,7 +624,7 @@
       "sourceId": "philo_pricing",
       "provider": "Philo",
       "url": "https://www.philo.com/",
-      "checkedAt": "2026-04-28T20:50:56.044Z",
+      "checkedAt": "2026-04-30T03:19:30.191Z",
       "checks": [],
       "notes": [
         "Fetch failed: fetch failed"
