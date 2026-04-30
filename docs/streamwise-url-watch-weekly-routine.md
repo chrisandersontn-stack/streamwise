@@ -106,6 +106,7 @@ curl -sS -X PUT "https://streamwise-xi.vercel.app/api/catalog" \
 
 - Fingerprint changes mean **HTML changed**, not guaranteed “dollar amount changed.”
 - Your live catalog endpoint may be cached for up to about an hour after a publish.
+- Incident log (2026-04-29): fixed broken Hulu CTA path by routing known dead Hulu offer URLs to a stable bundle page.
 
 ---
 
@@ -176,6 +177,25 @@ Recommended weekly manual-SLA set:
 - `verizon_unlimited_bundles`
 - `tmobile_offers`
 - `xfinity_offers`
+
+---
+
+## Post-deploy smoke test (5 minutes)
+
+Run this after each production deploy:
+
+1. Hard refresh the live app (`Cmd+Shift+R`).
+2. Confirm recommendations load and no section crashes.
+3. Click at least 3 outbound links (include Hulu + one non-Hulu source).
+4. Open `/api/track-click` and confirm it returns a healthy JSON response.
+5. Run link health check:
+
+```bash
+cd /Users/chrisanderson/streamwise
+npm run catalog:links:check
+```
+
+If it reports failures, review `data/catalog-link-health.json` and fix bad URLs before your next catalog publish.
 
 ---
 
