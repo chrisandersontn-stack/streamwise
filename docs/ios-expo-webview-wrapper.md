@@ -12,12 +12,38 @@ This matches your chosen approach:
 - Node.js 20+ recommended.
 - Expo account (free tier is enough to start); use **EAS** when you are ready for TestFlight builds without fighting Xcode signing manually.
 
+## How to run the commands below (read this first)
+
+These fenced blocks that start with `bash` are meant for a **terminal**, not for the Markdown editor.
+
+1. Open a terminal:
+   - **Cursor:** menu **Terminal → New Terminal** (or the `` Ctrl+` `` / `` Cmd+` `` shortcut), **or**
+   - **macOS:** open **Terminal.app** from Spotlight.
+2. You should see a prompt like `... %` at the bottom. That is where you paste commands.
+3. Run **one command at a time**. Press **Enter** after each paste.
+4. Wait for each command to finish before running the next one.
+5. If a command asks questions in the terminal, read them and answer (usually defaults are fine).
+
 ## 1) Create the sibling repo folder
 
-From the **parent directory** that already contains `streamwise` (example: `~/Projects`):
+You will create a **new folder** named `streamwise-ios` **next to** your existing `streamwise` folder (not inside it).
+
+First, go to the folder that **contains** `streamwise`. On your machine the web repo lives at:
+
+`/Users/chrisanderson/streamwise`
+
+So its parent folder is:
+
+`/Users/chrisanderson`
+
+Use the terminal to move there. Either of these works:
 
 ```bash
-cd ..
+cd /Users/chrisanderson
+```
+
+```bash
+cd /Users/chrisanderson/streamwise && cd ..
 ```
 
 ```bash
