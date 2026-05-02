@@ -46,3 +46,4 @@ For step-by-step App Store Connect/TestFlight actions, use:
 
 - `docs/testflight-submission-checklist.md`
 - `docs/testflight-quick-start.md` (10-minute fast pass)
+- `docs/ios-expo-webview-wrapper.md` (sibling Expo repo + WebView to production)
