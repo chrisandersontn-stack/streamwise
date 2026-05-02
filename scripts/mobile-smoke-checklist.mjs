@@ -8,6 +8,7 @@ const baseUrl = (process.env.MOBILE_SMOKE_BASE_URL || "http://localhost:3000").r
 const checks = [
   { label: "Home page", path: "/" },
   { label: "Catalog API", path: "/api/catalog" },
+  { label: "Support page", path: "/support" },
   { label: "Privacy page", path: "/privacy" },
   { label: "Terms page", path: "/terms" },
   { label: "Affiliate disclosure", path: "/affiliate-disclosure" },
@@ -46,7 +47,7 @@ function printManualSteps() {
   console.log("- [ ] Recommendation panel shows clear CTA: 'Start with this offer'.");
   console.log("- [ ] Recommendation updates after changing selected services.");
   console.log("- [ ] Freshness and verification warning blocks are visible and readable.");
-  console.log("- [ ] Privacy / Terms / Affiliate links open correctly.");
+  console.log("- [ ] Support / Privacy / Terms / Affiliate links open correctly.");
   console.log("- [ ] Contact support mailto link opens email composer.");
   console.log("- [ ] Outbound offer click opens provider page in external browser.");
   console.log("- [ ] Returning to app preserves selected services/preferences.");

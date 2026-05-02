@@ -34,7 +34,7 @@ https://streamwise-xi.vercel.app
 
 - [ ] Pick 2–3 services, confirm recommendation updates.
 - [ ] Tap **Start with this offer** once, confirm provider page opens.
-- [ ] Open footer links: **Privacy**, **Terms**, **Affiliate disclosure**, **App privacy details**.
+- [ ] Open footer links: **Support**, **Privacy**, **Terms**, **Affiliate disclosure**, **App privacy details**.
 
 ## Minute 6–8: App Store Connect essentials
 

@@ -67,7 +67,7 @@ export type Option = {
   priceStatus?: PriceStatus;
 };
 
-const LAST_CHECKED = "2026-04-05";
+const LAST_CHECKED = "2026-05-02";
 
 export const services: Service[] = [
   {

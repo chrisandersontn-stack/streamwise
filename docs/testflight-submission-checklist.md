@@ -43,7 +43,7 @@ Open `https://streamwise-xi.vercel.app` on iPhone and verify:
 - [ ] Service cards are readable and selectable.
 - [ ] Recommendation updates after changing selected services.
 - [ ] "Start with this offer" opens provider page.
-- [ ] Privacy / Terms / Affiliate disclosure / App privacy details pages open.
+- [ ] Support / Privacy / Terms / Affiliate disclosure / App privacy details pages open.
 - [ ] Support mail link opens Mail app.
 
 ## 3) Prepare App Store text fields

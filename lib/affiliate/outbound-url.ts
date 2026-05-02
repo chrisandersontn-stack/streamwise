@@ -47,15 +47,28 @@ function normalizeKnownBrokenSourceUrl(url: string) {
   return normalized;
 }
 
+/**
+ * True when the option can resolve to a real outbound destination (affiliate or official).
+ */
+export function hasResolvableOutbound(input: {
+  sourceUrl?: string;
+  affiliateUrl?: string;
+}): boolean {
+  return Boolean(input.affiliateUrl?.trim() || input.sourceUrl?.trim());
+}
+
 export function resolveOutboundSourceUrl(input: {
   sourceUrl?: string;
   affiliateUrl?: string;
 }): { href: string; kind: "affiliate_override" | "amazon_associates" | "walmart_affiliate" | "official" } {
-  if (input.affiliateUrl) {
-    return { href: input.affiliateUrl, kind: "affiliate_override" };
+  const affiliateUrl = input.affiliateUrl?.trim();
+  if (affiliateUrl) {
+    return { href: affiliateUrl, kind: "affiliate_override" };
   }
 
-  const sourceUrl = input.sourceUrl ? normalizeKnownBrokenSourceUrl(input.sourceUrl) : undefined;
+  const sourceUrl = input.sourceUrl
+    ? normalizeKnownBrokenSourceUrl(input.sourceUrl.trim())
+    : undefined;
   if (!sourceUrl) {
     return { href: "#", kind: "official" };
   }

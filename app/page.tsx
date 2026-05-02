@@ -14,7 +14,10 @@ import {
 } from "./streamwise-data";
 import { calculateCombos, getComboAnnualTotal } from "./streamwise-logic";
 import { getSupabaseBrowserClient } from "@/lib/client/supabase-browser";
-import { resolveOutboundSourceUrl } from "@/lib/affiliate/outbound-url";
+import {
+  hasResolvableOutbound,
+  resolveOutboundSourceUrl,
+} from "@/lib/affiliate/outbound-url";
 
 type RankingMode = "starting" | "ongoing";
 type Combo = ReturnType<typeof calculateCombos>[number];
@@ -317,32 +320,36 @@ function getComboConfidence(combo: Combo): ConfidenceLevel {
 }
 
 function renderSourceLink(item: Option) {
-  if (item.sourceUrl) {
-    const outbound = resolveOutboundSourceUrl({
-      sourceUrl: item.sourceUrl,
-      affiliateUrl: item.affiliateUrl,
-    });
-
-    return (
-      <a
-        href={outbound.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => {
-          trackOutboundClick(
-            item,
-            outbound.href,
-            normalizeOutboundLinkKindForTracking(outbound.kind)
-          );
-        }}
-        className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
-      >
-        {item.source}
-      </a>
-    );
+  if (!hasResolvableOutbound(item)) {
+    return item.source;
   }
 
-  return item.source;
+  const outbound = resolveOutboundSourceUrl({
+    sourceUrl: item.sourceUrl,
+    affiliateUrl: item.affiliateUrl,
+  });
+
+  if (outbound.href === "#") {
+    return item.source;
+  }
+
+  return (
+    <a
+      href={outbound.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => {
+        trackOutboundClick(
+          item,
+          outbound.href,
+          normalizeOutboundLinkKindForTracking(outbound.kind)
+        );
+      }}
+      className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
+    >
+      {item.source}
+    </a>
+  );
 }
 
 type OutboundResolvedKind = ReturnType<typeof resolveOutboundSourceUrl>["kind"];
@@ -446,11 +453,12 @@ function trackUiEvent(
 function renderComboActionLinks(combo: Combo) {
   const actionable = combo.chosen
     .map((item) => {
-      if (!item.sourceUrl) return null;
+      if (!hasResolvableOutbound(item)) return null;
       const outbound = resolveOutboundSourceUrl({
         sourceUrl: item.sourceUrl,
         affiliateUrl: item.affiliateUrl,
       });
+      if (outbound.href === "#") return null;
       return { item, outbound };
     })
     .filter(
@@ -506,11 +514,12 @@ function renderComboActionLinks(combo: Combo) {
 function renderPrimaryRecommendationCta(combo: Combo) {
   const firstAction = combo.chosen
     .map((item) => {
-      if (!item.sourceUrl) return null;
+      if (!hasResolvableOutbound(item)) return null;
       const outbound = resolveOutboundSourceUrl({
         sourceUrl: item.sourceUrl,
         affiliateUrl: item.affiliateUrl,
       });
+      if (outbound.href === "#") return null;
       return { item, outbound };
     })
     .find(
@@ -3139,6 +3148,9 @@ export default function Page() {
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <Link className="underline underline-offset-2 hover:text-slate-700" href="/about">
               About
+            </Link>
+            <Link className="underline underline-offset-2 hover:text-slate-700" href="/support">
+              Support
             </Link>
             <Link className="underline underline-offset-2 hover:text-slate-700" href="/privacy">
               Privacy
