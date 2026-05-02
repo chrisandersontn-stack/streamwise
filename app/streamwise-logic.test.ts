@@ -59,6 +59,42 @@ describe("calculateCombos", () => {
     expect(results[0]?.total).toBe(12.99);
   });
 
+  it("excludes options with priceStatus expired (even if expiresAt is missing)", () => {
+    const localOptions: Option[] = [
+      makeOption({
+        id: "retired_promo",
+        monthly: 4.99,
+        standardMonthly: 11.99,
+        introLengthMonths: 3,
+        covers: ["STARZ"],
+        category: "promo",
+        mutuallyExclusiveGroup: "starz_access",
+        priceStatus: "expired",
+      }),
+      makeOption({
+        id: "direct_plan",
+        monthly: 11.99,
+        covers: ["STARZ"],
+        category: "direct",
+        mutuallyExclusiveGroup: "starz_access",
+      }),
+    ];
+
+    const results = calculateCombos(
+      localOptions,
+      ["STARZ"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      new Date("2026-05-02T00:00:00Z")
+    );
+
+    expect(results[0]?.chosen.map((item) => item.id)).toEqual(["direct_plan"]);
+    expect(results[0]?.total).toBe(11.99);
+  });
+
   it("excludes options that are not yet effective", () => {
     const localOptions: Option[] = [
       makeOption({
