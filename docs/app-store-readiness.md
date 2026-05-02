@@ -41,3 +41,8 @@ Before App Store submission, verify all of the following:
 3. Support email is configured with `NEXT_PUBLIC_SUPPORT_EMAIL`.
 4. Pricing refresh process has run successfully in the last 7 days.
 5. TestFlight beta confirms mobile usability and CTA clarity.
+
+For step-by-step App Store Connect/TestFlight actions, use:
+
+- `docs/testflight-submission-checklist.md`
+- `docs/testflight-quick-start.md` (10-minute fast pass)
