@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-30T03:19:30.191Z",
+  "generatedAt": "2026-04-30T03:58:33.648Z",
   "adaptersRun": 14,
-  "checksDetectedCount": 0,
-  "changeCount": 0,
+  "checksDetectedCount": 9,
+  "changeCount": 15,
   "unknownCount": 0,
   "manualReviewCount": 5,
-  "fetchFailureCount": 14,
+  "fetchFailureCount": 1,
   "browserFallbackAttemptedCount": 0,
   "browserFallbackRecoveredCount": 0,
   "browserFallbackSkippedCount": 0,
@@ -13,45 +13,45 @@
     {
       "sourceId": "netflix_signup",
       "provider": "Netflix",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 2,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
     {
       "sourceId": "hulu_start",
       "provider": "Hulu",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 3,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
     {
       "sourceId": "disneyplus_pricing",
       "provider": "Disney+",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 3,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
     {
       "sourceId": "peacock_pricing",
       "provider": "Peacock",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 1,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
     {
       "sourceId": "max_pricing",
       "provider": "Max (HBO)",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 1,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
@@ -59,7 +59,7 @@
       "sourceId": "walmart_plus",
       "provider": "Walmart+",
       "state": "manual_required",
-      "fetchOk": false,
+      "fetchOk": true,
       "checksDetected": 0,
       "manualTasks": 3,
       "manualVerifiedOn": null
@@ -68,7 +68,7 @@
       "sourceId": "instacart_plus",
       "provider": "Instacart+",
       "state": "manual_required",
-      "fetchOk": false,
+      "fetchOk": true,
       "checksDetected": 0,
       "manualTasks": 3,
       "manualVerifiedOn": null
@@ -77,7 +77,7 @@
       "sourceId": "verizon_unlimited_bundles",
       "provider": "Verizon",
       "state": "manual_required",
-      "fetchOk": false,
+      "fetchOk": true,
       "checksDetected": 0,
       "manualTasks": 3,
       "manualVerifiedOn": null
@@ -86,7 +86,7 @@
       "sourceId": "tmobile_offers",
       "provider": "T-Mobile",
       "state": "manual_required",
-      "fetchOk": false,
+      "fetchOk": true,
       "checksDetected": 0,
       "manualTasks": 3,
       "manualVerifiedOn": null
@@ -103,49 +103,200 @@
     {
       "sourceId": "youtube_tv_pricing",
       "provider": "YouTube TV",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 2,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
     {
       "sourceId": "sling_pricing",
       "provider": "Sling TV",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 3,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
     {
       "sourceId": "fubo_pricing",
       "provider": "Fubo",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 2,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
     {
       "sourceId": "philo_pricing",
       "provider": "Philo",
-      "state": "failed_fetch",
-      "fetchOk": false,
-      "checksDetected": 0,
+      "state": "verified_automated",
+      "fetchOk": true,
+      "checksDetected": 2,
       "manualTasks": 0,
       "manualVerifiedOn": null
     }
   ],
   "sourceVerificationStateCounts": {
-    "verified_automated": 0,
+    "verified_automated": 9,
     "verified_manual": 0,
-    "failed_fetch": 9,
+    "failed_fetch": 0,
     "manual_required": 5
   },
   "verificationStatus": "degraded",
   "debugFetchEnabled": true,
-  "changes": [],
+  "changes": [
+    {
+      "sourceId": "netflix_signup",
+      "provider": "Netflix",
+      "field": "netflix_direct.monthly",
+      "label": "Netflix Standard with Ads",
+      "expectedPrice": 8.99,
+      "detectedPrice": 1,
+      "delta": -7.99,
+      "url": "https://www.netflix.com/signup"
+    },
+    {
+      "sourceId": "hulu_start",
+      "provider": "Hulu",
+      "field": "hulu_direct.monthly",
+      "label": "Hulu (With Ads)",
+      "expectedPrice": 11.99,
+      "detectedPrice": 19.99,
+      "delta": 8,
+      "url": "https://www.hulu.com/start"
+    },
+    {
+      "sourceId": "hulu_start",
+      "provider": "Hulu",
+      "field": "disney_hulu_espn_unlimited_bundle.monthly",
+      "label": "Disney+, Hulu, ESPN Bundle",
+      "expectedPrice": 35.99,
+      "detectedPrice": 12.99,
+      "delta": -23,
+      "url": "https://www.hulu.com/start"
+    },
+    {
+      "sourceId": "disneyplus_pricing",
+      "provider": "Disney+",
+      "field": "disney_direct.monthly",
+      "label": "Disney+ (With Ads)",
+      "expectedPrice": 11.99,
+      "detectedPrice": 35.99,
+      "delta": 24,
+      "url": "https://www.disneyplus.com/"
+    },
+    {
+      "sourceId": "disneyplus_pricing",
+      "provider": "Disney+",
+      "field": "disney_hulu_bundle.monthly",
+      "label": "Disney+, Hulu Bundle",
+      "expectedPrice": 12.99,
+      "detectedPrice": 11.99,
+      "delta": -1,
+      "url": "https://www.disneyplus.com/"
+    },
+    {
+      "sourceId": "disneyplus_pricing",
+      "provider": "Disney+",
+      "field": "disney_hulu_espn_unlimited_bundle.monthly",
+      "label": "Disney+, Hulu, ESPN Bundle",
+      "expectedPrice": 35.99,
+      "detectedPrice": 11.99,
+      "delta": -24,
+      "url": "https://www.disneyplus.com/"
+    },
+    {
+      "sourceId": "peacock_pricing",
+      "provider": "Peacock",
+      "field": "peacock_direct.monthly",
+      "label": "Peacock Premium",
+      "expectedPrice": 10.99,
+      "detectedPrice": 2.99,
+      "delta": -8,
+      "url": "https://www.peacocktv.com/"
+    },
+    {
+      "sourceId": "max_pricing",
+      "provider": "Max (HBO)",
+      "field": "max_direct.monthly",
+      "label": "Max Basic with Ads",
+      "expectedPrice": 10.99,
+      "detectedPrice": 14.98,
+      "delta": 3.99,
+      "url": "https://www.max.com/"
+    },
+    {
+      "sourceId": "youtube_tv_pricing",
+      "provider": "YouTube TV",
+      "field": "youtube_tv_direct.monthly",
+      "label": "YouTube TV Base Plan",
+      "expectedPrice": 82.99,
+      "detectedPrice": 0,
+      "delta": -82.99,
+      "url": "https://tv.youtube.com/"
+    },
+    {
+      "sourceId": "sling_pricing",
+      "provider": "Sling TV",
+      "field": "sling_orange_direct.monthly",
+      "label": "Sling Orange",
+      "expectedPrice": 45.99,
+      "detectedPrice": 4.99,
+      "delta": -41,
+      "url": "https://www.sling.com/"
+    },
+    {
+      "sourceId": "sling_pricing",
+      "provider": "Sling TV",
+      "field": "sling_blue_direct.monthly",
+      "label": "Sling Blue",
+      "expectedPrice": 45.99,
+      "detectedPrice": 4.99,
+      "delta": -41,
+      "url": "https://www.sling.com/"
+    },
+    {
+      "sourceId": "sling_pricing",
+      "provider": "Sling TV",
+      "field": "sling_orange_blue_promo.monthly",
+      "label": "Sling Orange & Blue promo",
+      "expectedPrice": 29.99,
+      "detectedPrice": 4.99,
+      "delta": -25,
+      "url": "https://www.sling.com/"
+    },
+    {
+      "sourceId": "fubo_pricing",
+      "provider": "Fubo",
+      "field": "fubo_promo.monthly",
+      "label": "Fubo promo plan",
+      "expectedPrice": 45.99,
+      "detectedPrice": 0,
+      "delta": -45.99,
+      "url": "https://www.fubo.tv/"
+    },
+    {
+      "sourceId": "fubo_pricing",
+      "provider": "Fubo",
+      "field": "fubo_promo.standardMonthly",
+      "label": "Fubo standard monthly after promo",
+      "expectedPrice": 55.99,
+      "detectedPrice": 0,
+      "delta": -55.99,
+      "url": "https://www.fubo.tv/"
+    },
+    {
+      "sourceId": "philo_pricing",
+      "provider": "Philo",
+      "field": "philo_bundle_plus.monthly",
+      "label": "Philo Bundle+",
+      "expectedPrice": 33,
+      "detectedPrice": 25,
+      "delta": -8,
+      "url": "https://www.philo.com/"
+    }
+  ],
   "unknown": [],
   "manualReview": [
     {
@@ -201,205 +352,48 @@
   ],
   "fetchFailures": [
     {
-      "sourceId": "netflix_signup",
-      "provider": "Netflix",
-      "url": "https://www.netflix.com/signup",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "hulu_start",
-      "provider": "Hulu",
-      "url": "https://www.hulu.com/start",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "disneyplus_pricing",
-      "provider": "Disney+",
-      "url": "https://www.disneyplus.com/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "peacock_pricing",
-      "provider": "Peacock",
-      "url": "https://www.peacocktv.com/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "max_pricing",
-      "provider": "Max (HBO)",
-      "url": "https://www.max.com/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "walmart_plus",
-      "provider": "Walmart+",
-      "url": "https://www.walmart.com/plus",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "instacart_plus",
-      "provider": "Instacart+",
-      "url": "https://www.instacart.com/plus",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "verizon_unlimited_bundles",
-      "provider": "Verizon",
-      "url": "https://www.verizon.com/plans/unlimited/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "tmobile_offers",
-      "provider": "T-Mobile",
-      "url": "https://www.t-mobile.com/offers",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
       "sourceId": "xfinity_offers",
       "provider": "Xfinity",
       "url": "https://www.xfinity.com/learn/offers",
-      "status": 0,
-      "error": "fetch failed",
+      "status": 403,
+      "error": "HTTP 403",
       "errorCode": "",
       "durationMs": null,
       "fetchMode": "http",
       "browserFallbackAttempted": false,
       "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "youtube_tv_pricing",
-      "provider": "YouTube TV",
-      "url": "https://tv.youtube.com/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "sling_pricing",
-      "provider": "Sling TV",
-      "url": "https://www.sling.com/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "fubo_pricing",
-      "provider": "Fubo",
-      "url": "https://www.fubo.tv/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
-    },
-    {
-      "sourceId": "philo_pricing",
-      "provider": "Philo",
-      "url": "https://www.philo.com/",
-      "status": 0,
-      "error": "fetch failed",
-      "errorCode": "",
-      "durationMs": null,
-      "fetchMode": "http",
-      "browserFallbackAttempted": false,
-      "browserFallbackSkipped": "",
-      "failureClass": "runtime_fetch_failure"
+      "failureClass": "blocked_or_unauthorized"
     }
   ],
   "fetchFailureBreakdown": {
-    "runtime_fetch_failure": 14
+    "blocked_or_unauthorized": 1
   },
   "adapterResults": [
     {
       "sourceId": "netflix_signup",
       "provider": "Netflix",
       "url": "https://www.netflix.com/signup",
-      "checkedAt": "2026-04-30T03:19:06.657Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:28.700Z",
+      "checks": [
+        {
+          "field": "netflix_direct.monthly",
+          "label": "Netflix Standard with Ads",
+          "detectedPrice": 1,
+          "expectedPrice": 8.99
+        },
+        {
+          "field": "netflix_premium_reference.monthly",
+          "label": "Netflix Premium (reference only)",
+          "detectedPrice": 1,
+          "expectedPrice": null
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Region-specific pricing can vary; treat this as US default check."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -407,15 +401,34 @@
       "sourceId": "hulu_start",
       "provider": "Hulu",
       "url": "https://www.hulu.com/start",
-      "checkedAt": "2026-04-30T03:19:08.465Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:29.146Z",
+      "checks": [
+        {
+          "field": "hulu_direct.monthly",
+          "label": "Hulu (With Ads)",
+          "detectedPrice": 19.99,
+          "expectedPrice": 11.99
+        },
+        {
+          "field": "disney_hulu_bundle.monthly",
+          "label": "Disney+, Hulu Bundle",
+          "detectedPrice": 12.99,
+          "expectedPrice": 12.99
+        },
+        {
+          "field": "disney_hulu_espn_unlimited_bundle.monthly",
+          "label": "Disney+, Hulu, ESPN Bundle",
+          "detectedPrice": 12.99,
+          "expectedPrice": 35.99
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Promo and naming on Hulu pages can shift between Duo/Trio labels.",
+        "Manual verification required when parser picks first generic price on the page."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -423,15 +436,34 @@
       "sourceId": "disneyplus_pricing",
       "provider": "Disney+",
       "url": "https://www.disneyplus.com/",
-      "checkedAt": "2026-04-30T03:19:10.277Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:29.291Z",
+      "checks": [
+        {
+          "field": "disney_direct.monthly",
+          "label": "Disney+ (With Ads)",
+          "detectedPrice": 35.99,
+          "expectedPrice": 11.99
+        },
+        {
+          "field": "disney_hulu_bundle.monthly",
+          "label": "Disney+, Hulu Bundle",
+          "detectedPrice": 11.99,
+          "expectedPrice": 12.99
+        },
+        {
+          "field": "disney_hulu_espn_unlimited_bundle.monthly",
+          "label": "Disney+, Hulu, ESPN Bundle",
+          "detectedPrice": 11.99,
+          "expectedPrice": 35.99
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Disney+ pages may direct to Hulu checkout for full bundle details.",
+        "Treat extracted values as candidates and verify against official checkout labels."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -439,15 +471,21 @@
       "sourceId": "peacock_pricing",
       "provider": "Peacock",
       "url": "https://www.peacocktv.com/",
-      "checkedAt": "2026-04-30T03:19:12.086Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:29.453Z",
+      "checks": [
+        {
+          "field": "peacock_direct.monthly",
+          "label": "Peacock Premium",
+          "detectedPrice": 2.99,
+          "expectedPrice": 10.99
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Peacock often rotates limited-time offers; validate whether detected price is intro or standard."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -455,15 +493,21 @@
       "sourceId": "max_pricing",
       "provider": "Max (HBO)",
       "url": "https://www.max.com/",
-      "checkedAt": "2026-04-30T03:19:13.896Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:29.824Z",
+      "checks": [
+        {
+          "field": "max_direct.monthly",
+          "label": "Max Basic with Ads",
+          "detectedPrice": 14.98,
+          "expectedPrice": 10.99
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Max frequently features promo placements; confirm whether detected value is recurring monthly pricing."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -471,16 +515,16 @@
       "sourceId": "walmart_plus",
       "provider": "Walmart+",
       "url": "https://www.walmart.com/plus",
-      "checkedAt": "2026-04-30T03:19:15.708Z",
+      "checkedAt": "2026-04-30T03:58:30.354Z",
       "checks": [],
       "notes": [
         "Walmart+ member benefits can change by account and campaign.",
         "Use this adapter as a manual review trigger, not an auto-pricing extractor."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200,
+        "error": ""
       },
       "manualReviewTasks": [
         "Verify Walmart+ membership monthly price.",
@@ -492,16 +536,16 @@
       "sourceId": "instacart_plus",
       "provider": "Instacart+",
       "url": "https://www.instacart.com/plus",
-      "checkedAt": "2026-04-30T03:19:17.514Z",
+      "checkedAt": "2026-04-30T03:58:32.054Z",
       "checks": [],
       "notes": [
         "Instacart+ benefits and Peacock inclusion can vary by plan/region and campaign.",
         "Use this adapter as a manual review trigger, not an auto-pricing extractor."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200,
+        "error": ""
       },
       "manualReviewTasks": [
         "Verify Instacart+ membership monthly price.",
@@ -513,16 +557,16 @@
       "sourceId": "verizon_unlimited_bundles",
       "provider": "Verizon",
       "url": "https://www.verizon.com/plans/unlimited/",
-      "checkedAt": "2026-04-30T03:19:19.327Z",
+      "checkedAt": "2026-04-30T03:58:32.156Z",
       "checks": [],
       "notes": [
         "Carrier-gated pricing often varies by plan eligibility and account state.",
         "Use this adapter as a manual review trigger, not an auto-pricing extractor."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200,
+        "error": ""
       },
       "manualReviewTasks": [
         "Verify Verizon Disney+/Hulu/ESPN perk monthly charge and eligibility terms.",
@@ -534,16 +578,16 @@
       "sourceId": "tmobile_offers",
       "provider": "T-Mobile",
       "url": "https://www.t-mobile.com/offers",
-      "checkedAt": "2026-04-30T03:19:21.138Z",
+      "checkedAt": "2026-04-30T03:58:32.475Z",
       "checks": [],
       "notes": [
         "T-Mobile perks are highly plan-dependent and may require logged-in account context.",
         "Use this adapter as a manual review trigger, not an auto-pricing extractor."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200,
+        "error": ""
       },
       "manualReviewTasks": [
         "Confirm Netflix On Us and Apple TV+ benefit pricing by eligible plan family.",
@@ -555,7 +599,7 @@
       "sourceId": "xfinity_offers",
       "provider": "Xfinity",
       "url": "https://www.xfinity.com/learn/offers",
-      "checkedAt": "2026-04-30T03:19:22.947Z",
+      "checkedAt": "2026-04-30T03:58:32.536Z",
       "checks": [],
       "notes": [
         "Xfinity StreamSaver access can depend on account type and regional availability.",
@@ -563,8 +607,8 @@
       ],
       "fetch": {
         "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "status": 403,
+        "error": "HTTP 403"
       },
       "manualReviewTasks": [
         "Confirm StreamSaver monthly price and covered services (Netflix/Peacock/Apple TV+).",
@@ -576,15 +620,27 @@
       "sourceId": "youtube_tv_pricing",
       "provider": "YouTube TV",
       "url": "https://tv.youtube.com/",
-      "checkedAt": "2026-04-30T03:19:24.757Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:32.735Z",
+      "checks": [
+        {
+          "field": "youtube_tv_direct.monthly",
+          "label": "YouTube TV Base Plan",
+          "detectedPrice": 0,
+          "expectedPrice": 82.99
+        },
+        {
+          "field": "youtube_tv_promo.monthly",
+          "label": "YouTube TV promo",
+          "detectedPrice": 67.99,
+          "expectedPrice": 67.99
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "YouTube TV promos can be gated to new subscribers and time-limited; verify intro duration separately."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -592,15 +648,33 @@
       "sourceId": "sling_pricing",
       "provider": "Sling TV",
       "url": "https://www.sling.com/",
-      "checkedAt": "2026-04-30T03:19:26.569Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:32.970Z",
+      "checks": [
+        {
+          "field": "sling_orange_direct.monthly",
+          "label": "Sling Orange",
+          "detectedPrice": 4.99,
+          "expectedPrice": 45.99
+        },
+        {
+          "field": "sling_blue_direct.monthly",
+          "label": "Sling Blue",
+          "detectedPrice": 4.99,
+          "expectedPrice": 45.99
+        },
+        {
+          "field": "sling_orange_blue_promo.monthly",
+          "label": "Sling Orange & Blue promo",
+          "detectedPrice": 4.99,
+          "expectedPrice": 29.99
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Sling pricing pages can show regional channel package variants; verify base package context."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -608,15 +682,27 @@
       "sourceId": "fubo_pricing",
       "provider": "Fubo",
       "url": "https://www.fubo.tv/",
-      "checkedAt": "2026-04-30T03:19:28.379Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:33.336Z",
+      "checks": [
+        {
+          "field": "fubo_promo.monthly",
+          "label": "Fubo promo plan",
+          "detectedPrice": 0,
+          "expectedPrice": 45.99
+        },
+        {
+          "field": "fubo_promo.standardMonthly",
+          "label": "Fubo standard monthly after promo",
+          "detectedPrice": 0,
+          "expectedPrice": 55.99
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Fubo may show package-dependent prices by market and tax/RSN fees separately."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     },
@@ -624,15 +710,27 @@
       "sourceId": "philo_pricing",
       "provider": "Philo",
       "url": "https://www.philo.com/",
-      "checkedAt": "2026-04-30T03:19:30.191Z",
-      "checks": [],
+      "checkedAt": "2026-04-30T03:58:33.647Z",
+      "checks": [
+        {
+          "field": "philo_essential_direct.monthly",
+          "label": "Philo Essential",
+          "detectedPrice": 25,
+          "expectedPrice": 25
+        },
+        {
+          "field": "philo_bundle_plus.monthly",
+          "label": "Philo Bundle+",
+          "detectedPrice": 25,
+          "expectedPrice": 33
+        }
+      ],
       "notes": [
-        "Fetch failed: fetch failed"
+        "Philo support pages can contain historical plan references; verify current package naming."
       ],
       "fetch": {
-        "ok": false,
-        "status": 0,
-        "error": "fetch failed"
+        "ok": true,
+        "status": 200
       },
       "manualReviewTasks": []
     }

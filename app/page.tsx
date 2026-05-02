@@ -1539,12 +1539,20 @@ function getDataFreshnessLabel(oldestDate: string | null) {
   };
 }
 
-function getFreshnessConfidenceCopy(freshness: ReturnType<typeof getFreshnessSummary>) {
+function getFreshnessConfidenceCopy(
+  freshness: ReturnType<typeof getFreshnessSummary>,
+  pipelineVerificationStatus?: string | null
+) {
+  const pipelineNote =
+    pipelineVerificationStatus === "degraded"
+      ? "Automated checks did not complete for every source, so dates reflect the last recorded verification, not a full fresh pass. "
+      : "";
+
   if (!freshness.hasStaleData) {
-    return "Prices were verified recently for this path.";
+    return `${pipelineNote}Prices for this path look current by last-checked dates.`;
   }
 
-  return `Most prices are still usable, but one or more entries may be older than ${STALE_PRICE_DATA_DAYS} days. Verify before subscribing.`;
+  return `${pipelineNote}Most prices are still usable, but one or more entries may be older than ${STALE_PRICE_DATA_DAYS} days. Verify before subscribing.`;
 }
 
 function getBestComboRetailValue(combo: Combo, selected: string[]) {
@@ -1595,7 +1603,8 @@ function renderBestSummary(
   rankingMode: RankingMode,
   runnerUp: Combo | undefined,
   selected: string[],
-  cheapest: Combo | undefined
+  cheapest: Combo | undefined,
+  pipelineVerificationStatus?: string | null
 ) {
   const primaryTotal = getPrimaryTotal(combo, rankingMode);
   const primarySavings = getPrimarySavings(combo, rankingMode);
@@ -1682,7 +1691,7 @@ function renderBestSummary(
 
       <div
         className={`mt-3 rounded-xl px-3 py-2 text-sm ${
-          freshness.hasStaleData
+          freshness.hasStaleData || pipelineVerificationStatus === "degraded"
             ? "bg-amber-100 text-amber-900"
             : "bg-emerald-100 text-emerald-900"
         }`}
@@ -1692,7 +1701,7 @@ function renderBestSummary(
           Latest checked: {formatDateIso(freshness.latest)} · Oldest checked:{" "}
           {formatDateIso(freshness.oldest)}
         </div>
-        <div className="mt-1">{getFreshnessConfidenceCopy(freshness)}</div>
+        <div className="mt-1">{getFreshnessConfidenceCopy(freshness, pipelineVerificationStatus)}</div>
       </div>
 
       <div className="mt-3 text-sm text-slate-300">
@@ -1729,7 +1738,8 @@ function renderCheapestCard(
   combo: Combo,
   rankingMode: RankingMode,
   recommended: Combo,
-  selected: string[]
+  selected: string[],
+  pipelineVerificationStatus?: string | null
 ) {
   const confidence = getComboConfidence(combo);
   const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
@@ -1771,7 +1781,7 @@ function renderCheapestCard(
 
       <div
         className={`mt-3 rounded-xl px-3 py-2 text-sm ${
-          freshness.hasStaleData
+          freshness.hasStaleData || pipelineVerificationStatus === "degraded"
             ? "bg-amber-100 text-amber-900"
             : "bg-emerald-100 text-emerald-900"
         }`}
@@ -1785,6 +1795,11 @@ function renderCheapestCard(
           <div className="mt-1">
             One or more prices may be stale (older than {STALE_PRICE_DATA_DAYS}{" "}
             days). Re-verify before relying on this path.
+          </div>
+        )}
+        {pipelineVerificationStatus === "degraded" && (
+          <div className="mt-1">
+            Automated verification is degraded; last-checked dates may not reflect a full run.
           </div>
         )}
       </div>
@@ -2058,6 +2073,11 @@ export default function Page() {
 
   const serviceCatalog = catalog?.services ?? defaultServices;
   const optionCatalog = catalog?.options ?? defaultOptions;
+
+  const showAdminPricingEditor =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK === "1" ||
+    process.env.NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK === "true";
 
   React.useEffect(() => {
     void fetch("/api/catalog")
@@ -2451,7 +2471,15 @@ export default function Page() {
 
         {process.env.NODE_ENV === "development" && dataHealthSummary && (
           <div className="mb-6 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-sm">
-            <div className="text-sm font-semibold text-indigo-900">Dev data health dashboard</div>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="text-sm font-semibold text-indigo-900">Dev data health dashboard</div>
+              <Link
+                className="text-sm font-semibold text-indigo-800 underline underline-offset-2 hover:text-indigo-950"
+                href="/admin/pricing"
+              >
+                Catalog price form →
+              </Link>
+            </div>
             <div className="mt-2 grid gap-3 text-sm text-indigo-900 md:grid-cols-7">
               <div>
                 <div className="text-xs uppercase tracking-wide text-indigo-700">Tracked</div>
@@ -2859,10 +2887,23 @@ export default function Page() {
               </div>
             ) : best ? (
               <>
-                {renderBestSummary(best, rankingMode, runnerUp, selected, cheapest)}
+                {renderBestSummary(
+                  best,
+                  rankingMode,
+                  runnerUp,
+                  selected,
+                  cheapest,
+                  dataHealthSummary?.verificationStatus ?? null
+                )}
 
                 {cheapest && best && cheapest.id !== best.id && (
-                  renderCheapestCard(cheapest, rankingMode, best, selected)
+                  renderCheapestCard(
+                    cheapest,
+                    rankingMode,
+                    best,
+                    selected,
+                    dataHealthSummary?.verificationStatus ?? null
+                  )
                 )}
 
                 <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
@@ -3106,6 +3147,14 @@ export default function Page() {
             >
               Affiliate disclosure
             </Link>
+            {showAdminPricingEditor && (
+              <Link
+                className="font-semibold text-slate-700 underline underline-offset-2 hover:text-slate-900"
+                href="/admin/pricing"
+              >
+                Catalog admin (pricing)
+              </Link>
+            )}
           </div>
         </footer>
       </div>

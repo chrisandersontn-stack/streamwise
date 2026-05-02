@@ -1,0 +1,881 @@
+{
+  "services": [
+    {
+      "id": "netflix",
+      "group": "Netflix",
+      "label": "Netflix",
+      "monthly": 8.99
+    },
+    {
+      "id": "disney",
+      "group": "Disney+",
+      "label": "Disney+",
+      "monthly": 11.99
+    },
+    {
+      "id": "hulu",
+      "group": "Hulu",
+      "label": "Hulu",
+      "monthly": 11.99
+    },
+    {
+      "id": "max",
+      "group": "Max",
+      "label": "Max",
+      "monthly": 10.99
+    },
+    {
+      "id": "peacock",
+      "group": "Peacock",
+      "label": "Peacock",
+      "monthly": 10.99
+    },
+    {
+      "id": "paramount",
+      "group": "Paramount+",
+      "label": "Paramount+",
+      "monthly": 8.99
+    },
+    {
+      "id": "apple",
+      "group": "Apple TV+",
+      "label": "Apple TV+",
+      "monthly": 12.99
+    },
+    {
+      "id": "prime",
+      "group": "Prime Video",
+      "label": "Prime Video",
+      "monthly": 8.99
+    },
+    {
+      "id": "espn",
+      "group": "ESPN+",
+      "label": "ESPN+",
+      "monthly": 12.99
+    },
+    {
+      "id": "amcplus",
+      "group": "AMC+",
+      "label": "AMC+",
+      "monthly": 7.99
+    },
+    {
+      "id": "starz",
+      "group": "STARZ",
+      "label": "STARZ",
+      "monthly": 11.99
+    },
+    {
+      "id": "crunchyroll",
+      "group": "Crunchyroll",
+      "label": "Crunchyroll",
+      "monthly": 9.99
+    },
+    {
+      "id": "discoveryplus",
+      "group": "discovery+",
+      "label": "discovery+",
+      "monthly": 5.99
+    },
+    {
+      "id": "youtube_tv",
+      "group": "YouTube TV",
+      "label": "YouTube TV",
+      "monthly": 82.99
+    },
+    {
+      "id": "hulu_live_tv",
+      "group": "Hulu + Live TV",
+      "label": "Hulu + Live TV",
+      "monthly": 89.99
+    },
+    {
+      "id": "sling_tv",
+      "group": "Sling TV",
+      "label": "Sling TV",
+      "monthly": 45.99
+    },
+    {
+      "id": "fubo",
+      "group": "Fubo",
+      "label": "Fubo",
+      "monthly": 55.99
+    },
+    {
+      "id": "philo",
+      "group": "Philo",
+      "label": "Philo",
+      "monthly": 25
+    }
+  ],
+  "options": [
+    {
+      "id": "netflix_direct",
+      "name": "Netflix Standard with Ads",
+      "notes": "Standard direct Netflix plan.",
+      "covers": [
+        "Netflix"
+      ],
+      "source": "Netflix",
+      "monthly": 8.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://help.netflix.com/en/node/24926",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "netflix_access"
+    },
+    {
+      "id": "disney_direct",
+      "name": "Disney+ (With Ads)",
+      "notes": "Disney+ with ads; source is Disney+ commerce signup on disneyplus.com (package=disney_duo_basic)—intentional for this solo option.",
+      "covers": [
+        "Disney+"
+      ],
+      "source": "Disney+",
+      "monthly": 11.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.disneyplus.com/commerce/cadence?package=disney_duo_basic",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "disney_access"
+    },
+    {
+      "id": "hulu_direct",
+      "name": "Hulu (With Ads)",
+      "notes": "Hulu with ads; source is Hulu commerce plans on secure.hulu.com (tracking query params stripped).",
+      "covers": [
+        "Hulu"
+      ],
+      "source": "Hulu",
+      "monthly": 18.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://secure.hulu.com/commerce/plans?offerType=FLAGSHIP_BUNDLE&default=bundle",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "hulu_access"
+    },
+    {
+      "id": "max_direct",
+      "name": "Max Basic with Ads",
+      "notes": "Lowest-priced current Max plan.",
+      "covers": [
+        "Max"
+      ],
+      "source": "Max",
+      "monthly": 10.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://help.hbomax.com/us/Answer/Detail/000002547",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "max_access"
+    },
+    {
+      "id": "peacock_direct",
+      "name": "Peacock Premium",
+      "notes": "Standard Peacock Premium monthly plan.",
+      "covers": [
+        "Peacock"
+      ],
+      "source": "Peacock",
+      "monthly": 10.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.peacocktv.com/plans/all-monthly",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "peacock_access"
+    },
+    {
+      "id": "paramount_direct",
+      "name": "Paramount+ Essential",
+      "notes": "Standard Paramount+ Essential plan.",
+      "covers": [
+        "Paramount+"
+      ],
+      "source": "Paramount+",
+      "monthly": 8.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.paramountplus.com/",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "paramount_access"
+    },
+    {
+      "id": "apple_direct",
+      "name": "Apple TV+",
+      "notes": "Standard Apple TV+ subscription.",
+      "covers": [
+        "Apple TV+"
+      ],
+      "source": "Apple",
+      "monthly": 12.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.apple.com/apple-tv/",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "apple_tv_access"
+    },
+    {
+      "id": "prime_video_direct",
+      "name": "Prime Video standalone",
+      "notes": "Standalone Prime Video subscription without full Prime membership.",
+      "covers": [
+        "Prime Video"
+      ],
+      "source": "Amazon",
+      "monthly": 8.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.amazon.com/amazonprime",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "prime_video_access"
+    },
+    {
+      "id": "espn_select_direct",
+      "name": "ESPN Select",
+      "notes": "Direct ESPN streaming plan that includes ESPN+ content only.",
+      "covers": [
+        "ESPN+"
+      ],
+      "source": "ESPN",
+      "monthly": 12.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://support.espn.com/hc/en-us/articles/40375475974036-ESPN-Select-or-Unlimited-Plans-and-Prices",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "espn_plus_access"
+    },
+    {
+      "id": "amcplus_direct",
+      "name": "AMC+ Monthly with Ads",
+      "notes": "Current ad-supported AMC+ plan.",
+      "covers": [
+        "AMC+"
+      ],
+      "source": "AMC+",
+      "monthly": 7.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.amcplus.com",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "amcplus_access"
+    },
+    {
+      "id": "starz_direct",
+      "name": "STARZ standard monthly plan",
+      "notes": "Current standard monthly STARZ price after introductory offers.",
+      "covers": [
+        "STARZ"
+      ],
+      "source": "STARZ",
+      "monthly": 11.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.starz.com/us/en/buy",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "starz_access"
+    },
+    {
+      "id": "crunchyroll_direct",
+      "name": "Crunchyroll Fan",
+      "notes": "Current entry-level Crunchyroll premium tier.",
+      "covers": [
+        "Crunchyroll"
+      ],
+      "source": "Crunchyroll",
+      "monthly": 9.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.crunchyroll.com/premium",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "crunchyroll_access"
+    },
+    {
+      "id": "discoveryplus_direct",
+      "name": "discovery+",
+      "notes": "Base discovery+ plan with ads.",
+      "covers": [
+        "discovery+"
+      ],
+      "source": "discovery+",
+      "monthly": 5.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.discoveryplus.com",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "discoveryplus_access"
+    },
+    {
+      "id": "youtube_tv_direct",
+      "name": "YouTube TV Base Plan",
+      "notes": "Standard YouTube TV base plan after promo pricing.",
+      "covers": [
+        "YouTube TV"
+      ],
+      "source": "YouTube TV",
+      "monthly": 82.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://tv.youtube.com/welcome/",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "youtube_tv_access"
+    },
+    {
+      "id": "youtube_tv_promo",
+      "name": "YouTube TV Base Plan promo",
+      "notes": "New-user introductory YouTube TV offer for 3 months.",
+      "covers": [
+        "YouTube TV"
+      ],
+      "source": "YouTube TV",
+      "monthly": 67.99,
+      "category": "promo",
+      "provider": "direct",
+      "sourceUrl": "https://tv.youtube.com/welcome/",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "standardMonthly": 82.99,
+      "introLengthMonths": 3,
+      "mutuallyExclusiveGroup": "youtube_tv_access"
+    },
+    {
+      "id": "hulu_live_tv_direct",
+      "name": "Hulu + Live TV",
+      "notes": "Live TV bundle includes Hulu, Disney+, and ESPN content paths in separate apps.",
+      "covers": [
+        "Hulu + Live TV",
+        "Hulu",
+        "Disney+",
+        "ESPN+"
+      ],
+      "source": "Hulu",
+      "monthly": 89.99,
+      "category": "bundle",
+      "provider": "hulu",
+      "sourceUrl": "https://www.hulu.com/live-tv",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "hulu_live_tv_access"
+    },
+    {
+      "id": "sling_orange_direct",
+      "name": "Sling Orange",
+      "notes": "Standard Sling Orange monthly plan.",
+      "covers": [
+        "Sling TV"
+      ],
+      "source": "Sling TV",
+      "monthly": 45.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.sling.com/service/compare-plans",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "sling_tv_access"
+    },
+    {
+      "id": "sling_blue_direct",
+      "name": "Sling Blue",
+      "notes": "Standard Sling Blue monthly plan.",
+      "covers": [
+        "Sling TV"
+      ],
+      "source": "Sling TV",
+      "monthly": 45.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.sling.com/service/compare-plans",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "sling_tv_access"
+    },
+    {
+      "id": "sling_orange_blue_promo",
+      "name": "Sling Orange & Blue promo",
+      "notes": "Half-off first month promotional price for Sling Orange & Blue.",
+      "covers": [
+        "Sling TV"
+      ],
+      "source": "Sling TV",
+      "monthly": 29.99,
+      "category": "promo",
+      "provider": "direct",
+      "sourceUrl": "https://www.sling.com/channels",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "standardMonthly": 60.99,
+      "introLengthMonths": 1,
+      "mutuallyExclusiveGroup": "sling_tv_access"
+    },
+    {
+      "id": "fubo_direct",
+      "name": "Fubo Pro",
+      "notes": "Ongoing monthly rate for Fubo’s main English Pro plan; other tiers (Elite, Premier, Latino, etc.) are on the same official channels page.",
+      "covers": [
+        "Fubo"
+      ],
+      "source": "Fubo",
+      "monthly": 55.99,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://www.fubo.tv/welcome/channels",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "fubo_access"
+    },
+    {
+      "id": "fubo_promo",
+      "name": "Fubo promo plan",
+      "notes": "Current first-month Fubo promotional price, then regular monthly rate.",
+      "covers": [
+        "Fubo"
+      ],
+      "source": "Fubo",
+      "monthly": 45.99,
+      "category": "promo",
+      "provider": "direct",
+      "sourceUrl": "https://www.fubo.tv/welcome/channels",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "standardMonthly": 55.99,
+      "introLengthMonths": 1,
+      "mutuallyExclusiveGroup": "fubo_access"
+    },
+    {
+      "id": "philo_essential_direct",
+      "name": "Philo Essential",
+      "notes": "Base Philo plan.",
+      "covers": [
+        "Philo"
+      ],
+      "source": "Philo",
+      "monthly": 25,
+      "category": "direct",
+      "provider": "direct",
+      "sourceUrl": "https://help.philo.com/account-billing/packages/",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "philo_access"
+    },
+    {
+      "id": "philo_bundle_plus",
+      "name": "Philo Bundle+",
+      "notes": "Bundle+ includes Philo plus access to Max Basic with Ads and ad-supported discovery+.",
+      "covers": [
+        "Philo",
+        "Max",
+        "discovery+"
+      ],
+      "source": "Philo",
+      "monthly": 33,
+      "category": "bundle",
+      "provider": "philo",
+      "sourceUrl": "https://help.philo.com/account-billing/packages/",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "philo_bundle_plus_family"
+    },
+    {
+      "id": "prime_membership_video",
+      "name": "Prime Video via Amazon Prime",
+      "notes": "Full Amazon Prime membership includes Prime Video, but costs more than the standalone video plan if streaming is your only goal.",
+      "covers": [
+        "Prime Video"
+      ],
+      "source": "Amazon Prime",
+      "monthly": 14.99,
+      "category": "membership",
+      "provider": "amazon",
+      "sourceUrl": "https://www.amazon.com/amazonprime",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "effectiveMonthly": 14.99,
+      "mutuallyExclusiveGroup": "prime_video_access"
+    },
+    {
+      "id": "apple_one_individual",
+      "name": "Apple One Individual",
+      "notes": "Apple One includes Apple TV+ plus other Apple subscriptions, but costs more than standalone Apple TV+ if that is all you need.",
+      "covers": [
+        "Apple TV+"
+      ],
+      "source": "Apple One",
+      "monthly": 19.95,
+      "category": "membership",
+      "provider": "apple",
+      "sourceUrl": "https://www.apple.com/apple-one/",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "apple_tv_access"
+    },
+    {
+      "id": "instacart_peacock",
+      "name": "Peacock Premium included with Instacart+",
+      "notes": "Peacock Premium is included with Instacart+. Membership cost is not included in this comparison.",
+      "covers": [
+        "Peacock"
+      ],
+      "source": "Instacart+",
+      "monthly": 0,
+      "category": "carrier",
+      "provider": "instacart_plus",
+      "requires": [
+        "instacart_plus"
+      ],
+      "sourceUrl": "https://www.instacart.com/instacart-plus",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "instacart_plus",
+      "effectiveMonthly": 0,
+      "mutuallyExclusiveGroup": "peacock_access"
+    },
+    {
+      "id": "walmart_paramount",
+      "name": "Paramount+ Essential included with Walmart+",
+      "notes": "Walmart+ members can choose Paramount+ Essential at no extra streaming cost.",
+      "covers": [
+        "Paramount+"
+      ],
+      "source": "Walmart+",
+      "monthly": 8.99,
+      "category": "membership",
+      "provider": "walmart_plus",
+      "requires": [
+        "walmart_plus"
+      ],
+      "sourceUrl": "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "walmart_plus",
+      "effectiveMonthly": 0,
+      "mutuallyExclusiveGroup": "walmart_streaming_choice"
+    },
+    {
+      "id": "walmart_peacock",
+      "name": "Peacock Premium included with Walmart+",
+      "notes": "Walmart+ members can choose Peacock Premium with ads at no extra streaming cost. Only one Walmart+ streaming benefit can be active at a time.",
+      "covers": [
+        "Peacock"
+      ],
+      "source": "Walmart+",
+      "monthly": 10.99,
+      "category": "membership",
+      "provider": "walmart_plus",
+      "requires": [
+        "walmart_plus"
+      ],
+      "sourceUrl": "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "walmart_plus",
+      "effectiveMonthly": 0,
+      "mutuallyExclusiveGroup": "walmart_streaming_choice"
+    },
+    {
+      "id": "disney_hulu_bundle",
+      "name": "Disney+, Hulu Bundle",
+      "notes": "Official two-service ad-supported bundle.",
+      "covers": [
+        "Disney+",
+        "Hulu"
+      ],
+      "source": "Disney / Hulu",
+      "monthly": 12.99,
+      "category": "bundle",
+      "provider": "hulu",
+      "sourceUrl": "https://www.hulu.com/disney-hulu-bundle",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "disney_hulu_family"
+    },
+    {
+      "id": "disney_hulu_espn_unlimited_bundle",
+      "name": "Disney+, Hulu, ESPN Unlimited Bundle",
+      "notes": "Bundle includes Disney+, Hulu, and ESPN Unlimited; modeled here as satisfying ESPN+ access.",
+      "covers": [
+        "Disney+",
+        "Hulu",
+        "ESPN+"
+      ],
+      "source": "Hulu",
+      "monthly": 35.99,
+      "category": "bundle",
+      "provider": "hulu",
+      "sourceUrl": "https://www.hulu.com/disney-hulu-espn-unlimited-bundle",
+      "lastChecked": "2026-04-30",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "disney_hulu_espn_family"
+    },
+    {
+      "id": "disney_hulu_max_bundle",
+      "name": "Disney+, Hulu, HBO Max Bundle",
+      "notes": "Three-service ad-supported bundle.",
+      "covers": [
+        "Disney+",
+        "Hulu",
+        "Max"
+      ],
+      "source": "Hulu",
+      "monthly": 19.99,
+      "category": "bundle",
+      "provider": "hulu",
+      "sourceUrl": "https://www.hbomax.com/bundle/disney-plus-hulu",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "mutuallyExclusiveGroup": "disney_hulu_max_family"
+    },
+    {
+      "id": "disney_hulu_bundle_promo",
+      "name": "Disney+, Hulu Bundle promo",
+      "notes": "Limited-time introductory price for the Disney+, Hulu Bundle, then renews at the current regular bundle rate.",
+      "covers": [
+        "Disney+",
+        "Hulu"
+      ],
+      "source": "Hulu",
+      "monthly": 4.99,
+      "category": "promo",
+      "provider": "hulu",
+      "expiresAt": "2026-12-31",
+      "sourceUrl": "https://help.hulu.com/article/hulu-offer-2026",
+      "lastChecked": "2026-04-05",
+      "priceStatus": "current",
+      "effectiveDate": "2026-03-05",
+      "standardMonthly": 12.99,
+      "introLengthMonths": 3,
+      "mutuallyExclusiveGroup": "disney_hulu_family"
+    },
+    {
+      "id": "starz_promo",
+      "name": "STARZ limited-time offer",
+      "notes": "Limited-time STARZ offer for 3 months, then standard monthly pricing.",
+      "covers": [
+        "STARZ"
+      ],
+      "source": "STARZ",
+      "monthly": 4.99,
+      "category": "promo",
+      "provider": "direct",
+      "sourceUrl": "https://www.starz.com/us/en/buy",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "standardMonthly": 11.99,
+      "introLengthMonths": 3,
+      "mutuallyExclusiveGroup": "starz_access"
+    },
+    {
+      "id": "verizon_netflix_max_current",
+      "name": "Verizon Netflix + Max perk",
+      "notes": "Current Verizon streaming perk price before the scheduled increase.",
+      "covers": [
+        "Netflix",
+        "Max"
+      ],
+      "source": "Verizon",
+      "monthly": 10,
+      "category": "carrier",
+      "provider": "verizon",
+      "requires": [
+        "verizon"
+      ],
+      "expiresAt": "5/5/26",
+      "sourceUrl": "https://www.verizon.com/support/netflix-max-perk-faqs/",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "verizon",
+      "effectiveDate": "4/5/26",
+      "mutuallyExclusiveGroup": "verizon_netflix_max_family"
+    },
+    {
+      "id": "verizon_netflix_max_future",
+      "name": "Verizon Netflix + Max perk",
+      "notes": "Scheduled Verizon perk price beginning May 6, 2026.",
+      "covers": [
+        "Netflix",
+        "Max"
+      ],
+      "source": "Verizon",
+      "monthly": 13,
+      "category": "carrier",
+      "provider": "verizon",
+      "requires": [
+        "verizon"
+      ],
+      "sourceUrl": "https://www.verizon.com/support/netflix-max-perk-faqs/",
+      "lastChecked": "4/20/26",
+      "priceStatus": "scheduled_change",
+      "includedWith": "verizon",
+      "effectiveDate": "5/6/26",
+      "mutuallyExclusiveGroup": "verizon_netflix_max_family"
+    },
+    {
+      "id": "verizon_disney_bundle",
+      "name": "Verizon Disney+, Hulu, ESPN+ perk",
+      "notes": "Verizon perk includes Disney+, Hulu, and ESPN+ with ads on eligible plans.",
+      "covers": [
+        "Disney+",
+        "Hulu",
+        "ESPN+"
+      ],
+      "source": "Verizon",
+      "monthly": 10,
+      "category": "carrier",
+      "provider": "verizon",
+      "requires": [
+        "verizon"
+      ],
+      "sourceUrl": "https://www.verizon.com/support/disney-bundle-perk-faqs/",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "verizon",
+      "mutuallyExclusiveGroup": "verizon_disney_family"
+    },
+    {
+      "id": "tmobile_netflix_on_us",
+      "name": "T-Mobile Netflix On Us",
+      "notes": "Eligible T-Mobile plans include Netflix Standard with Ads at no extra streaming cost.",
+      "covers": [
+        "Netflix"
+      ],
+      "source": "T-Mobile",
+      "monthly": 8.99,
+      "category": "carrier",
+      "provider": "tmobile",
+      "requires": [
+        "tmobile"
+      ],
+      "sourceUrl": "https://www.t-mobile.com/tv-streaming/netflix-on-us",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "tmobile",
+      "effectiveMonthly": 0,
+      "mutuallyExclusiveGroup": "netflix_access"
+    },
+    {
+      "id": "tmobile_apple_tv_discount",
+      "name": "T-Mobile Apple TV benefit",
+      "notes": "Eligible T-Mobile plans can get Apple TV billed through T-Mobile for $3/month.",
+      "covers": [
+        "Apple TV+"
+      ],
+      "source": "T-Mobile",
+      "monthly": 3,
+      "category": "carrier",
+      "provider": "tmobile",
+      "requires": [
+        "tmobile"
+      ],
+      "sourceUrl": "https://www.t-mobile.com/tv-streaming/apple-tv-plus-deal/faq",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "tmobile",
+      "mutuallyExclusiveGroup": "apple_tv_access"
+    },
+    {
+      "id": "xfinity_streamsaver",
+      "name": "Xfinity StreamSaver",
+      "notes": "Xfinity StreamSaver bundles Netflix Standard with Ads, Apple TV+, and Peacock Premium with ads for Xfinity Internet or TV customers.",
+      "covers": [
+        "Netflix",
+        "Apple TV+",
+        "Peacock"
+      ],
+      "source": "Xfinity",
+      "monthly": 18,
+      "category": "carrier",
+      "provider": "xfinity",
+      "requires": [
+        "xfinity"
+      ],
+      "sourceUrl": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+      "lastChecked": "2026-04-05",
+      "priceStatus": "current",
+      "includedWith": "xfinity",
+      "mutuallyExclusiveGroup": "xfinity_streamsaver_family"
+    },
+    {
+      "id": "xfinity_streamsaver_peacock_netflix_max",
+      "name": "Xfinity StreamSaver: Peacock, Netflix, HBO Max",
+      "notes": "Advertised StreamSaver bundle. Restrictions apply; pricing subject to change. Existing third-party subscriptions may need cancellation to avoid duplicate charges.",
+      "covers": [
+        "Peacock",
+        "Netflix",
+        "Max"
+      ],
+      "source": "Xfinity StreamStore",
+      "monthly": 22,
+      "category": "carrier",
+      "provider": "xfinity",
+      "requires": [
+        "xfinity"
+      ],
+      "sourceUrl": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "xfinity",
+      "mutuallyExclusiveGroup": "xfinity_streamsaver_family"
+    },
+    {
+      "id": "xfinity_streamsaver_peacock_netflix_apple_max",
+      "name": "Xfinity StreamSaver: Peacock, Netflix, Apple TV+, HBO Max",
+      "notes": "Advertised StreamSaver bundle. Restrictions apply; pricing subject to change. Existing third-party subscriptions may need cancellation to avoid duplicate charges.",
+      "covers": [
+        "Peacock",
+        "Netflix",
+        "Apple TV+",
+        "Max"
+      ],
+      "source": "Xfinity StreamStore",
+      "monthly": 30,
+      "category": "carrier",
+      "provider": "xfinity",
+      "requires": [
+        "xfinity"
+      ],
+      "sourceUrl": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "xfinity",
+      "mutuallyExclusiveGroup": "xfinity_streamsaver_family"
+    },
+    {
+      "id": "xfinity_streamsaver_peacock_netflix_disney_hulu_max",
+      "name": "Xfinity StreamSaver: Peacock, Netflix, Disney+, Hulu Bundle, HBO Max",
+      "notes": "Advertised StreamSaver bundle. Restrictions apply; pricing subject to change. Existing third-party subscriptions may need cancellation to avoid duplicate charges.",
+      "covers": [
+        "Peacock",
+        "Netflix",
+        "Disney+",
+        "Hulu",
+        "Max"
+      ],
+      "source": "Xfinity StreamStore",
+      "monthly": 30,
+      "category": "carrier",
+      "provider": "xfinity",
+      "requires": [
+        "xfinity"
+      ],
+      "sourceUrl": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+      "lastChecked": "4/20/26",
+      "priceStatus": "current",
+      "includedWith": "xfinity",
+      "mutuallyExclusiveGroup": "xfinity_streamsaver_family"
+    }
+  ],
+  "generatedAt": "2026-04-20T03:32:35.835Z"
+}

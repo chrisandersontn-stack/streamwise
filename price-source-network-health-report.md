@@ -40,8 +40,8 @@ Likely environment DNS issue: yes
   - DNS: failed (A=0, AAAA=0, error=no_dns_records)
   - HTTP: failed (status=0, duration=1ms, error=fetch failed)
 
-- **tv.apple.com**
-  - URL: https://tv.apple.com
+- **www.apple.com**
+  - URL: https://www.apple.com/apple-tv/
   - DNS: failed (A=0, AAAA=0, error=no_dns_records)
   - HTTP: failed (status=0, duration=1ms, error=fetch failed)
 

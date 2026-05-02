@@ -1,20 +1,6 @@
 {
   "version": 1,
   "entries": {
-    "opt-amcplus_direct": {
-      "hash": "94433a52b5412301d0b67820135b73ae8fc2d32146b44c0bebbe9f90bc58dd39",
-      "url": "https://support.amcplus.com/kb/guide/en/price-change-cenwVPBMYg/Steps/5010804",
-      "label": "AMC+ Monthly with Ads",
-      "fetchedAt": "2026-04-27T20:17:42.098Z",
-      "byteLength": 186455
-    },
-    "opt-apple_direct": {
-      "hash": "c61465ee51a24458474dbda03d95d33e4376864d1556b3eae2e50087e807c132",
-      "url": "https://tv.apple.com/",
-      "label": "Apple TV+",
-      "fetchedAt": "2026-04-27T20:17:42.098Z",
-      "byteLength": 902549
-    },
     "opt-apple_one_individual": {
       "hash": "c0f7c02a1599ad0879a209b34cd98604fec61cbfe0a544d7c72869c58b220420",
       "url": "https://www.apple.com/apple-one/",
@@ -28,20 +14,6 @@
       "label": "Crunchyroll Fan",
       "fetchedAt": "2026-04-27T20:17:42.098Z",
       "byteLength": 8061
-    },
-    "opt-discoveryplus_direct": {
-      "hash": "a72683f110353aeff891ab6220060125a5251abf5ceef59eff71624800b3cb34",
-      "url": "https://help.discoveryplus.com/hc/en-us/articles/360058773493-discovery-plans-and-prices",
-      "label": "discovery+",
-      "fetchedAt": "2026-04-27T20:17:42.098Z",
-      "byteLength": 29468
-    },
-    "opt-disney_direct": {
-      "hash": "d9e6801cb52baeb6bda831ce4498d40d5304337df4df918d127c6dcaa529e17f",
-      "url": "https://www.disneyplus.com/welcome/disney-bundle-duo",
-      "label": "Disney+ (With Ads)",
-      "fetchedAt": "2026-04-27T20:17:42.098Z",
-      "byteLength": 1294525
     },
     "opt-disney_hulu_bundle": {
       "hash": "578bd46a7c5ca4368013274dea72b091d70515a5ff8b944be7bd89e101a9f536",
@@ -64,26 +36,12 @@
       "fetchedAt": "2026-04-27T20:17:42.098Z",
       "byteLength": 398870
     },
-    "opt-disney_hulu_max_bundle": {
-      "hash": "78c25a659d74a5b2bce31c907eb04d5ef0041afe62c3408042c5bf784ba53714",
-      "url": "https://help.max.com/us/answer/detail/000002578",
-      "label": "Disney+, Hulu, HBO Max Bundle",
-      "fetchedAt": "2026-04-27T20:17:42.098Z",
-      "byteLength": 81157
-    },
     "opt-fubo_promo": {
       "hash": "1ab17e972f8d90b0284b1e74d92418934fd4564ab04345253b4db3bb1b049380",
       "url": "https://www.fubo.tv/welcome/channels",
       "label": "Fubo promo plan",
       "fetchedAt": "2026-04-27T20:17:42.098Z",
       "byteLength": 2691933
-    },
-    "opt-hulu_direct": {
-      "hash": "573d144e5d5d8defe33f15b4739f624e1a2bfd4ff15d15c6c5a5263c76842758",
-      "url": "https://www.hulu.com/premium-no-ads",
-      "label": "Hulu (With Ads)",
-      "fetchedAt": "2026-04-27T20:17:42.098Z",
-      "byteLength": 1649566
     },
     "opt-hulu_live_tv_direct": {
       "hash": "a82cfc0be443506ccb0d48434d9769d27f8ccfd122bb84b50ba9ee57bf0e26e3",

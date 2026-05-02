@@ -5,7 +5,7 @@ disneyplus_pricing,Disney+,Disney+,https://www.disneyplus.com/,Base + bundle pri
 peacock_pricing,Peacock,Peacock,https://www.peacocktv.com/,Premium monthly price + promos,Yes,Yes,No,No,Low,Monthly,,Included with Instacart+ in some cases,No,No,Yes,1,,,
 max_pricing,Max (HBO),Max,https://www.max.com/,Base + ad-free tiers,Yes,Yes,No,No,Low,Monthly,,Frequent promo pricing,No,No,Yes,1,,,
 paramountplus_pricing,Paramount+,Paramount+,https://www.paramountplus.com/,Base + Showtime bundle,Yes,Yes,No,No,Low,Monthly,,Often discounted via partners,No,No,Yes,2,,,
-appletv_pricing,Apple TV+,Apple TV+,https://tv.apple.com/,Monthly price,No,Yes,No,No,Low,Monthly,,Often bundled via Apple One,No,No,Yes,2,,,
+appletv_pricing,Apple TV+,Apple TV+,https://www.apple.com/apple-tv/,Monthly price,No,Yes,No,No,Low,Monthly,,Often bundled via Apple One,No,No,Yes,2,,,
 amazon_prime_video,Amazon Prime Video,Prime Video,https://www.amazon.com/amazonprime,Included with Prime membership,Yes,Yes,Yes,Yes,Medium,Monthly,,Price tied to Prime membership,No,Yes,Yes,1,,,
 walmart_plus,Walmart+,"Multiple (Paramount+, etc.)",https://www.walmart.com/plus,Membership price + included services,Yes,Yes,Yes,Yes,Medium,Monthly,,Includes streaming perks,No,No,Yes,1,,,
 instacart_plus,Instacart+,Peacock (included),https://www.instacart.com/plus,Membership price + included Peacock,Yes,Yes,Yes,Yes,Medium,Monthly,,Peacock included benefit,No,No,Yes,1,,,
