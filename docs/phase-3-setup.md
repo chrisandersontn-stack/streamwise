@@ -5,6 +5,7 @@
 ```bash
 # Catalog admin
 CATALOG_ADMIN_TOKEN=replace_with_secure_token
+NEXT_PUBLIC_SUPPORT_EMAIL=support@yourdomain.com
 
 # Optional: show footer link "Catalog admin (pricing)" on the main app (default: dev-only)
 # NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK=1

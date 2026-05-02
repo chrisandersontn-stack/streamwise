@@ -23,7 +23,8 @@
     "catalog:price-sources:record-manual": "node scripts/record-manual-price-verification.mjs",
     "catalog:price-sources:playwright-verify": "node scripts/verify-playwright.mjs",
     "catalog:price-sources:triage": "node scripts/run-price-source-triage.mjs",
-    "catalog:links:check": "node scripts/check-catalog-links.mjs --data app/streamwise-data.ts --output data/catalog-link-health.json"
+    "catalog:links:check": "node scripts/check-catalog-links.mjs --data app/streamwise-data.ts --output data/catalog-link-health.json",
+    "qa:mobile-smoke": "node scripts/mobile-smoke-checklist.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.3",
