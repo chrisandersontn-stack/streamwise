@@ -80,31 +80,144 @@ git branch -M main
 git push -u origin main
 ```
 
-## 2) Install WebView
+## 3) Point the WebView at production (Option C)
 
-Still inside `streamwise-ios`:
+Do this **inside the `streamwise-ios` project** (the sibling folder you created), not inside `streamwise`.
+
+### 3a) Open the mobile project in Cursor (recommended)
+
+1. Cursor menu: **File → Open Folder…**
+2. Pick the folder: `/Users/chrisanderson/streamwise-ios`
+3. Click **Open**
+
+You should now see `App.tsx` in the left file tree.
+
+### 3b) Install WebView (terminal, inside `streamwise-ios`)
+
+```bash
+cd /Users/chrisanderson/streamwise-ios
+```
 
 ```bash
 npx expo install react-native-webview
 ```
 
-## 3) Point the WebView at production (Option C)
+### 3c) Create the `.env` file (terminal)
 
-Edit `App.tsx` to render a full-screen `WebView` whose `source.uri` is your production URL, for example:
-
-`https://streamwise-xi.vercel.app`
-
-Recommended pattern:
-
-- Use an env-driven URL (`EXPO_PUBLIC_STREAMWISE_WEB_URL`) so staging/production swaps do not require code edits later.
-
-Example env file in the mobile repo (create `.env` locally; **do not commit secrets**):
+This file tells Expo which website URL to load. It is **not** a secret (it is a public URL), but it is still good practice to keep `.env` out of git if your repo is public.
 
 ```bash
-EXPO_PUBLIC_STREAMWISE_WEB_URL=https://streamwise-xi.vercel.app
+cd /Users/chrisanderson/streamwise-ios
 ```
 
-Expo reads `EXPO_PUBLIC_*` at build time.
+```bash
+printf '%s\n' 'EXPO_PUBLIC_STREAMWISE_WEB_URL=https://streamwise-xi.vercel.app' > .env
+```
+
+Confirm it exists:
+
+```bash
+cat .env
+```
+
+If `.env` is not ignored yet, add this line to `streamwise-ios/.gitignore` (create the file if needed):
+
+```gitignore
+.env
+```
+
+### 3d) Replace `App.tsx` (editor)
+
+1. In Cursor’s left sidebar, click **`App.tsx`**
+2. Select **all** text in that file and delete it
+3. Paste the entire block below
+4. Save the file (`Cmd+S`)
+
+```tsx
+import { StatusBar } from "expo-status-bar";
+import { useMemo, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { WebView } from "react-native-webview";
+
+const DEFAULT_WEB_URL = "https://streamwise-xi.vercel.app";
+
+export default function App() {
+  const webUrl = useMemo(() => {
+    const fromEnv = process.env.EXPO_PUBLIC_STREAMWISE_WEB_URL?.trim();
+    return fromEnv && fromEnv.length > 0 ? fromEnv : DEFAULT_WEB_URL;
+  }, []);
+
+  const [hasError, setHasError] = useState(false);
+
+  return (
+    <View style={styles.root}>
+      <StatusBar style="dark" />
+      {hasError ? (
+        <View style={styles.centered}>
+          <Text style={styles.title}>Could not load StreamWise</Text>
+          <Text style={styles.body}>
+            Check your internet connection, then fully close and reopen the app.
+          </Text>
+        </View>
+      ) : (
+        <WebView
+          source={{ uri: webUrl }}
+          style={styles.webview}
+          startInLoadingState
+          onError={() => setHasError(true)}
+          onHttpError={() => setHasError(true)}
+          renderLoading={() => (
+            <View style={styles.loading}>
+              <ActivityIndicator size="large" />
+              <Text style={styles.loadingText}>Loading StreamWise…</Text>
+            </View>
+          )}
+        />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: "#f8fafc" },
+  webview: { flex: 1 },
+  centered: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+    gap: 8,
+  },
+  loading: {
+    position: "absolute",
+    inset: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+  },
+  title: { fontSize: 18, fontWeight: "700", color: "#0f172a", textAlign: "center" },
+  body: { fontSize: 14, color: "#475569", textAlign: "center" },
+  loadingText: { fontSize: 14, color: "#64748b" },
+});
+```
+
+### 3e) Run the app locally (terminal)
+
+Stop any running dev server first (`Ctrl+C`), then:
+
+```bash
+cd /Users/chrisanderson/streamwise-ios
+```
+
+```bash
+npx expo start
+```
+
+Then press **`i`** in that same terminal window to open the iOS simulator (requires Xcode).
+
+You should see your live site load inside the app shell.
+
+**If you change `.env` later:** stop Expo (`Ctrl+C`) and run `npx expo start` again so the new URL is picked up.
 
 ## 4) iOS polish checklist (important for App Review comfort)
 
