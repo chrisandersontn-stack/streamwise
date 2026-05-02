@@ -10,7 +10,7 @@ export default function AffiliateDisclosurePage() {
     <main className="mx-auto max-w-3xl px-6 py-16 text-slate-800">
       <h1 className="text-3xl font-bold tracking-tight">Affiliate Disclosure</h1>
       <p className="mt-4 text-sm text-slate-600">
-        Last updated: April 17, 2026
+        Last updated: May 2, 2026
       </p>
 
       <section className="mt-10 space-y-4 text-sm leading-relaxed text-slate-700">
@@ -24,9 +24,17 @@ export default function AffiliateDisclosurePage() {
           receive a commission or referral fee at no additional cost to you.
         </p>
         <p>
-          StreamWise editorial recommendations are designed to reflect value for
-          users, but compensation can influence which offers are highlighted or
-          prioritized in the product experience.
+          Recommendation ranking is based on selected services, catalog pricing
+          data, and value logic (including 12-month total). Compensation does not
+          change ranking order.
+        </p>
+        <p>
+          Some providers may not offer affiliate links in all contexts. In those
+          cases, StreamWise may link to a non-affiliate official source.
+        </p>
+        <p>
+          We disclose compensated-link behavior in-product and on this page so
+          users can make informed decisions.
         </p>
       </section>
     </main>

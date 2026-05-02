@@ -2051,6 +2051,8 @@ function getProviderUnlockSummary(
 }
 
 export default function Page() {
+  const supportEmail =
+    process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() || "support@streamwise.app";
   const [catalog, setCatalog] = React.useState<CatalogResponse | null>(null);
   const [preferencesHydrated, setPreferencesHydrated] = React.useState(false);
   const [selected, setSelected] = React.useState<string[]>(defaultSelectedServices);
@@ -2385,7 +2387,7 @@ export default function Page() {
   }, [best]);
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 text-slate-900">
+    <div className="min-h-screen bg-slate-50 p-4 text-slate-900 sm:p-6">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
@@ -2419,7 +2421,9 @@ export default function Page() {
             </p>
             <p>
               We may earn a commission when you purchase or subscribe through
-              qualifying outbound links. Read the{" "}
+              qualifying outbound links. Recommendation ranking is based on your
+              selected services and value logic, not affiliate compensation. Read
+              the{" "}
               <Link
                 className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
                 href="/affiliate-disclosure"
@@ -3115,8 +3119,9 @@ export default function Page() {
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 className="text-lg font-semibold">What comes next</h3>
             <p className="mt-2 text-sm text-slate-600">
-              Replace hard-coded pricing with a real data source and expand
-              coverage so users trust that every major option is represented.
+              Finalize mobile UX polish, complete App Store submission assets and
+              privacy labels, and continue improving verification coverage so
+              users can trust the freshness and quality of pricing data.
             </p>
           </div>
 
@@ -3147,6 +3152,18 @@ export default function Page() {
             >
               Affiliate disclosure
             </Link>
+            <Link
+              className="underline underline-offset-2 hover:text-slate-700"
+              href="/app-privacy-details"
+            >
+              App privacy details
+            </Link>
+            <a
+              className="underline underline-offset-2 hover:text-slate-700"
+              href={`mailto:${supportEmail}`}
+            >
+              Contact support
+            </a>
             {showAdminPricingEditor && (
               <Link
                 className="font-semibold text-slate-700 underline underline-offset-2 hover:text-slate-900"

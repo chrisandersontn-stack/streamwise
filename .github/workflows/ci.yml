@@ -23,3 +23,19 @@ jobs:
       - run: npm test
 
       - run: npm run build
+
+      - name: Start app and run mobile smoke checks
+        env:
+          MOBILE_SMOKE_BASE_URL: http://localhost:3000
+        run: |
+          npm run start > /tmp/next-start.log 2>&1 &
+          APP_PID=$!
+          trap "kill $APP_PID" EXIT
+          for i in {1..30}; do
+            if curl -sf "$MOBILE_SMOKE_BASE_URL" > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl -sf "$MOBILE_SMOKE_BASE_URL" > /dev/null
+          npm run qa:mobile-smoke
