@@ -12,7 +12,8 @@ export async function GET() {
     },
     {
       headers: {
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+        // Catalog is admin-updated; avoid long CDN/browser stale windows (was up to 24h SWR).
+        "Cache-Control": "private, no-store",
       },
     }
   );

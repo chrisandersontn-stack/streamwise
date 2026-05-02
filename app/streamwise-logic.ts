@@ -46,6 +46,10 @@ function isOptionAvailableToday(
   hasInstacartPlus: boolean,
   today: Date
 ) {
+  if (opt.priceStatus === "expired") {
+    return false;
+  }
+
   if (opt.effectiveDate && isAfterToday(opt.effectiveDate, today)) {
     return false;
   }

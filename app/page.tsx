@@ -2080,7 +2080,7 @@ export default function Page() {
     process.env.NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK === "true";
 
   React.useEffect(() => {
-    void fetch("/api/catalog")
+    void fetch("/api/catalog", { cache: "no-store" })
       .then((res) => res.json())
       .then((data: CatalogResponse) => {
         if (Array.isArray(data.services) && Array.isArray(data.options)) {
