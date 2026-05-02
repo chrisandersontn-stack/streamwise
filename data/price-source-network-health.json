@@ -106,8 +106,8 @@
       }
     },
     {
-      "hostname": "tv.apple.com",
-      "url": "https://tv.apple.com",
+      "hostname": "www.apple.com",
+      "url": "https://www.apple.com/apple-tv/",
       "dns": {
         "ok": false,
         "ipv4Count": 0,

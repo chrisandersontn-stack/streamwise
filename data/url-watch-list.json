@@ -1,12 +1,12 @@
 [
   {
     "id": "opt-amcplus_direct",
-    "url": "https://support.amcplus.com/kb/guide/en/price-change-cenwVPBMYg/Steps/5010804",
+    "url": "https://www.amcplus.com",
     "label": "AMC+ Monthly with Ads"
   },
   {
     "id": "opt-apple_direct",
-    "url": "https://tv.apple.com/",
+    "url": "https://www.apple.com/apple-tv/",
     "label": "Apple TV+"
   },
   {
@@ -21,12 +21,12 @@
   },
   {
     "id": "opt-discoveryplus_direct",
-    "url": "https://help.discoveryplus.com/hc/en-us/articles/360058773493-discovery-plans-and-prices",
+    "url": "https://www.discoveryplus.com",
     "label": "discovery+"
   },
   {
     "id": "opt-disney_direct",
-    "url": "https://www.disneyplus.com/welcome/disney-bundle-duo",
+    "url": "https://www.disneyplus.com/commerce/cadence?package=disney_duo_basic",
     "label": "Disney+ (With Ads)"
   },
   {
@@ -46,7 +46,7 @@
   },
   {
     "id": "opt-disney_hulu_max_bundle",
-    "url": "https://help.max.com/us/answer/detail/000002578",
+    "url": "https://www.hbomax.com/bundle/disney-plus-hulu",
     "label": "Disney+, Hulu, HBO Max Bundle"
   },
   {
@@ -56,19 +56,29 @@
     "skipAutomation": true
   },
   {
+    "id": "opt-fubo_direct",
+    "url": "https://www.fubo.tv/welcome/channels",
+    "label": "Fubo Pro"
+  },
+  {
     "id": "opt-fubo_promo",
     "url": "https://www.fubo.tv/welcome/channels",
     "label": "Fubo promo plan"
   },
   {
     "id": "opt-hulu_direct",
-    "url": "https://www.hulu.com/premium-no-ads",
+    "url": "https://secure.hulu.com/commerce/plans?offerType=FLAGSHIP_BUNDLE&default=bundle",
     "label": "Hulu (With Ads)"
   },
   {
     "id": "opt-hulu_live_tv_direct",
     "url": "https://www.hulu.com/live-tv",
     "label": "Hulu + Live TV"
+  },
+  {
+    "id": "opt-hulu_hbomax_addon",
+    "url": "https://www.hulu.com/hbomax",
+    "label": "HBO Max on Hulu (add-on)"
   },
   {
     "id": "opt-instacart_peacock",

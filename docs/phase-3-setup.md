@@ -6,6 +6,9 @@
 # Catalog admin
 CATALOG_ADMIN_TOKEN=replace_with_secure_token
 
+# Optional: show footer link "Catalog admin (pricing)" on the main app (default: dev-only)
+# NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK=1
+
 # Supabase (required for auth + hosted persistence)
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
@@ -57,4 +60,5 @@ create table if not exists catalog_snapshots (
 - `GET /api/auth/user` - validates bearer token and returns user id
 - `GET|PUT /api/profile/preferences` - token-aware preference storage
 - `GET|PUT /api/catalog` - hosted catalog read/update (see `docs/pricing-data-process.md` for sourcing and refresh workflow)
+- `POST /api/admin/catalog-option` - update a single plan (same `x-admin-token` as catalog); browser UI at `/admin/pricing`
 - `POST /api/track-click` - analytics event capture (Supabase + PostHog + fallback)

@@ -162,6 +162,14 @@ Treat these as source-of-truth in `data/price-source-candidate-updates.json`:
 
 If verification is degraded, do not treat catalog freshness as fully verified.
 
+If checks are successful, you can automate date refresh:
+
+```bash
+npm run catalog:price-sources:apply-checks
+```
+
+This updates `lastChecked` in `catalog-after-auto.json` for options with successful automated checks.
+
 ### 6) Record manual verification for hard sources
 
 Run for providers that need human validation:

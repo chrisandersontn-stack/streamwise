@@ -26,6 +26,12 @@ export async function runFuboAdapter(source) {
     url: source.pricingPageUrl,
     checks: [
       {
+        field: "fubo_direct.monthly",
+        label: "Fubo Pro (ongoing)",
+        detectedPrice: standard,
+        expectedPrice: 55.99,
+      },
+      {
         field: "fubo_promo.monthly",
         label: "Fubo promo plan",
         detectedPrice: promo,

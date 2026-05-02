@@ -189,6 +189,22 @@ Run checks:
 npm run catalog:price-sources:check
 ```
 
+Apply successful checks to a catalog snapshot (refresh `lastChecked`, optional auto-price update):
+
+```bash
+# refresh lastChecked for options with successful checks
+npm run catalog:price-sources:apply-checks
+
+# optional: also update option.monthly from detected values
+node scripts/apply-price-source-check-results.mjs \
+  --catalog catalog-before.json \
+  --checks data/price-source-candidate-updates.json \
+  --output catalog-after-auto.json \
+  --apply-prices
+```
+
+Note: this only applies automated results for adapters that successfully fetched and detected checks.
+
 Run checks with fetch diagnostics (for failure triage):
 
 ```bash
@@ -266,6 +282,14 @@ Record a manual verification event for hard providers:
 
 ```bash
 npm run catalog:price-sources:record-manual -- --source walmart_plus --date 2026-04-28 --verifier "Chris" --notes "Verified in signed-in account flow"
+```
+
+Optional HTTP path (same `CATALOG_ADMIN_TOKEN` as catalog publish): `POST /api/manual-price-verification` with JSON body `sourceId`, `date` (`YYYY-MM-DD`), `verifier`, optional `notes`, and header `x-admin-token`. Writes `data/manual-price-verifications.json` on the server; on read-only serverless hosts prefer the CLI and commit the file.
+
+Before relying on browser fallback in CI or locally, confirm Chromium is installed:
+
+```bash
+npm run catalog:price-sources:playwright-verify
 ```
 
 Recommended manual-verification SLA for hard sources:
