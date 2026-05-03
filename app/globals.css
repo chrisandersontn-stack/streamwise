@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
+/* StreamWise soft blue system (Option A) — light, trust-forward UI */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --sw-page: #f4f8fc;
+  --sw-section: #eef4fa;
+  --sw-hero-from: #eaf3fb;
+  --sw-hero-to: #f8fbff;
+  --sw-heading: #0b1f3a;
+  --sw-body: #4a5a6a;
+  --background: var(--sw-page);
+  --foreground: var(--sw-body);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-sw-page: #f4f8fc;
+  --color-sw-section: #eef4fa;
+  --color-sw-hero-from: #eaf3fb;
+  --color-sw-hero-to: #f8fbff;
+  --color-sw-heading: #0b1f3a;
+  --color-sw-body: #4a5a6a;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
+  /* Keep branded light surfaces; avoid default gray “dark webpage” */
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--sw-page);
+    --foreground: var(--sw-body);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Navy hero: faint grid (precision / data product cue), opacity kept low */
+.sw-brand-hero {
+  background-color: var(--sw-heading);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.07) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: center top;
 }

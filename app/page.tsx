@@ -36,6 +36,40 @@ type ProviderKey =
   | "hulu"
   | "philo";
 
+/** Brand mark: bars + check — uses currentColor (white on navy, navy on light). */
+function StreamWiseLogoMark({
+  className = "",
+  size = "md",
+}: {
+  className?: string;
+  size?: "md" | "lg";
+}) {
+  const dim = size === "lg" ? "h-[4.5rem] w-[4.5rem] sm:h-20 sm:w-20" : "h-9 w-9";
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      className={`shrink-0 ${dim} ${className}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <g fill="currentColor">
+        <rect x="3" y="22" width="6" height="14" rx="1.5" opacity="0.72" />
+        <rect x="11" y="16" width="6" height="20" rx="1.5" opacity="0.86" />
+        <rect x="19" y="10" width="6" height="26" rx="1.5" />
+      </g>
+      <path
+        d="M25 8.5 34 17.5 21 31.5 14 24.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.35"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function renderPricingRealityNote() {
   return (
     <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
@@ -536,8 +570,8 @@ function renderPrimaryRecommendationCta(combo: Combo) {
 
 function renderHowRecommendationsWork() {
   return (
-    <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-      <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+    <details className="mt-4 rounded-2xl border border-black/5 bg-sw-section/50 p-4">
+      <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
         How ranking works
       </summary>
       <div className="mt-3 space-y-2 text-sm text-slate-700">
@@ -1557,8 +1591,8 @@ function renderLegalAndCatalogDetails(props: {
   const verificationDegraded = dataHealthSummary?.verificationStatus === "degraded";
 
   return (
-    <details className="mt-8 rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
-      <summary className="cursor-pointer font-semibold text-slate-800">
+    <details className="mt-10 rounded-2xl border border-black/5 bg-white p-4 text-sm text-sw-body shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+      <summary className="cursor-pointer font-semibold text-sw-heading">
         Legal & pricing data
       </summary>
       <div className="mt-3 space-y-3">
@@ -1590,9 +1624,9 @@ function renderLegalAndCatalogDetails(props: {
             Terms
           </Link>
         </p>
-        <div className="rounded-xl border border-slate-100 bg-slate-50 p-3">
+        <div className="rounded-xl border border-black/5 bg-sw-section/60 p-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-medium text-slate-800">Catalog verification</span>
+            <span className="font-medium text-sw-heading">Catalog verification</span>
             <span
               className={`rounded-full px-2.5 py-1 text-xs font-semibold ${catalogFreshnessLabel.classes}`}
             >
@@ -1686,14 +1720,17 @@ function renderBestSummary(
       : 0;
 
   return (
-    <div className="mt-4 rounded-2xl bg-slate-900 p-5 text-white">
+    <div className="mt-4 rounded-2xl bg-sw-heading p-5 text-white shadow-[0_16px_48px_-14px_rgba(11,31,58,0.45)] ring-1 ring-black/10">
       <div className="text-sm font-medium uppercase tracking-wide text-slate-300">
         {rankingMode === "ongoing"
           ? "Recommended long-term path"
           : "Recommended current path"}
       </div>
 
-      <div className="mt-2 text-4xl font-bold tracking-tight">{formatMoney(primaryTotal)}/mo</div>
+      <div className="mt-2 text-5xl font-bold tracking-tight sm:text-[3.25rem]">
+        {formatMoney(primaryTotal)}
+        <span className="text-3xl font-semibold text-slate-300 sm:text-4xl">/mo</span>
+      </div>
       {renderPrimaryRecommendationCta(combo)}
 
       <div className="mt-3 text-slate-200">
@@ -1803,9 +1840,9 @@ function renderCheapestCard(
   const freshness = getFreshnessSummary(combo);
 
   return (
-    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+    <div className="mt-4 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       <div className="flex flex-wrap items-center gap-2">
-        <div className="text-sm font-semibold text-slate-900">Cheapest option</div>
+        <div className="text-sm font-semibold text-sw-heading">Cheapest option</div>
         {renderStrategyBadge(getComboStrategy(combo))}
         {renderConfidenceBadge(confidence)}
         {extraCoveredServices > 0 && (
@@ -1819,7 +1856,7 @@ function renderCheapestCard(
         {getRecommendedReason(combo, recommended, selected)}
       </div>
 
-      <div className="mt-3 text-xl font-bold text-slate-900">
+      <div className="mt-3 text-xl font-bold text-sw-heading">
         {formatMoney(getPrimaryTotal(combo, rankingMode))}/mo
       </div>
 
@@ -1880,8 +1917,8 @@ function renderRankingModeToggle(
         onClick={() => setRankingMode("starting")}
         className={`rounded-xl px-3 py-2 text-sm font-medium ${
           rankingMode === "starting"
-            ? "bg-slate-900 text-white"
-            : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+            ? "bg-sw-heading text-white shadow-sm"
+            : "border border-slate-300 bg-white text-slate-700 hover:border-sw-heading/20 hover:bg-slate-50"
         }`}
         aria-pressed={rankingMode === "starting"}
       >
@@ -1893,8 +1930,8 @@ function renderRankingModeToggle(
         onClick={() => setRankingMode("ongoing")}
         className={`rounded-xl px-3 py-2 text-sm font-medium ${
           rankingMode === "ongoing"
-            ? "bg-slate-900 text-white"
-            : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+            ? "bg-sw-heading text-white shadow-sm"
+            : "border border-slate-300 bg-white text-slate-700 hover:border-sw-heading/20 hover:bg-slate-50"
         }`}
         aria-pressed={rankingMode === "ongoing"}
       >
@@ -1917,8 +1954,8 @@ function renderServiceCard(
       aria-pressed={active}
       className={`rounded-2xl border p-4 text-left transition ${
         active
-          ? "border-slate-900 bg-slate-900 text-white shadow"
-          : "border-slate-200 bg-slate-50 hover:border-slate-300"
+          ? "border-sw-heading bg-sw-heading text-white shadow-md"
+          : "border-slate-200 bg-slate-50 hover:border-sw-heading/25"
       }`}
     >
       <div className="flex items-start justify-between gap-3">
@@ -1981,14 +2018,14 @@ function renderStrategyCard(
     <div
       className={`rounded-2xl border p-4 ${
         confidence === "high"
-          ? "border-slate-300 bg-white shadow-sm"
+          ? "border-black/5 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
           : confidence === "medium"
-          ? "border-slate-200 bg-white"
-          : "border-slate-200 bg-slate-50 opacity-80"
+          ? "border-black/5 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+          : "border-black/5 bg-sw-section/50 opacity-90"
       }`}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <div className="text-sm font-semibold text-slate-900">{title}</div>
+        <div className="text-sm font-semibold text-sw-heading">{title}</div>
         {renderStrategyBadge(getComboStrategy(combo))}
         {renderConfidenceBadge(confidence)}
         {extraCoveredServices > 0 && (
@@ -1997,7 +2034,7 @@ function renderStrategyCard(
           </span>
         )}
         {isRecommended && (
-          <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+          <span className="rounded-full bg-sw-heading px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
             Recommended
           </span>
         )}
@@ -2005,7 +2042,7 @@ function renderStrategyCard(
 
       <div className="mt-1 text-xs text-slate-500">{getBestForLabel(combo, selected)}</div>
 
-      <div className="mt-3 text-2xl font-bold text-slate-900">
+      <div className="mt-3 text-2xl font-bold text-sw-heading">
         {formatMoney(getPrimaryTotal(combo, rankingMode))}/mo
       </div>
 
@@ -2015,7 +2052,7 @@ function renderStrategyCard(
         </div>
       )}
 
-      <div className="mt-1 text-sm text-slate-600">
+      <div className="mt-1 text-sm text-sw-body">
         {rankingMode === "ongoing" ? "Ongoing total" : "Starting total"} · Saves{" "}
         {formatMoney(Number.isFinite(getPrimarySavings(combo, rankingMode)) ? getPrimarySavings(combo, rankingMode) : 0)} vs retail
       </div>
@@ -2053,7 +2090,7 @@ function renderServiceSection(
   return (
     <div className="mt-6">
       <div className="mb-3">
-        <div className="text-sm font-semibold text-slate-800">{title}</div>
+        <div className="text-sm font-semibold text-sw-heading">{title}</div>
         <div className="text-sm text-slate-500">{description}</div>
       </div>
 
@@ -2439,17 +2476,24 @@ export default function Page() {
   }, [best]);
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 text-slate-900 sm:p-6">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900">StreamWise</h1>
-          <p className="mt-2 max-w-2xl text-lg text-slate-600">
-            Find the cheapest way to stream what you want.
+    <div className="min-h-screen bg-sw-page text-sw-body">
+      <section className="sw-brand-hero px-4 pb-12 pt-10 text-center sm:px-6 sm:pb-16 sm:pt-14">
+        <div className="mx-auto max-w-2xl">
+          <StreamWiseLogoMark size="lg" className="mx-auto text-white" />
+          <h1 className="mt-8 text-4xl font-bold tracking-tight text-white sm:text-[2.5rem]">
+            StreamWise
+          </h1>
+          <p className="mt-3 text-balance text-lg leading-relaxed text-white/85 sm:text-xl">
+            Find the cheapest streaming setup in seconds
           </p>
         </div>
+      </section>
 
+      <div className="h-6 bg-gradient-to-b from-sw-heading to-sw-page sm:h-8" aria-hidden />
+
+      <div className="mx-auto max-w-7xl px-4 pb-14 pt-2 sm:px-6 sm:pb-16 sm:pt-4">
         {process.env.NODE_ENV === "development" && dataHealthSummary && (
-          <div className="mb-6 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-sm">
+          <div className="mb-8 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="text-sm font-semibold text-indigo-900">Dev data health dashboard</div>
               <Link
@@ -2508,7 +2552,7 @@ export default function Page() {
         )}
 
         {process.env.NODE_ENV === "development" && conversionSummary && (
-          <div className="mb-6 rounded-3xl border border-violet-200 bg-violet-50 p-5 shadow-sm">
+          <div className="mb-8 rounded-3xl border border-violet-200 bg-violet-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="text-sm font-semibold text-violet-900">
                 Dev conversion dashboard
@@ -2588,8 +2632,8 @@ export default function Page() {
           </div>
         )}
 
-        <details className="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+        <details className="mb-8 rounded-3xl border border-black/5 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+          <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
             Save my preferences (optional)
           </summary>
           <div className="mt-2 text-sm text-slate-600">
@@ -2601,7 +2645,7 @@ export default function Page() {
               value={authEmail}
               onChange={(event) => setAuthEmail(event.target.value)}
               placeholder="you@example.com"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-slate-500 md:max-w-sm"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-sw-heading md:max-w-sm"
             />
             <button
               type="button"
@@ -2626,43 +2670,43 @@ export default function Page() {
           {authMessage && <div className="mt-1 text-xs text-slate-600">{authMessage}</div>}
         </details>
 
-        <details className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+        <details className="mb-8 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+          <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
             Dataset overview
           </summary>
           <div className="mt-4 grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
-            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-              <div className="text-sm font-semibold text-slate-800">What this compares</div>
+            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
+              <div className="text-sm font-semibold text-sw-heading">What this compares</div>
               <div className="mt-2 text-sm text-slate-600">
                 StreamWise compares direct plans, official bundles, carrier perks, promos,
                 and included membership paths using the pricing data in your current dataset.
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-              <div className="text-sm font-semibold text-slate-800">Current catalog</div>
-              <div className="mt-2 text-2xl font-bold text-slate-900">{serviceCards.length}</div>
+            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
+              <div className="text-sm font-semibold text-sw-heading">Current catalog</div>
+              <div className="mt-2 text-2xl font-bold text-sw-heading">{serviceCards.length}</div>
               <div className="text-sm text-slate-600">services modeled</div>
             </div>
 
-            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-              <div className="text-sm font-semibold text-slate-800">Comparison paths</div>
-              <div className="mt-2 text-2xl font-bold text-slate-900">{optionCatalog.length}</div>
+            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
+              <div className="text-sm font-semibold text-sw-heading">Comparison paths</div>
+              <div className="mt-2 text-2xl font-bold text-sw-heading">{optionCatalog.length}</div>
               <div className="text-sm text-slate-600">options in dataset</div>
             </div>
           </div>
         </details>
 
-        <div className="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr]">
+          <div className="rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <h2 className="text-2xl font-semibold">1. Your best path</h2>
+              <h2 className="text-2xl font-semibold text-sw-heading">1. Your best path</h2>
               {renderRankingModeToggle(rankingMode, setRankingMode)}
             </div>
 
             {!selected.length ? (
-              <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5">
-                <p className="text-sm font-medium text-slate-700">Pick your services to see a recommendation.</p>
+              <div className="mt-4 rounded-2xl border border-dashed border-slate-300/80 bg-sw-section/50 p-5">
+                <p className="text-sm font-medium text-sw-heading">Pick your services to see a recommendation.</p>
                 <p className="mt-1 text-sm text-slate-600">
                   Use the list on the right to choose what you watch—we rank paths by lowest 12-month total.
                 </p>
@@ -2687,8 +2731,8 @@ export default function Page() {
                     dataHealthSummary?.verificationStatus ?? null
                   )}
 
-                <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+                <details className="mt-4 rounded-2xl border border-black/5 bg-sw-section/40 p-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
                     Why this wins
                   </summary>
                   <ul className="mt-2 space-y-1 text-sm text-slate-600">
@@ -2698,13 +2742,13 @@ export default function Page() {
                   </ul>
                 </details>
 
-                <details className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-                  <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+                <details className="mt-4 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+                  <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
                     Plan breakdown
                   </summary>
                   <div className="mt-4 space-y-4">
                     {best.chosen.map((item) => (
-                      <div key={item.id} className="rounded-2xl border border-slate-200 p-4">
+                      <div key={item.id} className="rounded-2xl border border-black/5 p-4">
                         <div className="flex items-start justify-between gap-4">
                           <div>
                             {renderOptionHeader(item)}
@@ -2728,8 +2772,8 @@ export default function Page() {
 
             {renderHowRecommendationsWork()}
 
-            <details className="mt-4 rounded-2xl border border-slate-200 bg-white p-0 overflow-hidden">
-              <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-slate-800">
+            <details className="mt-4 rounded-2xl border border-black/5 bg-white p-0 overflow-hidden shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+              <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-sw-heading">
                 Before you subscribe
               </summary>
               <div className="border-t border-slate-100 px-4 pb-4 pt-2">
@@ -2738,8 +2782,8 @@ export default function Page() {
             </details>
           </div>
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-semibold">2. Pick your services</h2>
+          <div className="rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
+            <h2 className="text-2xl font-semibold text-sw-heading">2. Pick your services</h2>
 
             <div className="mt-4 space-y-3">
               <div className="flex items-center gap-3">
@@ -2835,7 +2879,7 @@ export default function Page() {
                   value={serviceSearch}
                   onChange={(event) => setServiceSearch(event.target.value)}
                   placeholder="Search Netflix, Apple TV+, YouTube TV..."
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-slate-500"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-sw-heading"
                 />
               </div>
 
@@ -2880,10 +2924,10 @@ export default function Page() {
               </div>
             )}
 
-            <div className="mt-6 rounded-2xl bg-slate-100 p-4">
+            <div className="mt-6 rounded-2xl bg-sw-section/60 p-4 ring-1 ring-black/[0.03]">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="text-sm text-slate-600">Selected services</div>
-                <div className="text-sm font-medium text-slate-800">
+                <div className="text-sm text-sw-body">Selected services</div>
+                <div className="text-sm font-medium text-sw-heading">
                   {selected.length} selected
                 </div>
               </div>
@@ -2905,9 +2949,9 @@ export default function Page() {
                 )}
               </div>
 
-              <div className="mt-4 text-sm text-slate-600">
+              <div className="mt-4 text-sm text-sw-body">
                 Retail total if bought separately:{" "}
-                <span className="font-semibold text-slate-900">
+                <span className="font-semibold text-sw-heading">
                   {formatMoney(selectedRetailTotal)}/mo
                 </span>
               </div>
@@ -2915,84 +2959,86 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-2xl font-semibold">
-              3. Alternative combinations
-            </h2>
-            <div className="text-sm text-slate-500">
-              Compare the best path inside each strategy, not just one flat list.
+        <section className="mt-10 rounded-3xl bg-sw-section p-4 sm:p-6 ring-1 ring-black/[0.04]">
+          <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <h2 className="text-2xl font-semibold text-sw-heading">
+                3. Alternative combinations
+              </h2>
+              <div className="text-sm text-slate-500">
+                Compare the best path inside each strategy, not just one flat list.
+              </div>
             </div>
+
+            <div className="mt-4 rounded-2xl bg-sw-section/70 px-4 py-3 text-sm text-sw-body">
+              {rankingMode === "ongoing"
+                ? "Grouped by strategy using lowest ongoing monthly cost."
+                : "Grouped by strategy using lowest starting monthly cost."}
+            </div>
+
+            {displayCombos.length ? (
+              <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {bestByStrategy.carrier &&
+                  renderStrategyCard(
+                    "Best carrier strategy",
+                    bestByStrategy.carrier,
+                    rankingMode,
+                    selected,
+                    best,
+                    cheapest
+                  )}
+
+                {bestByStrategy.bundle &&
+                  renderStrategyCard(
+                    "Best bundle strategy",
+                    bestByStrategy.bundle,
+                    rankingMode,
+                    selected,
+                    best,
+                    cheapest
+                  )}
+
+                {bestByStrategy.membership &&
+                  renderStrategyCard(
+                    "Best membership strategy",
+                    bestByStrategy.membership,
+                    rankingMode,
+                    selected,
+                    best,
+                    cheapest
+                  )}
+
+                {bestByStrategy.direct &&
+                  renderStrategyCard(
+                    "Best direct strategy",
+                    bestByStrategy.direct,
+                    rankingMode,
+                    selected,
+                    best,
+                    cheapest
+                  )}
+
+                {bestByStrategy.hybrid &&
+                  renderStrategyCard(
+                    "Best hybrid strategy",
+                    bestByStrategy.hybrid,
+                    rankingMode,
+                    selected,
+                    best,
+                    cheapest
+                  )}
+              </div>
+            ) : (
+              <div className="mt-6 rounded-2xl border border-dashed border-slate-300/80 bg-sw-section/40 px-4 py-6 text-sm text-slate-500">
+                No combinations yet.
+              </div>
+            )}
           </div>
+        </section>
 
-          <div className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
-            {rankingMode === "ongoing"
-              ? "Grouped by strategy using lowest ongoing monthly cost."
-              : "Grouped by strategy using lowest starting monthly cost."}
-          </div>
-
-          {displayCombos.length ? (
-            <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {bestByStrategy.carrier &&
-                renderStrategyCard(
-                  "Best carrier strategy",
-                  bestByStrategy.carrier,
-                  rankingMode,
-                  selected,
-                  best,
-                  cheapest
-                )}
-
-              {bestByStrategy.bundle &&
-                renderStrategyCard(
-                  "Best bundle strategy",
-                  bestByStrategy.bundle,
-                  rankingMode,
-                  selected,
-                  best,
-                  cheapest
-                )}
-
-              {bestByStrategy.membership &&
-                renderStrategyCard(
-                  "Best membership strategy",
-                  bestByStrategy.membership,
-                  rankingMode,
-                  selected,
-                  best,
-                  cheapest
-                )}
-
-              {bestByStrategy.direct &&
-                renderStrategyCard(
-                  "Best direct strategy",
-                  bestByStrategy.direct,
-                  rankingMode,
-                  selected,
-                  best,
-                  cheapest
-                )}
-
-              {bestByStrategy.hybrid &&
-                renderStrategyCard(
-                  "Best hybrid strategy",
-                  bestByStrategy.hybrid,
-                  rankingMode,
-                  selected,
-                  best,
-                  cheapest
-                )}
-            </div>
-          ) : (
-            <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-500">
-              No combinations yet.
-            </div>
-          )}
-        </div>
-
-        <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="mt-10 rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-2xl font-semibold">
+            <h2 className="text-2xl font-semibold text-sw-heading">
               4. Full comparison table
             </h2>
             <div className="text-sm text-slate-500">
@@ -3000,7 +3046,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
+          <div className="mt-4 rounded-2xl bg-sw-section/70 px-4 py-3 text-sm text-sw-body">
             {rankingMode === "ongoing"
               ? "Sorted by lowest ongoing monthly cost first."
               : "Sorted by lowest starting monthly cost first."}
@@ -3009,9 +3055,9 @@ export default function Page() {
             </span>
           </div>
 
-          <div className="mt-5 overflow-x-auto">
-            <div className="min-w-[1120px] overflow-hidden rounded-2xl border border-slate-200">
-              <div className="grid grid-cols-[1.4fr_0.95fr_0.6fr_0.7fr_0.8fr_0.8fr_0.8fr_0.8fr] bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
+          <div className="mt-6 overflow-x-auto">
+            <div className="min-w-[1120px] overflow-hidden rounded-2xl border border-black/5">
+              <div className="grid grid-cols-[1.4fr_0.95fr_0.6fr_0.7fr_0.8fr_0.8fr_0.8fr_0.8fr] bg-sw-section/90 px-4 py-3 text-sm font-semibold text-sw-heading">
                 <div>Combination</div>
                 <div>Coverage</div>
                 <div>Starting</div>
@@ -3030,7 +3076,7 @@ export default function Page() {
                       combo.id === best?.id
                         ? "border-emerald-600 bg-emerald-50/70"
                         : combo.id === cheapest?.id
-                        ? "border-slate-900 bg-slate-900/5"
+                        ? "border-sw-heading bg-sw-heading/[0.06]"
                         : "border-slate-200"
                     }`}
                   >
@@ -3067,8 +3113,8 @@ export default function Page() {
           dataHealthSummary,
         })}
 
-        <footer className="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-600">
-          <p className="max-w-2xl leading-relaxed text-slate-600">
+        <footer className="mt-12 border-t border-black/5 pt-8 text-sm text-sw-body">
+          <p className="max-w-2xl leading-relaxed">
             StreamWise compares streaming options using pricing data, provider terms, and
             estimated 12-month cost.
           </p>
