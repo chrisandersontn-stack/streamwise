@@ -49,22 +49,6 @@ function renderPricingRealityNote() {
   );
 }
 
-function renderCommissionInline() {
-  return (
-    <p className="mt-1 text-xs text-slate-500">
-      We may earn a commission when you purchase or subscribe through qualifying
-      outbound links.{" "}
-      <Link
-        className="font-medium text-slate-700 underline underline-offset-2 hover:text-slate-900"
-        href="/affiliate-disclosure"
-      >
-        Affiliate disclosure
-      </Link>
-      .
-    </p>
-  );
-}
-
 type CatalogResponse = {
   services: Service[];
   options: Option[];
@@ -554,7 +538,7 @@ function renderHowRecommendationsWork() {
   return (
     <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
       <summary className="cursor-pointer text-sm font-semibold text-slate-800">
-        How recommendation ranking works
+        How ranking works
       </summary>
       <div className="mt-3 space-y-2 text-sm text-slate-700">
         <p>
@@ -647,7 +631,6 @@ function renderOptionMeta(item: Option) {
       <div className="mt-1 text-sm text-slate-600">
         Source: {renderSourceLink(item)}
       </div>
-      {renderCommissionInline()}
 
       {item.priceStatus && (
         <div className="mt-1 text-sm text-slate-600">
@@ -1554,7 +1537,7 @@ function getFreshnessConfidenceCopy(
 ) {
   const pipelineNote =
     pipelineVerificationStatus === "degraded"
-      ? "Automated checks did not complete for every source, so dates reflect the last recorded verification, not a full fresh pass. "
+      ? "Some sources were not re-checked in the latest automated run; "
       : "";
 
   if (!freshness.hasStaleData) {
@@ -1562,6 +1545,77 @@ function getFreshnessConfidenceCopy(
   }
 
   return `${pipelineNote}Most prices are still usable, but one or more entries may be older than ${STALE_PRICE_DATA_DAYS} days. Verify before subscribing.`;
+}
+
+function renderLegalAndCatalogDetails(props: {
+  catalogFreshnessLabel: { label: string; classes: string };
+  catalogRefresh: ReturnType<typeof getCatalogRefreshSummary>;
+  catalog: CatalogResponse | null;
+  dataHealthSummary: DataHealthSummary | null;
+}) {
+  const { catalogFreshnessLabel, catalogRefresh, catalog, dataHealthSummary } = props;
+  const verificationDegraded = dataHealthSummary?.verificationStatus === "degraded";
+
+  return (
+    <details className="mt-8 rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
+      <summary className="cursor-pointer font-semibold text-slate-800">
+        Legal & pricing data
+      </summary>
+      <div className="mt-3 space-y-3">
+        <p>
+          StreamWise is an independent comparison tool. Results depend on your selections
+          and the pricing dataset, and offers can change at any time.
+        </p>
+        <p>
+          We may earn a commission on qualifying outbound links. Ranking does not change
+          based on affiliate compensation.{" "}
+          <Link
+            className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+            href="/affiliate-disclosure"
+          >
+            Affiliate disclosure
+          </Link>
+          {" · "}
+          <Link
+            className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+            href="/privacy"
+          >
+            Privacy
+          </Link>
+          {" · "}
+          <Link
+            className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+            href="/terms"
+          >
+            Terms
+          </Link>
+        </p>
+        <div className="rounded-xl border border-slate-100 bg-slate-50 p-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="font-medium text-slate-800">Catalog verification</span>
+            <span
+              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${catalogFreshnessLabel.classes}`}
+            >
+              {catalogFreshnessLabel.label}
+            </span>
+          </div>
+          <p className="mt-2 text-slate-600">
+            Latest checked: {formatDateIso(catalogRefresh.latest)} · Oldest checked:{" "}
+            {formatDateIso(catalogRefresh.oldest)}
+          </p>
+          <p className="mt-1 text-slate-600">
+            Catalog updated: {formatDateTime(catalog?.catalogUpdatedAt ?? null)} · Source:{" "}
+            {catalog?.catalogSource ?? "defaults"}
+          </p>
+          <p className="mt-2 text-slate-600">
+            {verificationDegraded
+              ? "We could not complete every automated check in the latest run. Totals still use the last recorded prices—confirm key offers on the provider site before you subscribe."
+              : "These are recorded catalog verification dates. Confirm checkout totals on official pages, especially for promos and provider-gated offers."}
+          </p>
+        </div>
+      </div>
+    </details>
+  );
 }
 
 function getBestComboRetailValue(combo: Combo, selected: string[]) {
@@ -1633,45 +1687,34 @@ function renderBestSummary(
 
   return (
     <div className="mt-4 rounded-2xl bg-slate-900 p-5 text-white">
-      <div className="rounded-xl bg-emerald-500/20 px-3 py-2 text-sm font-semibold text-emerald-100">
-        Start here: this is the strongest value path based on 12-month total cost.
-      </div>
-      <div className="text-sm uppercase tracking-wide text-slate-300">
+      <div className="text-sm font-medium uppercase tracking-wide text-slate-300">
         {rankingMode === "ongoing"
           ? "Recommended long-term path"
           : "Recommended current path"}
       </div>
-      <div className="mt-1 text-xs text-slate-300">
-        Recommendations prioritize 12-month total first.
-      </div>
-      <div className="mt-1 text-xs text-slate-300">
-        Rankings are neutral: affiliate links do not change recommendation order.
-      </div>
 
-      <div className="mt-2 text-4xl font-bold">{formatMoney(primaryTotal)}/mo</div>
+      <div className="mt-2 text-4xl font-bold tracking-tight">{formatMoney(primaryTotal)}/mo</div>
       {renderPrimaryRecommendationCta(combo)}
 
-      <div className="mt-2 flex flex-wrap gap-2">
-        {renderStrategyBadge(getComboStrategy(combo))}
-        {renderConfidenceBadge(confidenceLevel)}
-        {extraCoveredServices > 0 && (
-          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-            Includes bonus service
-          </span>
-        )}
-      </div>
-
-      <div className="mt-2 text-slate-200">
+      <div className="mt-3 text-slate-200">
         {rankingMode === "ongoing" ? "Ongoing savings vs retail: " : "Monthly savings vs retail: "}
-        <span className="font-semibold">{formatMoney(primarySavings)}</span>
+        <span className="font-semibold text-white">{formatMoney(primarySavings)}</span>
       </div>
 
       <div className="mt-1 text-sm text-slate-300">
-        12-month total: {formatMoney(annualCost)} · 12-month savings vs retail: {formatMoney(annualSavings)}
+        12-month total {formatMoney(annualCost)} · saves {formatMoney(annualSavings)} vs retail
       </div>
 
+      {combo.ongoingTotal !== combo.total && (
+        <>
+          <div className="mt-2 text-sm text-slate-300">
+            Starting {formatMoney(combo.total)}/mo · Ongoing {formatMoney(combo.ongoingTotal)}/mo after promos
+          </div>
+        </>
+      )}
+
       {cheapest && cheapest.id !== combo.id && (
-        <div className="mt-2 text-sm text-slate-300">
+        <div className="mt-2 text-sm text-slate-400">
           {annualDelta > 0.01
             ? `${formatMoney(annualDelta)} more than the cheapest path over 12 months`
             : annualDelta < -0.01
@@ -1680,65 +1723,69 @@ function renderBestSummary(
         </div>
       )}
 
-      <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-100">
-        {narrative}
-      </div>
-
-      <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-100">
-        {getRecommendationRuleSummary(combo, cheapest)}
-      </div>
-
-      <div className="mt-3 rounded-xl bg-emerald-100 px-3 py-2 text-sm font-medium text-emerald-900">
-        {getRecommendationVerdict(combo, cheapest)}
-      </div>
-
-      {renderRecommendationProof(combo, cheapest, selected)}
-
-      <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-200">
-        {confidenceNote}
-      </div>
-
-      <div
-        className={`mt-3 rounded-xl px-3 py-2 text-sm ${
-          freshness.hasStaleData || pipelineVerificationStatus === "degraded"
-            ? "bg-amber-100 text-amber-900"
-            : "bg-emerald-100 text-emerald-900"
-        }`}
-      >
-        <div className="font-medium">Data freshness</div>
-        <div className="mt-1">
-          Latest checked: {formatDateIso(freshness.latest)} · Oldest checked:{" "}
-          {formatDateIso(freshness.oldest)}
-        </div>
-        <div className="mt-1">{getFreshnessConfidenceCopy(freshness, pipelineVerificationStatus)}</div>
-      </div>
-
-      <div className="mt-3 text-sm text-slate-300">
-        Raw selected-service retail value represented: {formatMoney(rawRetailValue)}
-      </div>
-
-      {combo.ongoingTotal !== combo.total && (
-        <>
-          <div className="mt-1 text-sm text-slate-300">
-            Starting monthly total: {formatMoney(combo.total)}/mo
-          </div>
-          <div className="mt-1 text-sm text-slate-300">
-            Ongoing monthly total after promos: {formatMoney(combo.ongoingTotal)}/mo
-          </div>
-        </>
-      )}
-
-      <div className="mt-1 text-sm text-slate-300">
-        Uses {combo.chosen.filter((i) => (i.effectiveMonthly ?? i.monthly) !== 0).length} paid plan{combo.chosen.filter((i) => (i.effectiveMonthly ?? i.monthly) !== 0).length === 1 ? "" : "s"}
-      </div>
-
-      {tradeoffSummary && (
-        <div className="mt-3 rounded-xl bg-white/10 px-3 py-2 text-sm text-slate-100">
-          {tradeoffSummary}
-        </div>
-      )}
-
       {renderComboActionLinks(combo)}
+
+      <details className="mt-4 rounded-xl border border-white/15 bg-white/5 p-3">
+        <summary className="cursor-pointer text-sm font-semibold text-slate-100">
+          Why this recommendation?
+        </summary>
+        <div className="mt-3 space-y-3 text-sm text-slate-200">
+          <div className="rounded-lg bg-emerald-500/15 px-3 py-2 font-medium text-emerald-50">
+            Strongest 12-month value in the current dataset for your picks.
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {renderStrategyBadge(getComboStrategy(combo))}
+            {renderConfidenceBadge(confidenceLevel)}
+            {extraCoveredServices > 0 && (
+              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+                Includes bonus service
+              </span>
+            )}
+          </div>
+
+          <p className="text-xs text-slate-400">
+            Rankings prioritize 12-month total first. Affiliate links do not change recommendation order.
+          </p>
+
+          <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-100">{narrative}</div>
+
+          <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-100">
+            {getRecommendationRuleSummary(combo, cheapest)}
+          </div>
+
+          <div className="rounded-lg bg-emerald-100/90 px-3 py-2 font-medium text-emerald-950">
+            {getRecommendationVerdict(combo, cheapest)}
+          </div>
+
+          {renderRecommendationProof(combo, cheapest, selected)}
+
+          <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-200">{confidenceNote}</div>
+
+          <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-200">
+            <div className="font-medium text-slate-100">Price check dates (this path)</div>
+            <div className="mt-1 text-xs text-slate-300">
+              Latest: {formatDateIso(freshness.latest)} · Oldest: {formatDateIso(freshness.oldest)}
+            </div>
+            <div className="mt-2 text-slate-200">
+              {getFreshnessConfidenceCopy(freshness, pipelineVerificationStatus)}
+            </div>
+          </div>
+
+          <div className="text-slate-300">
+            Retail value represented for your selections: {formatMoney(rawRetailValue)}
+          </div>
+
+          <div className="text-slate-300">
+            Uses {combo.chosen.filter((i) => (i.effectiveMonthly ?? i.monthly) !== 0).length} paid plan
+            {combo.chosen.filter((i) => (i.effectiveMonthly ?? i.monthly) !== 0).length === 1 ? "" : "s"}
+          </div>
+
+          {tradeoffSummary && (
+            <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-100">{tradeoffSummary}</div>
+          )}
+        </div>
+      </details>
     </div>
   );
 }
@@ -2350,10 +2397,6 @@ export default function Page() {
     () => getDataFreshnessLabel(catalogRefresh.oldest),
     [catalogRefresh.oldest]
   );
-  const bestFreshness = React.useMemo(
-    () => (best ? getFreshnessSummary(best) : null),
-    [best]
-  );
 
   React.useEffect(() => {
     if (!best || !selected.length) return;
@@ -2398,88 +2441,11 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-slate-50 p-4 text-slate-900 sm:p-6">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Streaming savings planner
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight">StreamWise</h1>
-            <p className="mt-2 max-w-3xl text-base text-slate-600">
-              Find the cheapest mix of standalone plans, bundles, perks, and
-              included memberships for the streaming services you want.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-            <div className="text-xs uppercase tracking-wide text-slate-500">
-              What we optimize for
-            </div>
-            <div className="text-sm font-medium">Simple. Accurate. Fast.</div>
-          </div>
-        </div>
-
-        <div className="mb-6 rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
-          <div className="text-sm font-semibold text-slate-900">
-            Disclosures
-          </div>
-          <div className="mt-2 space-y-2 text-sm text-slate-700">
-            <p>
-              StreamWise is an independent comparison tool. Results depend on
-              your selections and the pricing dataset, and offers can change at
-              any time.
-            </p>
-            <p>
-              We may earn a commission when you purchase or subscribe through
-              qualifying outbound links. Recommendation ranking is based on your
-              selected services and value logic, not affiliate compensation. Read
-              the{" "}
-              <Link
-                className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
-                href="/affiliate-disclosure"
-              >
-                affiliate disclosure
-              </Link>
-              , plus{" "}
-              <Link
-                className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
-                href="/privacy"
-              >
-                privacy
-              </Link>{" "}
-              and{" "}
-              <Link
-                className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
-                href="/terms"
-              >
-                terms
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
-
-        <div className="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="text-sm font-semibold text-slate-800">Last data refresh</div>
-            <span
-              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${catalogFreshnessLabel.classes}`}
-            >
-              {catalogFreshnessLabel.label}
-            </span>
-          </div>
-          <div className="mt-2 text-sm text-slate-600">
-            Latest checked: {formatDateIso(catalogRefresh.latest)} · Oldest checked:{" "}
-            {formatDateIso(catalogRefresh.oldest)}
-          </div>
-          <div className="mt-1 text-sm text-slate-600">
-            Catalog updated: {formatDateTime(catalog?.catalogUpdatedAt ?? null)} · Source:{" "}
-            {catalog?.catalogSource ?? "defaults"}
-          </div>
-          <div className="mt-1 text-xs text-slate-500">
-            {dataHealthSummary?.verificationStatus === "degraded"
-              ? "Verification is currently degraded (automation fetch failures detected). Prices are based on last recorded verification and may need manual confirmation."
-              : "These are recorded catalog verification dates. Confirm with source pages before subscribing, especially for promos and provider-gated offers."}
-          </div>
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900">StreamWise</h1>
+          <p className="mt-2 max-w-2xl text-lg text-slate-600">
+            Find the cheapest way to stream what you want.
+          </p>
         </div>
 
         {process.env.NODE_ENV === "development" && dataHealthSummary && (
@@ -2660,42 +2626,120 @@ export default function Page() {
           {authMessage && <div className="mt-1 text-xs text-slate-600">{authMessage}</div>}
         </details>
 
-        <div className="mb-6 grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="text-sm font-semibold text-slate-800">
-              What this compares
+        <details className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+            Dataset overview
+          </summary>
+          <div className="mt-4 grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
+            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+              <div className="text-sm font-semibold text-slate-800">What this compares</div>
+              <div className="mt-2 text-sm text-slate-600">
+                StreamWise compares direct plans, official bundles, carrier perks, promos,
+                and included membership paths using the pricing data in your current dataset.
+              </div>
             </div>
-            <div className="mt-2 text-sm text-slate-600">
-              StreamWise compares direct plans, official bundles, carrier perks,
-              promos, and included membership paths using the pricing data in
-              your current dataset.
+
+            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+              <div className="text-sm font-semibold text-slate-800">Current catalog</div>
+              <div className="mt-2 text-2xl font-bold text-slate-900">{serviceCards.length}</div>
+              <div className="text-sm text-slate-600">services modeled</div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+              <div className="text-sm font-semibold text-slate-800">Comparison paths</div>
+              <div className="mt-2 text-2xl font-bold text-slate-900">{optionCatalog.length}</div>
+              <div className="text-sm text-slate-600">options in dataset</div>
             </div>
           </div>
+        </details>
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="text-sm font-semibold text-slate-800">
-              Current catalog
-            </div>
-            <div className="mt-2 text-2xl font-bold text-slate-900">
-              {serviceCards.length}
-            </div>
-            <div className="text-sm text-slate-600">services modeled</div>
-          </div>
-
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="text-sm font-semibold text-slate-800">
-              Comparison paths
-            </div>
-            <div className="mt-2 text-2xl font-bold text-slate-900">
-              {optionCatalog.length}
-            </div>
-            <div className="text-sm text-slate-600">options in dataset</div>
-          </div>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-semibold">1. Pick your services</h2>
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <h2 className="text-2xl font-semibold">1. Your best path</h2>
+              {renderRankingModeToggle(rankingMode, setRankingMode)}
+            </div>
+
+            {!selected.length ? (
+              <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5">
+                <p className="text-sm font-medium text-slate-700">Pick your services to see a recommendation.</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  Use the list on the right to choose what you watch—we rank paths by lowest 12-month total.
+                </p>
+              </div>
+            ) : best ? (
+              <>
+                {renderBestSummary(
+                  best,
+                  rankingMode,
+                  runnerUp,
+                  selected,
+                  cheapest,
+                  dataHealthSummary?.verificationStatus ?? null
+                )}
+
+                {cheapest && best && cheapest.id !== best.id &&
+                  renderCheapestCard(
+                    cheapest,
+                    rankingMode,
+                    best,
+                    selected,
+                    dataHealthSummary?.verificationStatus ?? null
+                  )}
+
+                <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+                    Why this wins
+                  </summary>
+                  <ul className="mt-2 space-y-1 text-sm text-slate-600">
+                    {getWhyThisWins(best, selected).map((reason, i) => (
+                      <li key={i}>• {reason}</li>
+                    ))}
+                  </ul>
+                </details>
+
+                <details className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+                    Plan breakdown
+                  </summary>
+                  <div className="mt-4 space-y-4">
+                    {best.chosen.map((item) => (
+                      <div key={item.id} className="rounded-2xl border border-slate-200 p-4">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            {renderOptionHeader(item)}
+                            <div className="mt-1 text-sm text-slate-600">
+                              Covers: {item.covers.join(", ")}
+                            </div>
+                            {renderOptionMeta(item)}
+                            {renderOptionWhyThisIsGood(item)}
+                            <div className="mt-1 text-sm text-slate-500">{item.notes}</div>
+                          </div>
+                          {renderOptionPrice(item)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              </>
+            ) : (
+              <p className="mt-4 text-slate-600">No combination found with the current data set.</p>
+            )}
+
+            {renderHowRecommendationsWork()}
+
+            <details className="mt-4 rounded-2xl border border-slate-200 bg-white p-0 overflow-hidden">
+              <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-slate-800">
+                Before you subscribe
+              </summary>
+              <div className="border-t border-slate-100 px-4 pb-4 pt-2">
+                {renderPricingRealityNote()}
+              </div>
+            </details>
+          </div>
+
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-2xl font-semibold">2. Pick your services</h2>
 
             <div className="mt-4 space-y-3">
               <div className="flex items-center gap-3">
@@ -2759,10 +2803,8 @@ export default function Page() {
               </div>
             </div>
 
-            <p className="mt-2 text-slate-600">
-              Start with the services you actually want. The engine compares
-              direct subscriptions against bundle, perk, promo, and included
-              access paths in your data.
+            <p className="mt-2 text-sm text-slate-600">
+              Choose what you watch—we compare direct plans, bundles, perks, and included access in your dataset.
             </p>
 
             {providerUnlockSummary.length > 0 && (
@@ -2871,101 +2913,6 @@ export default function Page() {
               </div>
             </div>
           </div>
-
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <h2 className="text-2xl font-semibold">2. Best result</h2>
-              {renderRankingModeToggle(rankingMode, setRankingMode)}
-            </div>
-
-            {!!selected.length && renderPricingRealityNote()}
-            {renderHowRecommendationsWork()}
-
-            {bestFreshness?.hasStaleData && (
-              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-                Freshness warning: one or more prices in the current recommended path may be
-                older than {STALE_PRICE_DATA_DAYS} days. Verify before subscribing.
-              </div>
-            )}
-
-            {!selected.length ? (
-              <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5">
-                <p className="text-sm font-medium text-slate-700">
-                  No services selected yet.
-                </p>
-                <p className="mt-1 text-sm text-slate-600">
-                  Choose one or more streaming services on the left to see the
-                  cheapest available combination.
-                </p>
-              </div>
-            ) : best ? (
-              <>
-                {renderBestSummary(
-                  best,
-                  rankingMode,
-                  runnerUp,
-                  selected,
-                  cheapest,
-                  dataHealthSummary?.verificationStatus ?? null
-                )}
-
-                {cheapest && best && cheapest.id !== best.id && (
-                  renderCheapestCard(
-                    cheapest,
-                    rankingMode,
-                    best,
-                    selected,
-                    dataHealthSummary?.verificationStatus ?? null
-                  )
-                )}
-
-                <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-                  <div className="text-sm font-semibold text-slate-800">
-                    Why this is the best option
-                  </div>
-
-                  <ul className="mt-2 space-y-1 text-sm text-slate-600">
-                    {getWhyThisWins(best, selected).map((reason, i) => (
-                      <li key={i}>• {reason}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-5 space-y-4">
-                  {best.chosen.map((item) => (
-                    <div
-                      key={item.id}
-                      className="rounded-2xl border border-slate-200 p-4"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          {renderOptionHeader(item)}
-
-                          <div className="mt-1 text-sm text-slate-600">
-                            Covers: {item.covers.join(", ")}
-                          </div>
-
-                          {renderOptionMeta(item)}
-
-                          {renderOptionWhyThisIsGood(item)}
-
-                          <div className="mt-1 text-sm text-slate-500">
-                            {item.notes}
-                          </div>
-                        </div>
-
-                        {renderOptionPrice(item)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <p className="mt-4 text-slate-600">
-                No combination found with the current data set.
-              </p>
-            )}
-          </div>
         </div>
 
         <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -2983,8 +2930,6 @@ export default function Page() {
               ? "Grouped by strategy using lowest ongoing monthly cost."
               : "Grouped by strategy using lowest starting monthly cost."}
           </div>
-
-          {!!selected.length && renderPricingRealityNote()}
 
           {displayCombos.length ? (
             <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -3115,76 +3060,77 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="text-lg font-semibold">What this proves</h3>
-            <p className="mt-2 text-sm text-slate-600">
-              The value here is not streaming commentary. It is a pricing engine
-              that helps people make bundle decisions quickly and with more
-              confidence.
-            </p>
-          </div>
+        {renderLegalAndCatalogDetails({
+          catalogFreshnessLabel,
+          catalogRefresh,
+          catalog,
+          dataHealthSummary,
+        })}
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="text-lg font-semibold">What comes next</h3>
-            <p className="mt-2 text-sm text-slate-600">
-              Finalize mobile UX polish, complete App Store submission assets and
-              privacy labels, and continue improving verification coverage so
-              users can trust the freshness and quality of pricing data.
-            </p>
-          </div>
-
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="text-lg font-semibold">Pricing limitations</h3>
-            <p className="mt-2 text-sm text-slate-600">
-              Promotions, bundles, and carrier perks change frequently. Always
-              verify eligibility, regional restrictions, and checkout totals on the
-              official offer pages linked from each option.
-            </p>
-          </div>
-        </div>
-
-        <footer className="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-500">
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <Link className="underline underline-offset-2 hover:text-slate-700" href="/about">
+        <footer className="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-600">
+          <p className="max-w-2xl leading-relaxed text-slate-600">
+            StreamWise compares streaming options using pricing data, provider terms, and
+            estimated 12-month cost.
+          </p>
+          <p className="mt-2 max-w-2xl leading-relaxed text-slate-500">
+            Prices and offers can change. Always confirm final terms with the provider before
+            subscribing.
+          </p>
+          <nav
+            className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-slate-500"
+            aria-label="Site and legal"
+          >
+            <Link
+              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
+              href="/about"
+            >
               About
             </Link>
-            <Link className="underline underline-offset-2 hover:text-slate-700" href="/support">
+            <Link
+              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
+              href="/support"
+            >
               Support
             </Link>
-            <Link className="underline underline-offset-2 hover:text-slate-700" href="/privacy">
+            <Link
+              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
+              href="/privacy"
+            >
               Privacy
             </Link>
-            <Link className="underline underline-offset-2 hover:text-slate-700" href="/terms">
+            <Link
+              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
+              href="/terms"
+            >
               Terms
             </Link>
             <Link
-              className="underline underline-offset-2 hover:text-slate-700"
+              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
               href="/affiliate-disclosure"
             >
               Affiliate disclosure
             </Link>
             <Link
-              className="underline underline-offset-2 hover:text-slate-700"
+              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
               href="/app-privacy-details"
             >
               App privacy details
             </Link>
             <a
-              className="underline underline-offset-2 hover:text-slate-700"
+              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
               href={`mailto:${supportEmail}`}
             >
               Contact support
             </a>
             {showAdminPricingEditor && (
               <Link
-                className="font-semibold text-slate-700 underline underline-offset-2 hover:text-slate-900"
+                className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 hover:text-slate-900"
                 href="/admin/pricing"
               >
                 Catalog admin (pricing)
               </Link>
             )}
-          </div>
+          </nav>
         </footer>
       </div>
     </div>
