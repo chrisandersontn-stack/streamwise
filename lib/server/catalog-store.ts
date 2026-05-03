@@ -58,9 +58,12 @@ function isValidCatalogPayload(value: unknown): value is CatalogPayload {
 }
 
 /**
- * Repairs legacy `starz_promo` rows that were saved as a flat $11.99 line (or are missing
- * intro / post-intro fields), so 12‑month math matches STARZ’s published limited-time offer
- * on https://www.starz.com/us/en/buy
+ * STARZ promo pricing is canonical in `streamwise-data.ts`. Supabase snapshots have been
+ * saved as flat $11.99 (or missing intro fields), which ties the standard plan on 12‑month
+ * math and lets `starz_direct` win tie-breakers — so users only see $11.99.
+ *
+ * We always re-anchor `starz_promo` from embedded defaults and keep only freshness / link
+ * fields from the snapshot. See https://www.starz.com/us/en/buy
  */
 function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
   const def = defaultOptions.find((o) => o.id === "starz_promo");
@@ -72,21 +75,6 @@ function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
   }
 
   const cur = options[idx]!;
-  const introMonths =
-    typeof cur.introLengthMonths === "number" && Number.isFinite(cur.introLengthMonths)
-      ? cur.introLengthMonths
-      : 0;
-  const std = cur.standardMonthly;
-  const hasValidPromoShape =
-    introMonths > 0 &&
-    typeof std === "number" &&
-    Number.isFinite(cur.monthly) &&
-    cur.monthly < std - 0.01;
-
-  if (hasValidPromoShape) {
-    return options;
-  }
-
   const next = [...options];
   next[idx] = {
     ...def,

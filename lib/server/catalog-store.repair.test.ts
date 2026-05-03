@@ -42,4 +42,21 @@ describe("repairCatalogOptions (STARZ promo)", () => {
     const fixed = repairCatalogOptions(withoutPromo);
     expect(fixed.some((o) => o.id === "starz_promo")).toBe(true);
   });
+
+  it("overwrites a snapshot row that looks like a valid promo but uses wrong numbers", () => {
+    const wrongNumbers = defaultOptions.map((o) =>
+      o.id === "starz_promo"
+        ? {
+            ...o,
+            monthly: 5.99,
+            standardMonthly: 12.99,
+            introLengthMonths: 3,
+          }
+        : o
+    );
+    const fixed = repairCatalogOptions(wrongNumbers);
+    const promo = fixed.find((o) => o.id === "starz_promo");
+    expect(promo?.monthly).toBe(4.99);
+    expect(promo?.standardMonthly).toBe(11.99);
+  });
 });
