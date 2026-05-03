@@ -2,6 +2,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import type { Session } from "@supabase/supabase-js";
 
@@ -35,40 +36,6 @@ type ProviderKey =
   | "amazon"
   | "hulu"
   | "philo";
-
-/** Brand mark: bars + check — uses currentColor (white on navy, navy on light). */
-function StreamWiseLogoMark({
-  className = "",
-  size = "md",
-}: {
-  className?: string;
-  size?: "md" | "lg";
-}) {
-  const dim = size === "lg" ? "h-[4.5rem] w-[4.5rem] sm:h-20 sm:w-20" : "h-9 w-9";
-  return (
-    <svg
-      viewBox="0 0 40 40"
-      className={`shrink-0 ${dim} ${className}`}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <g fill="currentColor">
-        <rect x="3" y="22" width="6" height="14" rx="1.5" opacity="0.72" />
-        <rect x="11" y="16" width="6" height="20" rx="1.5" opacity="0.86" />
-        <rect x="19" y="10" width="6" height="26" rx="1.5" />
-      </g>
-      <path
-        d="M25 8.5 34 17.5 21 31.5 14 24.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.35"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 function renderPricingRealityNote() {
   return (
@@ -2479,12 +2446,22 @@ export default function Page() {
     <div className="min-h-screen bg-sw-page text-sw-body">
       <section className="sw-brand-hero px-4 pb-12 pt-10 text-center sm:px-6 sm:pb-16 sm:pt-14">
         <div className="mx-auto max-w-2xl">
-          <StreamWiseLogoMark size="lg" className="mx-auto text-white" />
-          <h1 className="mt-8 text-4xl font-bold tracking-tight text-white sm:text-[2.5rem]">
+          <Image
+            src="/streamwise-logo.png"
+            alt=""
+            width={160}
+            height={160}
+            className="mx-auto h-24 w-24 object-contain sm:h-28 sm:w-28"
+            priority
+          />
+          <h1 className="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:mt-8 sm:text-4xl">
             StreamWise
           </h1>
-          <p className="mt-3 text-balance text-lg leading-relaxed text-white/85 sm:text-xl">
+          <p className="mt-3 text-balance text-lg font-medium leading-relaxed text-white/90 sm:text-xl">
             Find the cheapest streaming setup in seconds
+          </p>
+          <p className="mt-4 text-pretty text-base leading-relaxed text-white/75 sm:text-lg">
+            Pick your services below to compare monthly and 12-month totals.
           </p>
         </div>
       </section>
