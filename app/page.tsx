@@ -345,10 +345,6 @@ function normalizeOutboundLinkKindForTracking(
   return kind === "official" ? "source" : "affiliate";
 }
 
-function isAffiliateSupportedOutboundKind(kind: OutboundResolvedKind) {
-  return kind !== "official";
-}
-
 function trackOutboundClick(
   item: Option,
   resolvedUrl: string,
@@ -435,7 +431,10 @@ function trackUiEvent(
   }).catch(() => undefined);
 }
 
-function renderComboActionLinks(combo: Combo) {
+function renderComboActionLinks(
+  combo: Combo,
+  variant: "onNavy" | "onLight" = "onNavy"
+) {
   const actionable = combo.chosen
     .map((item) => {
       if (!hasResolvableOutbound(item)) return null;
@@ -456,20 +455,17 @@ function renderComboActionLinks(combo: Combo) {
     return null;
   }
 
+  const hintClass =
+    variant === "onNavy" ? "mb-2 text-xs text-slate-300" : "mb-2 text-xs text-slate-600";
+  const linkClass =
+    variant === "onNavy"
+      ? "rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/15"
+      : "rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-800 shadow-sm hover:border-slate-300 hover:bg-slate-50";
+
   return (
     <div className="mt-3">
-      <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        Next steps
-      </div>
-      <div className="mt-1 text-xs text-slate-500">
-        Open offer/source takes you to the provider page in a new tab so you can verify
-        details and subscribe directly.
-      </div>
-      <div className="mt-1 text-xs text-slate-500">
-        Some links are affiliate-supported, but ranking is independent and based on cost
-        logic.
-      </div>
-      <div className="mt-2 flex flex-wrap gap-2">
+      <p className={hintClass}>Tap a provider below to view the offer and subscribe</p>
+      <div className="flex flex-wrap gap-2">
         {actionable.map(({ item, outbound }) => (
           <a
             key={`${combo.id}-${item.id}`}
@@ -483,12 +479,9 @@ function renderComboActionLinks(combo: Combo) {
                 normalizeOutboundLinkKindForTracking(outbound.kind)
               )
             }
-            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className={linkClass}
           >
-            Open provider page: {item.name}{" "}
-            <span className="text-slate-500">
-              ({isAffiliateSupportedOutboundKind(outbound.kind) ? "affiliate-supported" : "source link"})
-            </span>
+            {item.name}
           </a>
         ))}
       </div>
@@ -1807,40 +1800,51 @@ function renderCheapestCard(
   const freshness = getFreshnessSummary(combo);
 
   return (
-    <div className="mt-4 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+    <div className="rounded-2xl border border-[rgba(0,0,0,0.08)] bg-sw-section/90 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
       <div className="flex flex-wrap items-center gap-2">
-        <div className="text-sm font-semibold text-sw-heading">Cheapest option</div>
-        {renderStrategyBadge(getComboStrategy(combo))}
-        {renderConfidenceBadge(confidence)}
+        <span className="text-lg font-bold leading-none text-sw-heading" aria-hidden>
+          ↓
+        </span>
+        <div className="text-lg font-bold tracking-tight text-sw-heading">Cheapest option</div>
+        <div className="flex flex-wrap items-center gap-1.5 opacity-[0.88] [&>span]:scale-95 [&>span]:text-[11px]">
+          {renderStrategyBadge(getComboStrategy(combo))}
+          {renderConfidenceBadge(confidence)}
+        </div>
         {extraCoveredServices > 0 && (
-          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+          <span className="rounded-full bg-emerald-100/90 px-2 py-0.5 text-[11px] font-semibold text-emerald-800">
             Includes bonus service
           </span>
         )}
       </div>
 
-      <div className="mt-2 text-sm text-slate-600">
-        {getRecommendedReason(combo, recommended, selected)}
+      <div className="mt-6">
+        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Lowest monthly price
+        </div>
+        <div className="mt-1 text-3xl font-bold tabular-nums tracking-tight text-sw-heading">
+          {formatMoney(getPrimaryTotal(combo, rankingMode))}
+          <span className="text-xl font-semibold text-slate-600">/mo</span>
+        </div>
       </div>
 
-      <div className="mt-3 text-xl font-bold text-sw-heading">
-        {formatMoney(getPrimaryTotal(combo, rankingMode))}/mo
-      </div>
-
-      <div className="mt-1 text-sm font-medium text-slate-700">
+      <div className="mt-5 text-sm font-medium text-slate-700">
         12-month total: {formatMoney(getComboAnnualCost(combo))}
       </div>
 
-      <div className="mt-1 text-sm font-medium text-slate-700">
+      <div className="mt-3 text-sm leading-snug text-slate-500">
         {annualDelta > 0.01
-          ? `${formatMoney(annualDelta)} cheaper than the recommended path over 12 months`
+          ? `Costs ${formatMoney(annualDelta)} less over 12 months than the recommended option`
           : annualDelta < -0.01
-          ? `${formatMoney(Math.abs(annualDelta))} more than the recommended path over 12 months`
+          ? `Costs ${formatMoney(Math.abs(annualDelta))} more over 12 months than the recommended option`
           : "Matches the recommended path over 12 months"}
       </div>
 
+      <div className="mt-5 text-sm leading-relaxed text-slate-600">
+        {getRecommendedReason(combo, recommended, selected)}
+      </div>
+
       <div
-        className={`mt-3 rounded-xl px-3 py-2 text-sm ${
+        className={`mt-5 rounded-xl px-3 py-2 text-sm ${
           freshness.hasStaleData || pipelineVerificationStatus === "degraded"
             ? "bg-amber-100 text-amber-900"
             : "bg-emerald-100 text-emerald-900"
@@ -1864,11 +1868,11 @@ function renderCheapestCard(
         )}
       </div>
 
-      <div className="mt-3 text-sm text-slate-700">
+      <div className="mt-4 text-sm font-medium text-slate-700">
         {combo.chosen.map((item) => item.name).join(" + ")}
       </div>
 
-      {renderComboActionLinks(combo)}
+      {renderComboActionLinks(combo, "onLight")}
     </div>
   );
 }
@@ -1919,10 +1923,10 @@ function renderServiceCard(
       type="button"
       onClick={() => onToggle(service.group)}
       aria-pressed={active}
-      className={`rounded-2xl border p-4 text-left transition ${
+      className={`rounded-2xl border p-4 text-left transition-[transform,box-shadow] duration-150 ease-out hover:scale-[1.02] hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sw-heading active:scale-[1.01] ${
         active
-          ? "border-sw-heading bg-sw-heading text-white shadow-md"
-          : "border-slate-200 bg-slate-50 hover:border-sw-heading/25"
+          ? "border-sw-heading bg-sw-heading text-white shadow-lg shadow-slate-900/30 hover:shadow-xl"
+          : "border-[rgba(0,0,0,0.06)] bg-white shadow-sm hover:border-black/10 hover:shadow-md"
       }`}
     >
       <div className="flex items-start justify-between gap-3">
@@ -2055,9 +2059,9 @@ function renderServiceSection(
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-10">
       <div className="mb-3">
-        <div className="text-sm font-semibold text-sw-heading">{title}</div>
+        <div className="text-base font-bold text-sw-heading">{title}</div>
         <div className="text-sm text-slate-500">{description}</div>
       </div>
 
@@ -2699,14 +2703,17 @@ export default function Page() {
                   dataHealthSummary?.verificationStatus ?? null
                 )}
 
-                {cheapest && best && cheapest.id !== best.id &&
-                  renderCheapestCard(
-                    cheapest,
-                    rankingMode,
-                    best,
-                    selected,
-                    dataHealthSummary?.verificationStatus ?? null
-                  )}
+                {cheapest && best && cheapest.id !== best.id && (
+                  <div className="mt-10 border-t border-black/[0.08] pt-10">
+                    {renderCheapestCard(
+                      cheapest,
+                      rankingMode,
+                      best,
+                      selected,
+                      dataHealthSummary?.verificationStatus ?? null
+                    )}
+                  </div>
+                )}
 
                 <details className="mt-4 rounded-2xl border border-black/5 bg-sw-section/40 p-4">
                   <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
