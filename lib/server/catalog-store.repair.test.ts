@@ -43,6 +43,14 @@ describe("repairCatalogOptions (STARZ promo)", () => {
     expect(fixed.some((o) => o.id === "starz_promo")).toBe(true);
   });
 
+  it("replaces snapshot priceStatus so a stale expired row cannot hide the promo", () => {
+    const withExpired = defaultOptions.map((o) =>
+      o.id === "starz_promo" ? { ...o, priceStatus: "expired" as const } : o
+    );
+    const fixed = repairCatalogOptions(withExpired);
+    expect(fixed.find((x) => x.id === "starz_promo")?.priceStatus).toBe("current");
+  });
+
   it("overwrites a snapshot row that looks like a valid promo but uses wrong numbers", () => {
     const wrongNumbers = defaultOptions.map((o) =>
       o.id === "starz_promo"

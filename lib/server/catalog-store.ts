@@ -57,13 +57,52 @@ function isValidCatalogPayload(value: unknown): value is CatalogPayload {
   return true;
 }
 
+function cloneCatalogOption(opt: CatalogOption): CatalogOption {
+  return JSON.parse(JSON.stringify(opt)) as CatalogOption;
+}
+
+function coerceFiniteNumber(value: unknown): number {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const n = Number.parseFloat(value.trim());
+    return Number.isFinite(n) ? n : 0;
+  }
+  return 0;
+}
+
+/**
+ * Supabase JSON sometimes returns numbers as strings. `streamwise-logic` uses
+ * `Number.isFinite` on intro months — strings become 0 and break promo annual math.
+ */
+function coerceOptionNumerics(option: CatalogOption): CatalogOption {
+  const next: CatalogOption = { ...option, monthly: coerceFiniteNumber(option.monthly) };
+
+  if (option.standardMonthly !== undefined && option.standardMonthly !== null) {
+    const v = coerceFiniteNumber(option.standardMonthly as unknown);
+    if (Number.isFinite(v)) next.standardMonthly = v;
+  }
+  if (option.effectiveMonthly !== undefined && option.effectiveMonthly !== null) {
+    const v = coerceFiniteNumber(option.effectiveMonthly as unknown);
+    if (Number.isFinite(v)) next.effectiveMonthly = v;
+  }
+  if (option.introLengthMonths !== undefined && option.introLengthMonths !== null) {
+    next.introLengthMonths = Math.round(coerceFiniteNumber(option.introLengthMonths as unknown));
+  }
+  return next;
+}
+
 /**
  * STARZ promo pricing is canonical in `streamwise-data.ts`. Supabase snapshots have been
  * saved as flat $11.99 (or missing intro fields), which ties the standard plan on 12‑month
  * math and lets `starz_direct` win tie-breakers — so users only see $11.99.
  *
- * We always re-anchor `starz_promo` from embedded defaults and keep only freshness / link
- * fields from the snapshot. See https://www.starz.com/us/en/buy
+ * We always re-anchor `starz_promo` from embedded defaults. We only keep **lastChecked**
+ * and outbound URLs from the snapshot — never `priceStatus` / `expiresAt` / `effectiveDate`,
+ * because a stale `expired` or past `expiresAt` would drop the promo entirely in ranking.
+ *
+ * See https://www.starz.com/us/en/buy
  */
 function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
   const def = defaultOptions.find((o) => o.id === "starz_promo");
@@ -71,24 +110,24 @@ function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
 
   const idx = options.findIndex((o) => o.id === "starz_promo");
   if (idx === -1) {
-    return [...options, def];
+    return [...options, cloneCatalogOption(def)];
   }
 
   const cur = options[idx]!;
+  const base = cloneCatalogOption(def);
   const next = [...options];
   next[idx] = {
-    ...def,
-    lastChecked: cur.lastChecked ?? def.lastChecked,
-    priceStatus: cur.priceStatus ?? def.priceStatus,
-    sourceUrl: cur.sourceUrl?.trim() || def.sourceUrl,
-    affiliateUrl: cur.affiliateUrl ?? def.affiliateUrl,
+    ...base,
+    lastChecked: cur.lastChecked ?? base.lastChecked,
+    sourceUrl: cur.sourceUrl?.trim() || base.sourceUrl,
+    affiliateUrl: cur.affiliateUrl ?? base.affiliateUrl,
   };
   return next;
 }
 
 /** Applies snapshot repairs (e.g. STARZ promo shape) before serving catalog data. */
 export function repairCatalogOptions(options: CatalogOption[]): CatalogOption[] {
-  return repairStarzPromoOption(options);
+  return repairStarzPromoOption(options).map(coerceOptionNumerics);
 }
 
 async function ensureCatalogDirectory() {

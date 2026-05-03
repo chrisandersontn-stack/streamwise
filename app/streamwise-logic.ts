@@ -85,8 +85,15 @@ function isOptionAvailableToday(
   return true;
 }
 
-function toFiniteNumber(value: number | undefined) {
-  return Number.isFinite(value) ? (value as number) : 0;
+function toFiniteNumber(value: number | string | undefined) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : 0;
+  }
+  if (typeof value === "string") {
+    const n = Number.parseFloat(value.trim());
+    return Number.isFinite(n) ? n : 0;
+  }
+  return 0;
 }
 
 function getStartingMonthly(option: Option) {
@@ -143,12 +150,14 @@ function getOngoingTotal(chosen: Option[]) {
 }
 
 function getIntroMonths(option: Option) {
-  if (!Number.isFinite(option.introLengthMonths)) {
+  const raw = option.introLengthMonths as number | string | undefined;
+  const intro =
+    typeof raw === "string" ? Number.parseInt(raw, 10) : typeof raw === "number" ? raw : NaN;
+  if (!Number.isFinite(intro)) {
     return 0;
   }
 
-  const intro = option.introLengthMonths as number;
-  return Math.max(0, Math.min(12, intro));
+  return Math.max(0, Math.min(12, Math.round(intro)));
 }
 
 export function getOptionAnnualCost(option: Option) {

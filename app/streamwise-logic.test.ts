@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { Option } from "./streamwise-data";
-import { calculateCombos } from "./streamwise-logic";
+import { calculateCombos, getOptionAnnualCost } from "./streamwise-logic";
 
 function makeOption(overrides: Partial<Option>): Option {
   return {
@@ -165,6 +165,19 @@ describe("calculateCombos", () => {
 
     expect(withoutProvider[0]?.chosen.map((item) => item.id)).toEqual(["direct"]);
     expect(withProvider[0]?.chosen.map((item) => item.id)).toEqual(["tmobile_free"]);
+  });
+
+  it("computes promo annual cost when JSON supplies numeric fields as strings", () => {
+    const promo = makeOption({
+      id: "starz_like_promo",
+      monthly: "4.99" as unknown as number,
+      standardMonthly: "11.99" as unknown as number,
+      introLengthMonths: "3" as unknown as number,
+      covers: ["STARZ"],
+      category: "promo",
+      mutuallyExclusiveGroup: "starz_access",
+    });
+    expect(getOptionAnnualCost(promo)).toBeCloseTo(4.99 * 3 + 11.99 * 9, 5);
   });
 
   it("prioritizes lower 12-month total when monthly totals tie", () => {
