@@ -32,6 +32,52 @@ function isValidCatalogPayload(value: unknown): value is CatalogPayload {
   return true;
 }
 
+/**
+ * Repairs legacy `starz_promo` rows that were saved as a flat $11.99 line (or are missing
+ * intro / post-intro fields), so 12‑month math matches STARZ’s published limited-time offer
+ * on https://www.starz.com/us/en/buy
+ */
+function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
+  const def = defaultOptions.find((o) => o.id === "starz_promo");
+  if (!def) return options;
+
+  const idx = options.findIndex((o) => o.id === "starz_promo");
+  if (idx === -1) {
+    return [...options, def];
+  }
+
+  const cur = options[idx]!;
+  const introMonths =
+    typeof cur.introLengthMonths === "number" && Number.isFinite(cur.introLengthMonths)
+      ? cur.introLengthMonths
+      : 0;
+  const std = cur.standardMonthly;
+  const hasValidPromoShape =
+    introMonths > 0 &&
+    typeof std === "number" &&
+    Number.isFinite(cur.monthly) &&
+    cur.monthly < std - 0.01;
+
+  if (hasValidPromoShape) {
+    return options;
+  }
+
+  const next = [...options];
+  next[idx] = {
+    ...def,
+    lastChecked: cur.lastChecked ?? def.lastChecked,
+    priceStatus: cur.priceStatus ?? def.priceStatus,
+    sourceUrl: cur.sourceUrl?.trim() || def.sourceUrl,
+    affiliateUrl: cur.affiliateUrl ?? def.affiliateUrl,
+  };
+  return next;
+}
+
+/** Applies snapshot repairs (e.g. STARZ promo shape) before serving catalog data. */
+export function repairCatalogOptions(options: CatalogOption[]): CatalogOption[] {
+  return repairStarzPromoOption(options);
+}
+
 async function ensureCatalogDirectory() {
   await fs.mkdir(path.dirname(catalogPath), { recursive: true });
 }
@@ -55,7 +101,7 @@ export async function getCatalogWithMetadata(): Promise<CatalogWithMetadata> {
     if (data && Array.isArray(data.services) && Array.isArray(data.options)) {
       return {
         services: data.services as Service[],
-        options: data.options as CatalogOption[],
+        options: repairCatalogOptions(data.options as CatalogOption[]),
         catalogUpdatedAt:
           typeof data.updated_at === "string" && data.updated_at
             ? data.updated_at
@@ -72,7 +118,7 @@ export async function getCatalogWithMetadata(): Promise<CatalogWithMetadata> {
       const fileStat = await fs.stat(catalogPath);
       return {
         services: parsed.services,
-        options: parsed.options,
+        options: repairCatalogOptions(parsed.options),
         catalogUpdatedAt: fileStat.mtime.toISOString(),
         catalogSource: "file",
       };
@@ -83,7 +129,7 @@ export async function getCatalogWithMetadata(): Promise<CatalogWithMetadata> {
 
   return {
     services: defaultServices,
-    options: defaultOptions,
+    options: repairCatalogOptions([...defaultOptions]),
     catalogUpdatedAt: null,
     catalogSource: "defaults",
   };

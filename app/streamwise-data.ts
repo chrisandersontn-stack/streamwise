@@ -686,7 +686,7 @@ export const options: Option[] = [
     introLengthMonths: 3,
     covers: ["STARZ"],
     notes:
-      "Limited-time STARZ offer for 3 months, then standard monthly pricing.",
+      "STARZ limited-time monthly offer ($4.99/mo for 3 months on starz.com), then renews at the current standard monthly rate ($11.99/mo).",
     source: "STARZ",
     sourceUrl: "https://www.starz.com/us/en/buy",
     category: "promo",
