@@ -1563,45 +1563,6 @@ function getBestComboRetailValue(combo: Combo, selected: string[]) {
   return getCoveredSelectedRetailValue(combo, selected);
 }
 
-function getRecommendedReason(
-  combo: Combo,
-  cheapest: Combo | undefined,
-  selected: string[]
-) {
-  const annualCost = getComboAnnualCost(combo);
-  const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
-
-  if (!cheapest || cheapest.id === combo.id) {
-    if (extraCoveredServices > 0) {
-      return "Recommended because it is the best 12-month value and the extra service is a bonus at this price.";
-    }
-
-    return "Recommended because it has the best total 12-month value in the current dataset.";
-  }
-
-  const annualDelta = getComboAnnualCost(cheapest) - annualCost;
-  const startingDelta = cheapest.total - combo.total;
-  const ongoingDelta = cheapest.ongoingTotal - combo.ongoingTotal;
-
-  if (annualDelta > 0.01) {
-    return `Recommended because it saves ${formatMoney(annualDelta)} over 12 months versus the cheaper-looking option.`;
-  }
-
-  if (Math.abs(annualDelta) <= 0.01 && extraCoveredServices > 0) {
-    return "Recommended because it costs the same over 12 months and the extra service is upside, not a defect.";
-  }
-
-  if (Math.abs(annualDelta) <= 0.01 && ongoingDelta < -0.01) {
-    return `Recommended because it matches 12-month cost and saves ${formatMoney(Math.abs(ongoingDelta))}/mo later.`;
-  }
-
-  if (Math.abs(annualDelta) <= 0.01 && startingDelta > 0.01) {
-    return `Recommended because it matches 12-month cost while starting ${formatMoney(startingDelta)}/mo cheaper.`;
-  }
-
-  return `Recommended because the 12-month tradeoff is stronger even though another path looks cheaper at first glance.`;
-}
-
 function renderBestSummary(
   combo: Combo,
   rankingMode: RankingMode,
@@ -1639,16 +1600,12 @@ function renderBestSummary(
         <span className="text-3xl font-semibold text-slate-300 sm:text-4xl">/mo</span>
       </div>
       <p className="mt-2 text-sm leading-snug text-slate-400">
-        This is the lowest total cost based on your selections
+        Best 12-month value based on your selections
       </p>
 
       {renderPrimaryRecommendationCta(combo)}
 
       {renderComboActionLinks(combo)}
-
-      <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
-        Links may be affiliate-supported
-      </p>
 
       <div className="mt-4 text-slate-200">
         {rankingMode === "ongoing" ? "Ongoing savings vs retail: " : "Monthly savings vs retail: "}
@@ -1676,6 +1633,10 @@ function renderBestSummary(
             : "Matches the cheapest path over 12 months"}
         </div>
       )}
+
+      <p className="mt-3 text-[10px] leading-relaxed text-slate-500/70">
+        Links may be affiliate-supported
+      </p>
 
       <details className="mt-4 rounded-xl border border-white/15 bg-white/5 p-3">
         <summary className="cursor-pointer text-sm font-semibold text-slate-100">
@@ -1786,7 +1747,7 @@ function renderCheapestCard(
       </div>
 
       <div className="mt-5 text-sm leading-relaxed text-slate-600">
-        {getRecommendedReason(combo, recommended, selected)}
+        Lowest monthly price, but not the lowest 12-month total.
       </div>
 
       <div className="mt-4 text-sm font-medium text-slate-700">
