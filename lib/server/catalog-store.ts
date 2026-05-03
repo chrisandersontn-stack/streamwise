@@ -22,6 +22,31 @@ type CatalogWithMetadata = CatalogPayload & {
 
 const catalogPath = path.join(process.cwd(), "data", "catalog.json");
 
+function readTruthyEnv(name: string) {
+  const v = process.env[name]?.trim().toLowerCase();
+  return v === "1" || v === "true" || v === "yes";
+}
+
+/**
+ * When true, `/api/catalog` serves `streamwise-data.ts` (embedded defaults) instead of
+ * Supabase or `data/catalog.json`.
+ *
+ * - In **development** (`next dev`), this is the default so edits to `streamwise-data.ts`
+ *   show up immediately. Set `STREAMWISE_CATALOG_USE_REMOTE=1` to load the real snapshot
+ *   while developing (e.g. testing admin pricing against Supabase).
+ * - Set `STREAMWISE_USE_DEFAULT_CATALOG=1` in **any** environment to force embedded defaults
+ *   (e.g. until a bad production snapshot is fixed).
+ */
+function shouldServeEmbeddedDefaultCatalog(): boolean {
+  if (readTruthyEnv("STREAMWISE_USE_DEFAULT_CATALOG")) {
+    return true;
+  }
+  if (process.env.NODE_ENV !== "development") {
+    return false;
+  }
+  return !readTruthyEnv("STREAMWISE_CATALOG_USE_REMOTE");
+}
+
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -88,6 +113,15 @@ export async function getCatalog(): Promise<CatalogPayload> {
 }
 
 export async function getCatalogWithMetadata(): Promise<CatalogWithMetadata> {
+  if (shouldServeEmbeddedDefaultCatalog()) {
+    return {
+      services: defaultServices,
+      options: repairCatalogOptions([...defaultOptions]),
+      catalogUpdatedAt: null,
+      catalogSource: "defaults",
+    };
+  }
+
   const supabase = getSupabaseAdminClient();
   if (supabase) {
     const { data } = await supabase
