@@ -433,7 +433,8 @@ function trackUiEvent(
 
 function renderComboActionLinks(
   combo: Combo,
-  variant: "onNavy" | "onLight" = "onNavy"
+  variant: "onNavy" | "onLight" = "onNavy",
+  rootMarginClass = "mt-3"
 ) {
   const actionable = combo.chosen
     .map((item) => {
@@ -463,7 +464,7 @@ function renderComboActionLinks(
       : "rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-800 shadow-sm hover:border-slate-300 hover:bg-slate-50";
 
   return (
-    <div className="mt-3">
+    <div className={rootMarginClass}>
       <p className={hintClass}>Tap a provider below to view the offer and subscribe</p>
       <div className="flex flex-wrap gap-2">
         {actionable.map(({ item, outbound }) => (
@@ -510,7 +511,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
   if (!firstAction) return null;
 
   return (
-    <div className="mt-3">
+    <div className="mt-1.5">
       <a
         href={firstAction.outbound.href}
         target="_blank"
@@ -524,9 +525,9 @@ function renderPrimaryRecommendationCta(combo: Combo) {
         }
         className="inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
       >
-        View best plan
+        View plan details
       </a>
-      <p className="mt-2 text-xs leading-relaxed text-slate-300">
+      <p className="mt-1.5 text-xs leading-relaxed text-slate-300">
         Takes you to the provider to confirm details and subscribe
       </p>
     </div>
@@ -1595,17 +1596,19 @@ function renderBestSummary(
 
       <div className="mt-2 text-sm font-semibold text-white">Best value for your setup</div>
 
-      <div className="mt-2 text-5xl font-bold tracking-tight sm:text-[3.25rem]">
+      <div className="mt-1 text-5xl font-bold tracking-tight sm:text-[3.25rem]">
         {formatMoney(primaryTotal)}
         <span className="text-3xl font-semibold text-slate-300 sm:text-4xl">/mo</span>
       </div>
-      <p className="mt-2 text-sm leading-snug text-slate-400">
+      <p className="mt-1 text-sm leading-snug text-slate-400">
         Best 12-month value based on your selections
       </p>
 
       {renderPrimaryRecommendationCta(combo)}
 
-      {renderComboActionLinks(combo)}
+      <div className="mt-7">
+        {renderComboActionLinks(combo, "onNavy", "mt-0")}
+      </div>
 
       <div className="mt-4 text-slate-200">
         {rankingMode === "ongoing" ? "Ongoing savings vs retail: " : "Monthly savings vs retail: "}
@@ -1635,7 +1638,7 @@ function renderBestSummary(
       )}
 
       <p className="mt-3 text-[10px] leading-relaxed text-slate-500/70">
-        Links may be affiliate-supported
+        Some links may be affiliate-supported
       </p>
 
       <details className="mt-4 rounded-xl border border-white/15 bg-white/5 p-3">
@@ -1705,6 +1708,11 @@ function renderCheapestCard(
   const confidence = getComboConfidence(combo);
   const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
   const annualDelta = getComboAnnualCost(recommended) - getComboAnnualCost(combo);
+  const annualTieThresholdDollars = 1;
+  const cheapestExplainerCopy =
+    Math.abs(annualDelta) < annualTieThresholdDollars
+      ? "Same 12-month total, but lower monthly cost."
+      : "Lowest monthly price, but not the lowest 12-month total.";
 
   return (
     <div className="rounded-2xl border border-[rgba(0,0,0,0.08)] bg-sw-section/90 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
@@ -1746,9 +1754,7 @@ function renderCheapestCard(
           : "Matches the recommended path over 12 months"}
       </div>
 
-      <div className="mt-5 text-sm leading-relaxed text-slate-600">
-        Lowest monthly price, but not the lowest 12-month total.
-      </div>
+      <div className="mt-5 text-sm leading-relaxed text-slate-600">{cheapestExplainerCopy}</div>
 
       <div className="mt-4 text-sm font-medium text-slate-700">
         {combo.chosen.map((item) => item.name).join(" + ")}
