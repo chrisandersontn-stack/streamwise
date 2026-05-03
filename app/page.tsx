@@ -510,21 +510,26 @@ function renderPrimaryRecommendationCta(combo: Combo) {
   if (!firstAction) return null;
 
   return (
-    <a
-      href={firstAction.outbound.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() =>
-        trackOutboundClick(
-          firstAction.item,
-          firstAction.outbound.href,
-          normalizeOutboundLinkKindForTracking(firstAction.outbound.kind)
-        )
-      }
-      className="mt-3 inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
-    >
-      Start with this offer
-    </a>
+    <div className="mt-3">
+      <a
+        href={firstAction.outbound.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() =>
+          trackOutboundClick(
+            firstAction.item,
+            firstAction.outbound.href,
+            normalizeOutboundLinkKindForTracking(firstAction.outbound.kind)
+          )
+        }
+        className="inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+      >
+        View best plan
+      </a>
+      <p className="mt-2 text-xs leading-relaxed text-slate-300">
+        Takes you to the provider to confirm details and subscribe
+      </p>
+    </div>
   );
 }
 
@@ -1420,47 +1425,6 @@ function formatDateIso(value: string | null) {
   return parsed.toISOString().slice(0, 10);
 }
 
-function getFreshnessSummary(combo: Combo) {
-  const validDates = combo.chosen
-    .map((item) => item.lastChecked)
-    .filter((value): value is string => Boolean(value))
-    .map((value) => ({ raw: value, parsed: toUtcDay(value) }))
-    .filter(
-      (entry): entry is { raw: string; parsed: Date } =>
-        entry.parsed !== null
-    );
-
-  if (!validDates.length) {
-    return {
-      latest: null as string | null,
-      oldest: null as string | null,
-      staleAgeDays: null as number | null,
-      hasStaleData: true,
-    };
-  }
-
-  validDates.sort((a, b) => a.parsed.getTime() - b.parsed.getTime());
-
-  const oldest = validDates[0]?.raw ?? null;
-  const latest = validDates.at(-1)?.raw ?? null;
-  const today = new Date();
-  const todayUtc = new Date(
-    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
-  );
-  const oldestParsed = validDates[0]?.parsed ?? null;
-  const staleAgeDays = oldestParsed
-    ? Math.floor((todayUtc.getTime() - oldestParsed.getTime()) / 86_400_000)
-    : null;
-
-  return {
-    latest,
-    oldest,
-    staleAgeDays,
-    hasStaleData:
-      staleAgeDays === null || staleAgeDays > STALE_PRICE_DATA_DAYS,
-  };
-}
-
 function getCatalogRefreshSummary(optionCatalog: Option[]) {
   const validDates = optionCatalog
     .map((item) => item.lastChecked)
@@ -1525,30 +1489,17 @@ function getDataFreshnessLabel(oldestDate: string | null) {
   };
 }
 
-function getFreshnessConfidenceCopy(
-  freshness: ReturnType<typeof getFreshnessSummary>,
-  pipelineVerificationStatus?: string | null
-) {
-  const pipelineNote =
-    pipelineVerificationStatus === "degraded"
-      ? "Some sources were not re-checked in the latest automated run; "
-      : "";
-
-  if (!freshness.hasStaleData) {
-    return `${pipelineNote}Prices for this path look current by last-checked dates.`;
-  }
-
-  return `${pipelineNote}Most prices are still usable, but one or more entries may be older than ${STALE_PRICE_DATA_DAYS} days. Verify before subscribing.`;
+/** User-facing pricing reassurance (no internal pipeline / “degraded” wording). */
+function getUserPricingReassuranceCopy() {
+  return "Prices are regularly reviewed and updated. Always confirm final details on the provider's site before subscribing.";
 }
 
 function renderLegalAndCatalogDetails(props: {
   catalogFreshnessLabel: { label: string; classes: string };
   catalogRefresh: ReturnType<typeof getCatalogRefreshSummary>;
   catalog: CatalogResponse | null;
-  dataHealthSummary: DataHealthSummary | null;
 }) {
-  const { catalogFreshnessLabel, catalogRefresh, catalog, dataHealthSummary } = props;
-  const verificationDegraded = dataHealthSummary?.verificationStatus === "degraded";
+  const { catalogFreshnessLabel, catalogRefresh, catalog } = props;
 
   return (
     <details className="mt-10 rounded-2xl border border-black/5 bg-white p-4 text-sm text-sw-body shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
@@ -1601,11 +1552,7 @@ function renderLegalAndCatalogDetails(props: {
             Catalog updated: {formatDateTime(catalog?.catalogUpdatedAt ?? null)} · Source:{" "}
             {catalog?.catalogSource ?? "defaults"}
           </p>
-          <p className="mt-2 text-slate-600">
-            {verificationDegraded
-              ? "We could not complete every automated check in the latest run. Totals still use the last recorded prices—confirm key offers on the provider site before you subscribe."
-              : "These are recorded catalog verification dates. Confirm checkout totals on official pages, especially for promos and provider-gated offers."}
-          </p>
+          <p className="mt-2 text-slate-600">{getUserPricingReassuranceCopy()}</p>
         </div>
       </div>
     </details>
@@ -1660,8 +1607,7 @@ function renderBestSummary(
   rankingMode: RankingMode,
   runnerUp: Combo | undefined,
   selected: string[],
-  cheapest: Combo | undefined,
-  pipelineVerificationStatus?: string | null
+  cheapest: Combo | undefined
 ) {
   const primaryTotal = getPrimaryTotal(combo, rankingMode);
   const primarySavings = getPrimarySavings(combo, rankingMode);
@@ -1671,7 +1617,6 @@ function renderBestSummary(
   const rawRetailValue = getBestComboRetailValue(combo, selected);
   const confidenceLevel = getComboConfidence(combo);
   const confidenceNote = getConfidenceNote(combo);
-  const freshness = getFreshnessSummary(combo);
   const narrative = getWhyThisWins(combo, selected)[0] ?? "Best available path.";
   const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
   const annualDelta =
@@ -1687,13 +1632,25 @@ function renderBestSummary(
           : "Recommended current path"}
       </div>
 
+      <div className="mt-2 text-sm font-semibold text-white">Best value for your setup</div>
+
       <div className="mt-2 text-5xl font-bold tracking-tight sm:text-[3.25rem]">
         {formatMoney(primaryTotal)}
         <span className="text-3xl font-semibold text-slate-300 sm:text-4xl">/mo</span>
       </div>
+      <p className="mt-2 text-sm leading-snug text-slate-400">
+        This is the lowest total cost based on your selections
+      </p>
+
       {renderPrimaryRecommendationCta(combo)}
 
-      <div className="mt-3 text-slate-200">
+      {renderComboActionLinks(combo)}
+
+      <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+        Links may be affiliate-supported
+      </p>
+
+      <div className="mt-4 text-slate-200">
         {rankingMode === "ongoing" ? "Ongoing savings vs retail: " : "Monthly savings vs retail: "}
         <span className="font-semibold text-white">{formatMoney(primarySavings)}</span>
       </div>
@@ -1720,8 +1677,6 @@ function renderBestSummary(
         </div>
       )}
 
-      {renderComboActionLinks(combo)}
-
       <details className="mt-4 rounded-xl border border-white/15 bg-white/5 p-3">
         <summary className="cursor-pointer text-sm font-semibold text-slate-100">
           Why this recommendation?
@@ -1741,10 +1696,6 @@ function renderBestSummary(
             )}
           </div>
 
-          <p className="text-xs text-slate-400">
-            Rankings prioritize 12-month total first. Affiliate links do not change recommendation order.
-          </p>
-
           <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-100">{narrative}</div>
 
           <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-100">
@@ -1760,13 +1711,10 @@ function renderBestSummary(
           <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-200">{confidenceNote}</div>
 
           <div className="rounded-lg bg-white/10 px-3 py-2 text-slate-200">
-            <div className="font-medium text-slate-100">Price check dates (this path)</div>
-            <div className="mt-1 text-xs text-slate-300">
-              Latest: {formatDateIso(freshness.latest)} · Oldest: {formatDateIso(freshness.oldest)}
-            </div>
-            <div className="mt-2 text-slate-200">
-              {getFreshnessConfidenceCopy(freshness, pipelineVerificationStatus)}
-            </div>
+            <div className="font-medium text-slate-100">Pricing checked recently</div>
+            <p className="mt-2 text-sm leading-relaxed text-slate-300">
+              {getUserPricingReassuranceCopy()}
+            </p>
           </div>
 
           <div className="text-slate-300">
@@ -1791,13 +1739,11 @@ function renderCheapestCard(
   combo: Combo,
   rankingMode: RankingMode,
   recommended: Combo,
-  selected: string[],
-  pipelineVerificationStatus?: string | null
+  selected: string[]
 ) {
   const confidence = getComboConfidence(combo);
   const extraCoveredServices = getExtraCoveredServiceCount(combo, selected);
   const annualDelta = getComboAnnualCost(recommended) - getComboAnnualCost(combo);
-  const freshness = getFreshnessSummary(combo);
 
   return (
     <div className="rounded-2xl border border-[rgba(0,0,0,0.08)] bg-sw-section/90 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
@@ -1841,31 +1787,6 @@ function renderCheapestCard(
 
       <div className="mt-5 text-sm leading-relaxed text-slate-600">
         {getRecommendedReason(combo, recommended, selected)}
-      </div>
-
-      <div
-        className={`mt-5 rounded-xl px-3 py-2 text-sm ${
-          freshness.hasStaleData || pipelineVerificationStatus === "degraded"
-            ? "bg-amber-100 text-amber-900"
-            : "bg-emerald-100 text-emerald-900"
-        }`}
-      >
-        <div className="font-medium">Data freshness</div>
-        <div className="mt-1">
-          Latest checked: {formatDateIso(freshness.latest)} · Oldest checked:{" "}
-          {formatDateIso(freshness.oldest)}
-        </div>
-        {freshness.hasStaleData && (
-          <div className="mt-1">
-            One or more prices may be stale (older than {STALE_PRICE_DATA_DAYS}{" "}
-            days). Re-verify before relying on this path.
-          </div>
-        )}
-        {pipelineVerificationStatus === "degraded" && (
-          <div className="mt-1">
-            Automated verification is degraded; last-checked dates may not reflect a full run.
-          </div>
-        )}
       </div>
 
       <div className="mt-4 text-sm font-medium text-slate-700">
@@ -2448,23 +2369,23 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-sw-page text-sw-body">
-      <section className="sw-brand-hero px-4 pb-12 pt-10 text-center sm:px-6 sm:pb-16 sm:pt-14">
+      <section className="sw-brand-hero px-4 pb-8 pt-8 text-center sm:px-6 sm:pb-10 sm:pt-10">
         <div className="mx-auto max-w-2xl">
           <Image
             src="/streamwise-logo.png"
             alt=""
             width={160}
             height={160}
-            className="mx-auto h-24 w-24 object-contain sm:h-28 sm:w-28"
+            className="mx-auto h-16 w-16 object-contain sm:h-20 sm:w-20"
             priority
           />
-          <h1 className="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:mt-8 sm:text-4xl">
+          <h1 className="mt-4 text-balance text-3xl font-bold tracking-tight text-white sm:mt-5 sm:text-4xl">
             StreamWise
           </h1>
-          <p className="mt-3 text-balance text-lg font-medium leading-relaxed text-white/90 sm:text-xl">
+          <p className="mt-2 text-balance text-base font-medium leading-relaxed text-white/90 sm:text-lg">
             Find the cheapest streaming setup in seconds
           </p>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-white/75 sm:text-lg">
+          <p className="mt-2 text-pretty text-sm leading-relaxed text-white/75 sm:text-base">
             Pick your services below to compare monthly and 12-month totals.
           </p>
         </div>
@@ -2473,211 +2394,6 @@ export default function Page() {
       <div className="h-6 bg-gradient-to-b from-sw-heading to-sw-page sm:h-8" aria-hidden />
 
       <div className="mx-auto max-w-7xl px-4 pb-14 pt-2 sm:px-6 sm:pb-16 sm:pt-4">
-        {process.env.NODE_ENV === "development" && dataHealthSummary && (
-          <div className="mb-8 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="text-sm font-semibold text-indigo-900">Dev data health dashboard</div>
-              <Link
-                className="text-sm font-semibold text-indigo-800 underline underline-offset-2 hover:text-indigo-950"
-                href="/admin/pricing"
-              >
-                Catalog price form →
-              </Link>
-            </div>
-            <div className="mt-2 grid gap-3 text-sm text-indigo-900 md:grid-cols-7">
-              <div>
-                <div className="text-xs uppercase tracking-wide text-indigo-700">Tracked</div>
-                <div className="text-lg font-semibold">{dataHealthSummary.sourcesTracked}</div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-indigo-700">Checked</div>
-                <div className="text-lg font-semibold">{dataHealthSummary.sourcesChecked}</div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-indigo-700">Verified</div>
-                <div className="text-lg font-semibold">
-                  {dataHealthSummary.sourcesWithDetectedChecks}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-indigo-700">Failed</div>
-                <div className="text-lg font-semibold">{dataHealthSummary.sourcesFailed}</div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-indigo-700">Manual review</div>
-                <div className="text-lg font-semibold">
-                  {dataHealthSummary.sourcesManualReview}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-indigo-700">Status</div>
-                <div className="text-lg font-semibold">{dataHealthSummary.verificationStatus}</div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-indigo-700">Manual verified</div>
-                <div className="text-lg font-semibold">
-                  {dataHealthSummary.manualVerificationsRecorded}
-                </div>
-              </div>
-            </div>
-            <div className="mt-2 text-xs text-indigo-800">
-              Next scheduled check: {dataHealthSummary.nextScheduledCheckUtc}
-            </div>
-            <div className="mt-1 text-xs text-indigo-800">
-              Oldest verified provider:{" "}
-              {dataHealthSummary.oldestVerifiedProvider
-                ? `${dataHealthSummary.oldestVerifiedProvider.provider} (${dataHealthSummary.oldestVerifiedProvider.date ?? "unknown date"})`
-                : "Unknown"}
-            </div>
-          </div>
-        )}
-
-        {process.env.NODE_ENV === "development" && conversionSummary && (
-          <div className="mb-8 rounded-3xl border border-violet-200 bg-violet-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="text-sm font-semibold text-violet-900">
-                Dev conversion dashboard
-              </div>
-              <div className="flex gap-2">
-                {[1, 7, 30].map((days) => (
-                  <button
-                    key={days}
-                    type="button"
-                    onClick={() => setAnalyticsWindowDays(days as 1 | 7 | 30)}
-                    className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
-                      analyticsWindowDays === days
-                        ? "bg-violet-900 text-white"
-                        : "border border-violet-300 bg-white text-violet-800 hover:bg-violet-100"
-                    }`}
-                    aria-pressed={analyticsWindowDays === days}
-                  >
-                    {days === 1 ? "24h" : `${days}d`}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mt-1 text-xs text-violet-700">
-              Window: last {analyticsWindowDays === 1 ? "24 hours" : `${analyticsWindowDays} days`}
-            </div>
-            <div className="mt-2 grid gap-3 text-sm text-violet-900 md:grid-cols-5">
-              <div>
-                <div className="text-xs uppercase tracking-wide text-violet-700">
-                  Recommendation views
-                </div>
-                <div className="text-lg font-semibold">
-                  {conversionSummary.recommendationViews}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-violet-700">
-                  Outbound clicks
-                </div>
-                <div className="text-lg font-semibold">
-                  {conversionSummary.outboundClicks}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-violet-700">
-                  Affiliate clicks
-                </div>
-                <div className="text-lg font-semibold">
-                  {conversionSummary.affiliateClicks}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-violet-700">
-                  Source clicks
-                </div>
-                <div className="text-lg font-semibold">
-                  {conversionSummary.sourceClicks}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-wide text-violet-700">
-                  CTR
-                </div>
-                <div className="text-lg font-semibold">
-                  {(conversionSummary.clickThroughRate * 100).toFixed(1)}%
-                </div>
-              </div>
-            </div>
-
-            {conversionSummary.topClickedOptions.length > 0 && (
-              <div className="mt-3 text-sm text-violet-900">
-                <span className="font-medium">Top clicked options:</span>{" "}
-                {conversionSummary.topClickedOptions
-                  .map((item) => `${item.optionName} (${item.clicks})`)
-                  .join(", ")}
-              </div>
-            )}
-          </div>
-        )}
-
-        <details className="mb-8 rounded-3xl border border-black/5 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
-          <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
-            Save my preferences (optional)
-          </summary>
-          <div className="mt-2 text-sm text-slate-600">
-            Sign in with a magic link to sync preferences to your account.
-          </div>
-          <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-center">
-            <input
-              type="email"
-              value={authEmail}
-              onChange={(event) => setAuthEmail(event.target.value)}
-              placeholder="you@example.com"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-sw-heading md:max-w-sm"
-            />
-            <button
-              type="button"
-              onClick={() => void requestMagicLink()}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-            >
-              Send magic link
-            </button>
-            <button
-              type="button"
-              onClick={() => void signOut()}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-            >
-              Sign out
-            </button>
-          </div>
-          <div className="mt-2 text-xs text-slate-500">
-            {authSession?.user?.email
-              ? `Signed in as ${authSession.user.email}`
-              : "Not signed in"}
-          </div>
-          {authMessage && <div className="mt-1 text-xs text-slate-600">{authMessage}</div>}
-        </details>
-
-        <details className="mb-8 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
-          <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
-            Dataset overview
-          </summary>
-          <div className="mt-4 grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
-            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
-              <div className="text-sm font-semibold text-sw-heading">What this compares</div>
-              <div className="mt-2 text-sm text-slate-600">
-                StreamWise compares direct plans, official bundles, carrier perks, promos,
-                and included membership paths using the pricing data in your current dataset.
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
-              <div className="text-sm font-semibold text-sw-heading">Current catalog</div>
-              <div className="mt-2 text-2xl font-bold text-sw-heading">{serviceCards.length}</div>
-              <div className="text-sm text-slate-600">services modeled</div>
-            </div>
-
-            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
-              <div className="text-sm font-semibold text-sw-heading">Comparison paths</div>
-              <div className="mt-2 text-2xl font-bold text-sw-heading">{optionCatalog.length}</div>
-              <div className="text-sm text-slate-600">options in dataset</div>
-            </div>
-          </div>
-        </details>
-
         <div className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr]">
           <div className="rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -2694,24 +2410,11 @@ export default function Page() {
               </div>
             ) : best ? (
               <>
-                {renderBestSummary(
-                  best,
-                  rankingMode,
-                  runnerUp,
-                  selected,
-                  cheapest,
-                  dataHealthSummary?.verificationStatus ?? null
-                )}
+                {renderBestSummary(best, rankingMode, runnerUp, selected, cheapest)}
 
                 {cheapest && best && cheapest.id !== best.id && (
                   <div className="mt-10 border-t border-black/[0.08] pt-10">
-                    {renderCheapestCard(
-                      cheapest,
-                      rankingMode,
-                      best,
-                      selected,
-                      dataHealthSummary?.verificationStatus ?? null
-                    )}
+                    {renderCheapestCard(cheapest, rankingMode, best, selected)}
                   </div>
                 )}
 
@@ -2943,6 +2646,211 @@ export default function Page() {
           </div>
         </div>
 
+        {process.env.NODE_ENV === "development" && dataHealthSummary && (
+          <div className="mb-8 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="text-sm font-semibold text-indigo-900">Dev data health dashboard</div>
+              <Link
+                className="text-sm font-semibold text-indigo-800 underline underline-offset-2 hover:text-indigo-950"
+                href="/admin/pricing"
+              >
+                Catalog price form →
+              </Link>
+            </div>
+            <div className="mt-2 grid gap-3 text-sm text-indigo-900 md:grid-cols-7">
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Tracked</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.sourcesTracked}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Checked</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.sourcesChecked}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Verified</div>
+                <div className="text-lg font-semibold">
+                  {dataHealthSummary.sourcesWithDetectedChecks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Failed</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.sourcesFailed}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Manual review</div>
+                <div className="text-lg font-semibold">
+                  {dataHealthSummary.sourcesManualReview}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Status</div>
+                <div className="text-lg font-semibold">{dataHealthSummary.verificationStatus}</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-indigo-700">Manual verified</div>
+                <div className="text-lg font-semibold">
+                  {dataHealthSummary.manualVerificationsRecorded}
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 text-xs text-indigo-800">
+              Next scheduled check: {dataHealthSummary.nextScheduledCheckUtc}
+            </div>
+            <div className="mt-1 text-xs text-indigo-800">
+              Oldest verified provider:{" "}
+              {dataHealthSummary.oldestVerifiedProvider
+                ? `${dataHealthSummary.oldestVerifiedProvider.provider} (${dataHealthSummary.oldestVerifiedProvider.date ?? "unknown date"})`
+                : "Unknown"}
+            </div>
+          </div>
+        )}
+
+        {process.env.NODE_ENV === "development" && conversionSummary && (
+          <div className="mb-8 rounded-3xl border border-violet-200 bg-violet-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="text-sm font-semibold text-violet-900">
+                Dev conversion dashboard
+              </div>
+              <div className="flex gap-2">
+                {[1, 7, 30].map((days) => (
+                  <button
+                    key={days}
+                    type="button"
+                    onClick={() => setAnalyticsWindowDays(days as 1 | 7 | 30)}
+                    className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
+                      analyticsWindowDays === days
+                        ? "bg-violet-900 text-white"
+                        : "border border-violet-300 bg-white text-violet-800 hover:bg-violet-100"
+                    }`}
+                    aria-pressed={analyticsWindowDays === days}
+                  >
+                    {days === 1 ? "24h" : `${days}d`}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mt-1 text-xs text-violet-700">
+              Window: last {analyticsWindowDays === 1 ? "24 hours" : `${analyticsWindowDays} days`}
+            </div>
+            <div className="mt-2 grid gap-3 text-sm text-violet-900 md:grid-cols-5">
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Recommendation views
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.recommendationViews}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Outbound clicks
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.outboundClicks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Affiliate clicks
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.affiliateClicks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  Source clicks
+                </div>
+                <div className="text-lg font-semibold">
+                  {conversionSummary.sourceClicks}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-violet-700">
+                  CTR
+                </div>
+                <div className="text-lg font-semibold">
+                  {(conversionSummary.clickThroughRate * 100).toFixed(1)}%
+                </div>
+              </div>
+            </div>
+
+            {conversionSummary.topClickedOptions.length > 0 && (
+              <div className="mt-3 text-sm text-violet-900">
+                <span className="font-medium">Top clicked options:</span>{" "}
+                {conversionSummary.topClickedOptions
+                  .map((item) => `${item.optionName} (${item.clicks})`)
+                  .join(", ")}
+              </div>
+            )}
+          </div>
+        )}
+
+        <details className="mb-8 rounded-3xl border border-black/5 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+          <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
+            Save my preferences (optional)
+          </summary>
+          <div className="mt-2 text-sm text-slate-600">
+            Sign in with a magic link to sync preferences to your account.
+          </div>
+          <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-center">
+            <input
+              type="email"
+              value={authEmail}
+              onChange={(event) => setAuthEmail(event.target.value)}
+              placeholder="you@example.com"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-sw-heading md:max-w-sm"
+            />
+            <button
+              type="button"
+              onClick={() => void requestMagicLink()}
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              Send magic link
+            </button>
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              Sign out
+            </button>
+          </div>
+          <div className="mt-2 text-xs text-slate-500">
+            {authSession?.user?.email
+              ? `Signed in as ${authSession.user.email}`
+              : "Not signed in"}
+          </div>
+          {authMessage && <div className="mt-1 text-xs text-slate-600">{authMessage}</div>}
+        </details>
+
+        <details className="mb-8 rounded-2xl border border-black/5 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+          <summary className="cursor-pointer text-sm font-semibold text-sw-heading">
+            Dataset overview
+          </summary>
+          <div className="mt-4 grid gap-4 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
+            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
+              <div className="text-sm font-semibold text-sw-heading">What this compares</div>
+              <div className="mt-2 text-sm text-slate-600">
+                StreamWise compares direct plans, official bundles, carrier perks, promos,
+                and included membership paths using the pricing data in your current dataset.
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
+              <div className="text-sm font-semibold text-sw-heading">Current catalog</div>
+              <div className="mt-2 text-2xl font-bold text-sw-heading">{serviceCards.length}</div>
+              <div className="text-sm text-slate-600">services modeled</div>
+            </div>
+
+            <div className="rounded-2xl border border-black/5 bg-sw-section/80 p-4">
+              <div className="text-sm font-semibold text-sw-heading">Comparison paths</div>
+              <div className="mt-2 text-2xl font-bold text-sw-heading">{optionCatalog.length}</div>
+              <div className="text-sm text-slate-600">options in dataset</div>
+            </div>
+          </div>
+        </details>
+
         <section className="mt-10 rounded-3xl bg-sw-section p-4 sm:p-6 ring-1 ring-black/[0.04]">
           <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
             <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -3094,7 +3002,6 @@ export default function Page() {
           catalogFreshnessLabel,
           catalogRefresh,
           catalog,
-          dataHealthSummary,
         })}
 
         <footer className="mt-12 border-t border-black/5 pt-8 text-sm text-sw-body">
