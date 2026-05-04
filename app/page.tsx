@@ -37,6 +37,29 @@ type ProviderKey =
   | "hulu"
   | "philo";
 
+/** CJ NordPass affiliate click URL (unchanged). Override with `NEXT_PUBLIC_NORDPASS_CJ_URL` in env if needed. */
+const NORDPASS_CJ_FALLBACK = "https://www.tkqlhce.com/click-101740617-13977273";
+
+const NORDPASS_CJ_ENV =
+  typeof process.env.NEXT_PUBLIC_NORDPASS_CJ_URL === "string"
+    ? process.env.NEXT_PUBLIC_NORDPASS_CJ_URL.trim()
+    : "";
+const NORDPASS_CJ_CLICK_URL = NORDPASS_CJ_ENV || NORDPASS_CJ_FALLBACK;
+
+function nordPassTrackStub(clickUrl: string): Option {
+  return {
+    id: "sponsor:nordpass",
+    name: "NordPass",
+    provider: "direct",
+    monthly: 0,
+    covers: [],
+    notes: "Secondary affiliate placement; not a streaming catalog option.",
+    source: "NordPass",
+    sourceUrl: clickUrl,
+    category: "direct",
+  };
+}
+
 function renderPricingRealityNote() {
   return (
     <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
@@ -390,6 +413,36 @@ function trackOutboundClick(
     body: JSON.stringify(payload),
     keepalive: true,
   }).catch(() => undefined);
+}
+
+function renderNordPassAffiliateCard() {
+  const stub = nordPassTrackStub(NORDPASS_CJ_CLICK_URL);
+
+  return (
+    <div className="mt-8 rounded-2xl border border-black/5 bg-sw-section/40 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <h3 className="text-sm font-semibold text-sw-heading">
+        Manage your streaming passwords safely
+      </h3>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+        If you use multiple streaming services, a password manager can help keep your logins
+        organized and secure.
+      </p>
+      <div className="mt-4">
+        <a
+          href={NORDPASS_CJ_CLICK_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() =>
+            trackOutboundClick(stub, NORDPASS_CJ_CLICK_URL, "affiliate")
+          }
+          className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm hover:border-slate-400 hover:bg-slate-50"
+        >
+          View NordPass
+        </a>
+      </div>
+      <p className="mt-2 text-xs text-slate-500">Affiliate-supported link</p>
+    </div>
+  );
 }
 
 function trackUiEvent(
@@ -2612,6 +2665,8 @@ export default function Page() {
             </div>
           </div>
         </div>
+
+        {renderNordPassAffiliateCard()}
 
         {process.env.NODE_ENV === "development" && dataHealthSummary && (
           <div className="mb-8 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
