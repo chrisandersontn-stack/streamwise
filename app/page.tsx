@@ -37,24 +37,17 @@ type ProviderKey =
   | "hulu"
   | "philo";
 
-/** CJ NordPass affiliate click URL (unchanged). Override with `NEXT_PUBLIC_NORDPASS_CJ_URL` in env if needed. */
-const NORDPASS_CJ_FALLBACK = "https://www.tkqlhce.com/click-101740617-13977273";
+const NORDVPN_CJ_CLICK_URL = "https://www.dpbolvw.net/click-101740617-13914989";
 
-const NORDPASS_CJ_ENV =
-  typeof process.env.NEXT_PUBLIC_NORDPASS_CJ_URL === "string"
-    ? process.env.NEXT_PUBLIC_NORDPASS_CJ_URL.trim()
-    : "";
-const NORDPASS_CJ_CLICK_URL = NORDPASS_CJ_ENV || NORDPASS_CJ_FALLBACK;
-
-function nordPassTrackStub(clickUrl: string): Option {
+function nordVpnTrackStub(clickUrl: string): Option {
   return {
-    id: "sponsor:nordpass",
-    name: "NordPass",
+    id: "affiliate:nordvpn",
+    name: "NordVPN",
     provider: "direct",
     monthly: 0,
     covers: [],
     notes: "Secondary affiliate placement; not a streaming catalog option.",
-    source: "NordPass",
+    source: "CJ",
     sourceUrl: clickUrl,
     category: "direct",
   };
@@ -374,7 +367,11 @@ function trackOutboundClick(
   linkKind:
     | "affiliate"
     | "source"
-    | ReturnType<typeof resolveOutboundSourceUrl>["kind"]
+    | ReturnType<typeof resolveOutboundSourceUrl>["kind"],
+  metadata?: {
+    placement?: string;
+    network?: string;
+  }
 ) {
   const normalizedLinkKind =
     linkKind === "official"
@@ -390,6 +387,8 @@ function trackOutboundClick(
     sourceUrl: item.sourceUrl,
     resolvedUrl,
     linkKind: normalizedLinkKind,
+    placement: metadata?.placement ?? "",
+    network: metadata?.network ?? "",
   };
 
   try {
@@ -400,6 +399,8 @@ function trackOutboundClick(
       sourceUrl: payload.sourceUrl ?? "",
       resolvedUrl: payload.resolvedUrl,
       linkKind: payload.linkKind,
+      placement: payload.placement,
+      network: payload.network,
     });
     const ok = navigator.sendBeacon("/api/track-click", params);
     if (ok) return;
@@ -415,29 +416,32 @@ function trackOutboundClick(
   }).catch(() => undefined);
 }
 
-function renderNordPassAffiliateCard() {
-  const stub = nordPassTrackStub(NORDPASS_CJ_CLICK_URL);
+function renderNordVpnAffiliateCard() {
+  const stub = nordVpnTrackStub(NORDVPN_CJ_CLICK_URL);
 
   return (
     <div className="mt-8 rounded-2xl border border-black/5 bg-sw-section/40 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       <h3 className="text-sm font-semibold text-sw-heading">
-        Manage your streaming passwords safely
+        Protect your streaming setup
       </h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-600">
-        If you use multiple streaming services, a password manager can help keep your logins
-        organized and secure.
+        A VPN can help protect your connection when managing subscriptions or streaming on
+        public Wi-Fi.
       </p>
       <div className="mt-4">
         <a
-          href={NORDPASS_CJ_CLICK_URL}
+          href={NORDVPN_CJ_CLICK_URL}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer sponsored"
           onClick={() =>
-            trackOutboundClick(stub, NORDPASS_CJ_CLICK_URL, "affiliate")
+            trackOutboundClick(stub, NORDVPN_CJ_CLICK_URL, "affiliate", {
+              placement: "secondary_tools_card",
+              network: "CJ",
+            })
           }
           className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 shadow-sm hover:border-slate-400 hover:bg-slate-50"
         >
-          View NordPass
+          View NordVPN
         </a>
       </div>
       <p className="mt-2 text-xs text-slate-500">Affiliate-supported link</p>
@@ -2666,8 +2670,6 @@ export default function Page() {
           </div>
         </div>
 
-        {renderNordPassAffiliateCard()}
-
         {process.env.NODE_ENV === "development" && dataHealthSummary && (
           <div className="mb-8 rounded-3xl border border-indigo-200 bg-indigo-50 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -2949,6 +2951,8 @@ export default function Page() {
             )}
           </div>
         </section>
+
+        {renderNordVpnAffiliateCard()}
 
         <div className="mt-10 rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">

@@ -10,6 +10,8 @@ type ClickEvent = {
   sourceUrl?: string;
   resolvedUrl?: string;
   linkKind?: string;
+  placement?: string;
+  network?: string;
 };
 
 function parseClickEvent(request: NextRequest, body: unknown): ClickEvent | null {
@@ -50,6 +52,8 @@ function parseClickEvent(request: NextRequest, body: unknown): ClickEvent | null
       sourceUrl: body.get("sourceUrl")?.toString(),
       resolvedUrl: body.get("resolvedUrl")?.toString(),
       linkKind: body.get("linkKind")?.toString(),
+      placement: body.get("placement")?.toString(),
+      network: body.get("network")?.toString(),
     };
   }
 
@@ -96,6 +100,8 @@ export async function POST(request: NextRequest) {
     sourceUrl: payload.sourceUrl ?? null,
     resolvedUrl: payload.resolvedUrl ?? null,
     linkKind: payload.linkKind ?? null,
+    placement: payload.placement ?? null,
+    network: payload.network ?? null,
     referrer: request.headers.get("referer"),
     userAgent: request.headers.get("user-agent"),
   });
@@ -112,6 +118,8 @@ export async function POST(request: NextRequest) {
         sourceUrl: payload.sourceUrl ?? null,
         resolvedUrl: payload.resolvedUrl ?? null,
         linkKind: payload.linkKind ?? null,
+        placement: payload.placement ?? null,
+        network: payload.network ?? null,
         referrer: request.headers.get("referer"),
       },
     });
