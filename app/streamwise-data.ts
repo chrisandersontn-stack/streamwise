@@ -533,16 +533,15 @@ export const options: Option[] = [
   // MEMBERSHIP / INCLUDED PATHS
   {
     id: "prime_membership_video",
-    name: "Prime Video via Amazon Prime",
+    name: "Prime Video included with Amazon Prime",
     provider: "amazon",
-    monthly: 14.99,
-    effectiveMonthly: 14.99,
+    monthly: 8.99,
+    effectiveMonthly: 0,
     covers: ["Prime Video"],
     notes:
-      "Full Amazon Prime membership includes Prime Video, but costs more than the standalone video plan if streaming is your only goal.",
+      "Prime Video is included with Amazon Prime at no extra streaming cost. Membership cost is not included in this comparison.",
     source: "Amazon Prime",
-    sourceUrl:
-      "https://www.amazon.com/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+    sourceUrl: "https://www.amazon.com/amazonprime",
     requires: ["amazon_prime"],
     includedWith: "amazon_prime",
     category: "membership",
@@ -552,12 +551,13 @@ export const options: Option[] = [
   },
   {
     id: "apple_one_individual",
-    name: "Apple One Individual",
+    name: "Apple TV+ included with Apple One",
     provider: "apple",
-    monthly: 19.95,
+    monthly: 12.99,
+    effectiveMonthly: 0,
     covers: ["Apple TV+"],
     notes:
-      "Apple One includes Apple TV+ plus other Apple subscriptions, but costs more than standalone Apple TV+ if that is all you need.",
+      "Apple TV+ is included with Apple One at no extra streaming cost. Membership cost is not included in this comparison.",
     source: "Apple One",
     sourceUrl: "https://www.apple.com/apple-one/",
     requires: ["apple_one"],

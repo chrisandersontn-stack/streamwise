@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { Option } from "./streamwise-data";
+import { options as defaultCatalogOptions } from "./streamwise-data";
 import { calculateCombos, getOptionAnnualCost } from "./streamwise-logic";
 
 function makeOption(overrides: Partial<Option>): Option {
@@ -434,5 +435,81 @@ describe("calculateCombos", () => {
       today
     );
     expect(allowedWithAppleOne[0]?.chosen.map((c) => c.id)).toEqual(["apple_one_individual"]);
+  });
+
+  it("prefers Prime-included Prime Video over standalone when user has Amazon Prime (full catalog)", () => {
+    const today = new Date("2026-05-02T00:00:00Z");
+
+    const withoutPrime = calculateCombos(
+      defaultCatalogOptions,
+      ["Prime Video"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      today
+    );
+    expect(withoutPrime[0]?.chosen.map((c) => c.id)).toEqual(["prime_video_direct"]);
+
+    const withPrime = calculateCombos(
+      defaultCatalogOptions,
+      ["Prime Video"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      today
+    );
+    expect(withPrime[0]?.chosen.map((c) => c.id)).toEqual(["prime_membership_video"]);
+    expect(withPrime[0]?.total).toBe(0);
+    expect(withPrime[0]?.savings).toBeGreaterThan(0);
+  });
+
+  it("prefers Apple-One-included Apple TV+ over standalone when user has Apple One (full catalog)", () => {
+    const today = new Date("2026-05-02T00:00:00Z");
+
+    const withoutAppleOne = calculateCombos(
+      defaultCatalogOptions,
+      ["Apple TV+"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      today
+    );
+    expect(withoutAppleOne[0]?.chosen.map((c) => c.id)).toEqual(["apple_direct"]);
+
+    const withAppleOne = calculateCombos(
+      defaultCatalogOptions,
+      ["Apple TV+"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      today
+    );
+    expect(withAppleOne[0]?.chosen.map((c) => c.id)).toEqual(["apple_one_individual"]);
+    expect(withAppleOne[0]?.total).toBe(0);
+    expect(withAppleOne[0]?.savings).toBeGreaterThan(0);
   });
 });
