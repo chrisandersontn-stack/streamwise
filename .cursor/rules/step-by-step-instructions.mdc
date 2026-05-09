@@ -1,0 +1,10 @@
+---
+description: Always give step-by-step instructions for tasks the user must do locally or in accounts the agent cannot access.
+alwaysApply: true
+---
+
+# Step-by-step instructions for Chris
+
+When the user must do something outside the repo (browser, hosting, Supabase, Git auth, terminals they own, etc.), **always** respond with **numbered step-by-step** instructions. Use short imperative lines, exact UI labels where helpful, and full commands (no ellipses). Do not replace these with only high-level bullets unless the user asks for a short summary.
+
+If a step is optional, label it **Optional:**. If a step depends on their host (e.g. Vercel), say **If you use Vercel:** (or Netlify, etc.).
