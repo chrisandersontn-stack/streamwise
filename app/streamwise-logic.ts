@@ -44,6 +44,10 @@ function isOptionAvailableToday(
   hasTMobile: boolean,
   hasXfinity: boolean,
   hasInstacartPlus: boolean,
+  hasAmazonPrime: boolean,
+  hasAtt: boolean,
+  hasSpectrumCharter: boolean,
+  hasAppleOne: boolean,
   today: Date
 ) {
   if (opt.priceStatus === "expired") {
@@ -79,6 +83,22 @@ function isOptionAvailableToday(
   }
 
   if (opt.requires.includes("instacart_plus") && !hasInstacartPlus) {
+    return false;
+  }
+
+  if (opt.requires.includes("amazon_prime") && !hasAmazonPrime) {
+    return false;
+  }
+
+  if (opt.requires.includes("att") && !hasAtt) {
+    return false;
+  }
+
+  if (opt.requires.includes("spectrum_charter") && !hasSpectrumCharter) {
+    return false;
+  }
+
+  if (opt.requires.includes("apple_one") && !hasAppleOne) {
     return false;
   }
 
@@ -262,6 +282,10 @@ function getAvailableOptions(
   hasTMobile: boolean,
   hasXfinity: boolean,
   hasInstacartPlus: boolean,
+  hasAmazonPrime: boolean,
+  hasAtt: boolean,
+  hasSpectrumCharter: boolean,
+  hasAppleOne: boolean,
   today: Date
 ) {
   return options
@@ -273,6 +297,10 @@ function getAvailableOptions(
         hasTMobile,
         hasXfinity,
         hasInstacartPlus,
+        hasAmazonPrime,
+        hasAtt,
+        hasSpectrumCharter,
+        hasAppleOne,
         today
       )
     )
@@ -436,6 +464,10 @@ export function calculateCombos(
   hasTMobile: boolean,
   hasXfinity: boolean,
   hasInstacartPlus: boolean,
+  hasAmazonPrime: boolean,
+  hasAtt: boolean,
+  hasSpectrumCharter: boolean,
+  hasAppleOne: boolean,
   todayOverride?: Date,
   serviceCatalog: Service[] = defaultServices
 ): ComboResult[] {
@@ -459,6 +491,10 @@ export function calculateCombos(
     hasTMobile,
     hasXfinity,
     hasInstacartPlus,
+    hasAmazonPrime,
+    hasAtt,
+    hasSpectrumCharter,
+    hasAppleOne,
     today
   );
 

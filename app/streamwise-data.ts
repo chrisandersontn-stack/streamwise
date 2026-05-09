@@ -10,14 +10,22 @@ export type Requirement =
   | "walmart_plus"
   | "tmobile"
   | "xfinity"
-  | "instacart_plus";
+  | "instacart_plus"
+  | "amazon_prime"
+  | "att"
+  | "spectrum_charter"
+  | "apple_one";
 
 export type IncludedWith =
   | "verizon"
   | "walmart_plus"
   | "tmobile"
   | "xfinity"
-  | "instacart_plus";
+  | "instacart_plus"
+  | "amazon_prime"
+  | "att"
+  | "spectrum_charter"
+  | "apple_one";
 
 export type OptionCategory =
   | "direct"
@@ -535,6 +543,8 @@ export const options: Option[] = [
     source: "Amazon Prime",
     sourceUrl:
       "https://www.amazon.com/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+    requires: ["amazon_prime"],
+    includedWith: "amazon_prime",
     category: "membership",
     mutuallyExclusiveGroup: "prime_video_access",
     lastChecked: LAST_CHECKED,
@@ -550,6 +560,8 @@ export const options: Option[] = [
       "Apple One includes Apple TV+ plus other Apple subscriptions, but costs more than standalone Apple TV+ if that is all you need.",
     source: "Apple One",
     sourceUrl: "https://www.apple.com/apple-one/",
+    requires: ["apple_one"],
+    includedWith: "apple_one",
     category: "membership",
     mutuallyExclusiveGroup: "apple_tv_access",
     lastChecked: LAST_CHECKED,

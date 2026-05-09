@@ -32,6 +32,10 @@ describe("repairCatalogOptions (STARZ promo)", () => {
       false,
       false,
       false,
+      false,
+      false,
+      false,
+      false,
       new Date("2026-05-02T00:00:00Z")
     );
     expect(combos[0]?.chosen.some((c) => c.id === "starz_promo")).toBe(true);

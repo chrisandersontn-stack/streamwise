@@ -51,6 +51,10 @@ describe("calculateCombos", () => {
       false,
       false,
       false,
+      false,
+      false,
+      false,
+      false,
       new Date("2026-04-10T00:00:00Z")
     );
 
@@ -88,6 +92,10 @@ describe("calculateCombos", () => {
       false,
       false,
       false,
+      false,
+      false,
+      false,
+      false,
       new Date("2026-05-02T00:00:00Z")
     );
 
@@ -113,6 +121,10 @@ describe("calculateCombos", () => {
     const results = calculateCombos(
       localOptions,
       ["Netflix"],
+      false,
+      false,
+      false,
+      false,
       false,
       false,
       false,
@@ -149,6 +161,10 @@ describe("calculateCombos", () => {
       false,
       false,
       false,
+      false,
+      false,
+      false,
+      false,
       new Date("2026-04-10T00:00:00Z")
     );
 
@@ -158,6 +174,10 @@ describe("calculateCombos", () => {
       false,
       false,
       true,
+      false,
+      false,
+      false,
+      false,
       false,
       false,
       new Date("2026-04-10T00:00:00Z")
@@ -210,6 +230,10 @@ describe("calculateCombos", () => {
       false,
       false,
       false,
+      false,
+      false,
+      false,
+      false,
       new Date("2026-04-10T00:00:00Z")
     );
 
@@ -237,6 +261,10 @@ describe("calculateCombos", () => {
       false,
       false,
       false,
+      false,
+      false,
+      false,
+      false,
       new Date("2026-04-10T00:00:00Z")
     );
 
@@ -257,6 +285,10 @@ describe("calculateCombos", () => {
     const results = calculateCombos(
       localOptions,
       ["Netflix"],
+      false,
+      false,
+      false,
+      false,
       false,
       false,
       false,
@@ -295,11 +327,112 @@ describe("calculateCombos", () => {
       false,
       false,
       false,
+      false,
+      false,
+      false,
+      false,
       new Date("2026-04-10T00:00:00Z")
     );
 
     expect(results[0]?.annualTotal).toBe(120);
     expect(results[1]?.annualTotal).toBe(120);
     expect(results[0]?.chosen.map((item) => item.id)).toEqual(["promo_then_14"]);
+  });
+
+  it("respects amazon_prime and apple_one requirements", () => {
+    const today = new Date("2026-05-02T00:00:00Z");
+
+    const primeMembershipOnly: Option[] = [
+      makeOption({
+        id: "prime_membership_video",
+        name: "Prime Video via Amazon Prime",
+        provider: "amazon",
+        monthly: 14.99,
+        effectiveMonthly: 14.99,
+        covers: ["Prime Video"],
+        requires: ["amazon_prime"],
+        includedWith: "amazon_prime",
+        category: "membership",
+        mutuallyExclusiveGroup: "prime_video_access",
+      }),
+    ];
+
+    const blockedWithoutPrime = calculateCombos(
+      primeMembershipOnly,
+      ["Prime Video"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      today
+    );
+    expect(blockedWithoutPrime.length).toBe(0);
+
+    const allowedWithPrime = calculateCombos(
+      primeMembershipOnly,
+      ["Prime Video"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      today
+    );
+    expect(allowedWithPrime[0]?.chosen.map((c) => c.id)).toEqual(["prime_membership_video"]);
+
+    const appleOneOnly: Option[] = [
+      makeOption({
+        id: "apple_one_individual",
+        name: "Apple One Individual",
+        provider: "apple",
+        monthly: 19.95,
+        covers: ["Apple TV+"],
+        requires: ["apple_one"],
+        includedWith: "apple_one",
+        category: "membership",
+        mutuallyExclusiveGroup: "apple_tv_access",
+      }),
+    ];
+
+    const blockedWithoutAppleOne = calculateCombos(
+      appleOneOnly,
+      ["Apple TV+"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      today
+    );
+    expect(blockedWithoutAppleOne.length).toBe(0);
+
+    const allowedWithAppleOne = calculateCombos(
+      appleOneOnly,
+      ["Apple TV+"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      today
+    );
+    expect(allowedWithAppleOne[0]?.chosen.map((c) => c.id)).toEqual(["apple_one_individual"]);
   });
 });

@@ -32,6 +32,10 @@ type ProviderKey =
   | "tmobile"
   | "xfinity"
   | "instacart_plus"
+  | "amazon_prime"
+  | "att"
+  | "spectrum_charter"
+  | "apple_one"
   | "apple"
   | "amazon"
   | "hulu"
@@ -108,6 +112,10 @@ type PreferencesPayload = {
   hasTMobile: boolean;
   hasXfinity: boolean;
   hasInstacartPlus: boolean;
+  hasAmazonPrime: boolean;
+  hasAtt: boolean;
+  hasSpectrumCharter: boolean;
+  hasAppleOne: boolean;
   rankingMode: RankingMode;
 };
 
@@ -189,7 +197,7 @@ function getItemProviderKey(item: Option): ProviderKey | undefined {
     includedWith?: ProviderKey;
   };
 
-  return maybeProvider.provider ?? maybeProvider.includedWith;
+  return maybeProvider.includedWith ?? maybeProvider.provider;
 }
 
 function getProviderDisplayName(provider: ProviderKey | undefined) {
@@ -206,6 +214,14 @@ function getProviderDisplayName(provider: ProviderKey | undefined) {
       return "Xfinity";
     case "instacart_plus":
       return "Instacart+";
+    case "amazon_prime":
+      return "Amazon Prime";
+    case "att":
+      return "AT&T";
+    case "spectrum_charter":
+      return "Spectrum / Charter";
+    case "apple_one":
+      return "Apple One";
     case "apple":
       return "Apple";
     case "amazon":
@@ -224,10 +240,14 @@ function getProviderBadgeClasses(provider: ProviderKey | undefined) {
     case "verizon":
     case "tmobile":
     case "xfinity":
+    case "att":
+    case "spectrum_charter":
       return "bg-sky-100 text-sky-700";
     case "walmart_plus":
     case "instacart_plus":
+    case "amazon_prime":
       return "bg-emerald-100 text-emerald-700";
+    case "apple_one":
     case "apple":
       return "bg-zinc-100 text-zinc-700";
     case "amazon":
@@ -2023,7 +2043,9 @@ function getProviderUnlockSummary(
   selected: string[],
   hasTMobile: boolean,
   hasXfinity: boolean,
-  hasInstacartPlus: boolean
+  hasInstacartPlus: boolean,
+  hasAmazonPrime: boolean,
+  hasAppleOne: boolean
 ) {
   const unlocked: string[] = [];
 
@@ -2056,6 +2078,14 @@ function getProviderUnlockSummary(
     unlocked.push("Instacart+ can unlock included Peacock access");
   }
 
+  if (hasAmazonPrime && selected.includes("Prime Video")) {
+    unlocked.push("Amazon Prime can unlock membership-based Prime Video paths");
+  }
+
+  if (hasAppleOne && selected.includes("Apple TV+")) {
+    unlocked.push("Apple One can bundle Apple TV+ with other Apple subscriptions");
+  }
+
   return unlocked;
 }
 
@@ -2070,6 +2100,10 @@ export default function Page() {
   const [hasTMobile, setHasTMobile] = React.useState(false);
   const [hasXfinity, setHasXfinity] = React.useState(false);
   const [hasInstacartPlus, setHasInstacartPlus] = React.useState(false);
+  const [hasAmazonPrime, setHasAmazonPrime] = React.useState(false);
+  const [hasAtt, setHasAtt] = React.useState(false);
+  const [hasSpectrumCharter, setHasSpectrumCharter] = React.useState(false);
+  const [hasAppleOne, setHasAppleOne] = React.useState(false);
   const [rankingMode, setRankingMode] = React.useState<RankingMode>("starting");
   const [serviceSearch, setServiceSearch] = React.useState("");
   const [authEmail, setAuthEmail] = React.useState("");
@@ -2141,6 +2175,10 @@ export default function Page() {
         setHasTMobile(Boolean(prefs.hasTMobile));
         setHasXfinity(Boolean(prefs.hasXfinity));
         setHasInstacartPlus(Boolean(prefs.hasInstacartPlus));
+        setHasAmazonPrime(Boolean(prefs.hasAmazonPrime));
+        setHasAtt(Boolean(prefs.hasAtt));
+        setHasSpectrumCharter(Boolean(prefs.hasSpectrumCharter));
+        setHasAppleOne(Boolean(prefs.hasAppleOne));
         setRankingMode(prefs.rankingMode === "ongoing" ? "ongoing" : "starting");
       })
       .catch(() => undefined)
@@ -2158,6 +2196,10 @@ export default function Page() {
         hasTMobile,
         hasXfinity,
         hasInstacartPlus,
+        hasAmazonPrime,
+        hasAtt,
+        hasSpectrumCharter,
+        hasAppleOne,
         rankingMode,
       };
       const headers: Record<string, string> = {
@@ -2186,6 +2228,10 @@ export default function Page() {
     hasTMobile,
     hasXfinity,
     hasInstacartPlus,
+    hasAmazonPrime,
+    hasAtt,
+    hasSpectrumCharter,
+    hasAppleOne,
     rankingMode,
     authSession,
   ]);
@@ -2224,6 +2270,10 @@ export default function Page() {
     setHasTMobile(false);
     setHasXfinity(false);
     setHasInstacartPlus(false);
+    setHasAmazonPrime(false);
+    setHasAtt(false);
+    setHasSpectrumCharter(false);
+    setHasAppleOne(false);
     setRankingMode("starting");
     setServiceSearch("");
   };
@@ -2235,6 +2285,10 @@ export default function Page() {
     setHasTMobile(false);
     setHasXfinity(false);
     setHasInstacartPlus(false);
+    setHasAmazonPrime(false);
+    setHasAtt(false);
+    setHasSpectrumCharter(false);
+    setHasAppleOne(false);
     setRankingMode("starting");
     setServiceSearch("");
   };
@@ -2282,9 +2336,18 @@ export default function Page() {
       selected,
       hasTMobile,
       hasXfinity,
-      hasInstacartPlus
+      hasInstacartPlus,
+      hasAmazonPrime,
+      hasAppleOne
     );
-  }, [selected, hasTMobile, hasXfinity, hasInstacartPlus]);
+  }, [
+    selected,
+    hasTMobile,
+    hasXfinity,
+    hasInstacartPlus,
+    hasAmazonPrime,
+    hasAppleOne,
+  ]);
 
   const selectedRetailTotal = React.useMemo(() => {
     return serviceCards
@@ -2302,6 +2365,10 @@ export default function Page() {
         hasTMobile,
         hasXfinity,
         hasInstacartPlus,
+        hasAmazonPrime,
+        hasAtt,
+        hasSpectrumCharter,
+        hasAppleOne,
         undefined,
         serviceCatalog
       ),
@@ -2312,6 +2379,10 @@ export default function Page() {
       hasTMobile,
       hasXfinity,
       hasInstacartPlus,
+      hasAmazonPrime,
+      hasAtt,
+      hasSpectrumCharter,
+      hasAppleOne,
       optionCatalog,
       serviceCatalog,
     ]
@@ -2554,6 +2625,54 @@ export default function Page() {
                 />
                 <label htmlFor="has-instacart-plus" className="text-sm text-slate-600">
                   I have Instacart+ (unlock included Peacock benefit)
+                </label>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  id="has-amazon-prime"
+                  type="checkbox"
+                  checked={hasAmazonPrime}
+                  onChange={() => setHasAmazonPrime((prev) => !prev)}
+                />
+                <label htmlFor="has-amazon-prime" className="text-sm text-slate-600">
+                  I have Amazon Prime (unlock Prime Video and Prime membership streaming options)
+                </label>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  id="has-att"
+                  type="checkbox"
+                  checked={hasAtt}
+                  onChange={() => setHasAtt((prev) => !prev)}
+                />
+                <label htmlFor="has-att" className="text-sm text-slate-600">
+                  I have AT&T (unlock telecom streaming offers)
+                </label>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  id="has-spectrum-charter"
+                  type="checkbox"
+                  checked={hasSpectrumCharter}
+                  onChange={() => setHasSpectrumCharter((prev) => !prev)}
+                />
+                <label htmlFor="has-spectrum-charter" className="text-sm text-slate-600">
+                  I have Spectrum / Charter (unlock cable and internet streaming offers)
+                </label>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  id="has-apple-one"
+                  type="checkbox"
+                  checked={hasAppleOne}
+                  onChange={() => setHasAppleOne((prev) => !prev)}
+                />
+                <label htmlFor="has-apple-one" className="text-sm text-slate-600">
+                  I have Apple One (unlock Apple bundle pricing)
                 </label>
               </div>
             </div>

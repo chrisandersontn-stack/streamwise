@@ -10,6 +10,10 @@ type UserPreferences = {
   hasTMobile: boolean;
   hasXfinity: boolean;
   hasInstacartPlus: boolean;
+  hasAmazonPrime: boolean;
+  hasAtt: boolean;
+  hasSpectrumCharter: boolean;
+  hasAppleOne: boolean;
   rankingMode: "starting" | "ongoing";
   updatedAt: string;
 };
@@ -25,6 +29,10 @@ const defaultPreferences: Omit<UserPreferences, "updatedAt"> = {
   hasTMobile: false,
   hasXfinity: false,
   hasInstacartPlus: false,
+  hasAmazonPrime: false,
+  hasAtt: false,
+  hasSpectrumCharter: false,
+  hasAppleOne: false,
   rankingMode: "starting",
 };
 
@@ -46,6 +54,10 @@ function normalizePreferences(value: unknown): UserPreferences {
     hasTMobile: Boolean(value.hasTMobile),
     hasXfinity: Boolean(value.hasXfinity),
     hasInstacartPlus: Boolean(value.hasInstacartPlus),
+    hasAmazonPrime: Boolean(value.hasAmazonPrime),
+    hasAtt: Boolean(value.hasAtt),
+    hasSpectrumCharter: Boolean(value.hasSpectrumCharter),
+    hasAppleOne: Boolean(value.hasAppleOne),
     rankingMode: value.rankingMode === "ongoing" ? "ongoing" : "starting",
     updatedAt:
       typeof value.updatedAt === "string" ? value.updatedAt : new Date().toISOString(),
