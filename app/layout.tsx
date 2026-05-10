@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   title: "StreamWise | Find Better Streaming Deals",
   description:
     "Compare streaming subscriptions, bundles, and provider perks to find lower monthly and annual costs.",
+  verification: {
+    other: {
+      "fo-verify": "ca91fe57-4835-4fe0-b91d-01d93b7bcdaf",
+    },
+  },
 };
 
 export default function RootLayout({
