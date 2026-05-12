@@ -3,6 +3,11 @@ import path from "node:path";
 
 import type { PriceStatus } from "@/app/streamwise-data";
 import { options as defaultOptions, services as defaultServices } from "@/app/streamwise-data";
+import {
+  parseAdminFullCatalogOption,
+  serviceLabelsFromCatalog,
+  type AdminFullOptionSaveMode,
+} from "@/lib/server/admin-full-catalog-option";
 import { getSupabaseAdminClient } from "@/lib/server/supabase-admin";
 
 type Service = (typeof defaultServices)[number];
@@ -299,4 +304,33 @@ export async function applyAdminCatalogOptionUpdate(
   nextOptions[index] = next;
   await saveCatalog({ services: catalog.services, options: nextOptions });
   return next;
+}
+
+/**
+ * Replace or append one catalog option (full Option shape) and persist.
+ */
+export async function applyAdminCatalogOptionFullSave(
+  raw: unknown,
+  mode: AdminFullOptionSaveMode
+): Promise<CatalogOption> {
+  const catalog = await getCatalog();
+  const labels = serviceLabelsFromCatalog(catalog.services);
+  const option = parseAdminFullCatalogOption(raw, labels);
+  const index = catalog.options.findIndex((o) => o.id === option.id);
+
+  if (mode === "create") {
+    if (index !== -1) {
+      throw new Error("option_id_exists");
+    }
+  } else if (index === -1) {
+    throw new Error("unknown_option");
+  }
+
+  const nextOptions =
+    mode === "create"
+      ? [...catalog.options, option as CatalogOption]
+      : catalog.options.map((o, i) => (i === index ? (option as CatalogOption) : o));
+
+  await saveCatalog({ services: catalog.services, options: nextOptions });
+  return option as CatalogOption;
 }
