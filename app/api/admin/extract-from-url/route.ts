@@ -60,6 +60,24 @@ export async function POST(request: NextRequest) {
       "fetch_empty_content",
     ]);
     const status = clientErrors.has(code) ? 400 : 502;
-    return NextResponse.json({ ok: false, error: code }, { status });
+
+    const fetchHints: Record<string, string> = {
+      fetch_http_403:
+        "That site refused our server (anti-bot / login wall). Try a simpler URL (help article, press pricing page) or fill the form by hand.",
+      fetch_http_401:
+        "That URL requires a login our server cannot use. Open the page in your browser, copy the visible pricing text into Notes, or pick a public help URL.",
+      fetch_http_404:
+        "That URL returned “not found.” Check for typos or use the provider’s main pricing/help page.",
+      fetch_empty_content:
+        "The page loaded but had almost no readable text (often heavy JavaScript). Try a different URL or enter fields manually.",
+      fetch_timeout: "The page took too long to respond. Try again or use a lighter URL.",
+      fetch_body_too_large: "That page was too large to download in one request. Try a narrower help/pricing URL.",
+    };
+
+    const hint = fetchHints[code];
+    return NextResponse.json(
+      hint ? { ok: false, error: code, hint } : { ok: false, error: code },
+      { status }
+    );
   }
 }

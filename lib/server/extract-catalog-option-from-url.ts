@@ -34,9 +34,14 @@ export async function fetchPagePlainText(urlString: string): Promise<FetchPageRe
       signal: controller.signal,
       redirect: "follow",
       headers: {
+        // Many sites return 403 for non-browser or “bot” user agents; use a normal desktop Chrome string.
         "User-Agent":
-          "Mozilla/5.0 (compatible; StreamWiseCatalogBot/1.0; +https://streamwise-xi.vercel.app)",
-        Accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.8",
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Cache-Control": "no-cache",
+        "Upgrade-Insecure-Requests": "1",
       },
     });
     if (!res.ok) {
