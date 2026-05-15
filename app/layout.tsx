@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { SiteFooter, SiteHeaderNav } from "@/components/site-chrome";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,7 +38,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-sw-page text-sw-body">
         <header className="sticky top-0 z-50 border-b border-white/10 bg-sw-heading shadow-[0_6px_20px_-6px_rgba(0,0,0,0.35)]">
-          <div className="mx-auto flex h-14 w-full max-w-7xl items-center px-4 sm:h-16 sm:px-6">
+          <div className="mx-auto flex min-h-14 w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2 sm:min-h-16 sm:px-6 sm:py-0">
             <Link
               href="/"
               className="flex items-center gap-2.5 text-white no-underline transition hover:opacity-90"
@@ -52,9 +53,11 @@ export default function RootLayout({
               />
               <span className="text-[15px] font-semibold tracking-tight sm:text-base">StreamWise</span>
             </Link>
+            <SiteHeaderNav />
           </div>
         </header>
-        {children}
+        <div className="flex flex-1 flex-col">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );

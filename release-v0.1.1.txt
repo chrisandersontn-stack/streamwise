@@ -1,0 +1,4 @@
+v0.1.1
+- Added NordVPN secondary affiliate card
+- Uses CJ link: https://www.dpbolvw.net/click-101740617-13914989
+- Placement: above full comparison table

@@ -1612,6 +1612,13 @@ function renderLegalAndCatalogDetails(props: {
           >
             Terms
           </Link>
+          {" · "}
+          <Link
+            className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+            href="/contact"
+          >
+            Contact
+          </Link>
         </p>
         <div className="rounded-xl border border-black/5 bg-sw-section/60 p-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -2090,8 +2097,6 @@ function getProviderUnlockSummary(
 }
 
 export default function Page() {
-  const supportEmail =
-    process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() || "support@streamwise.app";
   const [catalog, setCatalog] = React.useState<CatalogResponse | null>(null);
   const [preferencesHydrated, setPreferencesHydrated] = React.useState(false);
   const [selected, setSelected] = React.useState<string[]>(defaultSelectedServices);
@@ -2118,11 +2123,6 @@ export default function Page() {
 
   const serviceCatalog = catalog?.services ?? defaultServices;
   const optionCatalog = catalog?.options ?? defaultOptions;
-
-  const showAdminPricingEditor =
-    process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK === "1" ||
-    process.env.NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK === "true";
 
   React.useEffect(() => {
     void fetch("/api/catalog", { cache: "no-store" })
@@ -3149,71 +3149,6 @@ export default function Page() {
           catalog,
         })}
 
-        <footer className="mt-12 border-t border-black/5 pt-8 text-sm text-sw-body">
-          <p className="max-w-2xl leading-relaxed">
-            StreamWise compares streaming options using pricing data, provider terms, and
-            estimated 12-month cost.
-          </p>
-          <p className="mt-2 max-w-2xl leading-relaxed text-slate-500">
-            Prices and offers can change. Always confirm final terms with the provider before
-            subscribing.
-          </p>
-          <nav
-            className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-slate-500"
-            aria-label="Site and legal"
-          >
-            <Link
-              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-              href="/about"
-            >
-              About
-            </Link>
-            <Link
-              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-              href="/support"
-            >
-              Support
-            </Link>
-            <Link
-              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-              href="/privacy"
-            >
-              Privacy
-            </Link>
-            <Link
-              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-              href="/terms"
-            >
-              Terms
-            </Link>
-            <Link
-              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-              href="/affiliate-disclosure"
-            >
-              Affiliate disclosure
-            </Link>
-            <Link
-              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-              href="/app-privacy-details"
-            >
-              App privacy details
-            </Link>
-            <a
-              className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-              href={`mailto:${supportEmail}`}
-            >
-              Contact support
-            </a>
-            {showAdminPricingEditor && (
-              <Link
-                className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 hover:text-slate-900"
-                href="/admin/pricing"
-              >
-                Catalog admin (pricing)
-              </Link>
-            )}
-          </nav>
-        </footer>
       </div>
     </div>
   );
