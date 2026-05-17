@@ -1,122 +1,148 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { LegalArticle, LegalPageTitle } from "@/components/legal-article";
+import {
+  LegalArticle,
+  LegalHighlight,
+  LegalList,
+  LegalMeta,
+  LegalPageFooter,
+  LegalPageTitle,
+  LegalSection,
+} from "@/components/legal-article";
 import { STREAMWISE_HELLO_EMAIL, getPublicContactEmail } from "@/lib/site-email";
+import { marketingMetadata } from "@/lib/marketing-metadata";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | StreamWise",
-  description: "What StreamWise collects, what it does not collect, analytics, and affiliate links.",
-};
-
-const section = "mt-8 space-y-4 text-sm leading-relaxed text-sw-body sm:text-base";
+export const metadata = marketingMetadata({
+  title: "Privacy Policy",
+  description:
+    "How StreamWise handles analytics, anonymous usage data, affiliate links, and your privacy. Contact hello@streamwise.media.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   const contactEmail = getPublicContactEmail();
 
   return (
     <LegalArticle>
-      <LegalPageTitle eyebrow="Legal">Privacy Policy</LegalPageTitle>
-      <p className="mt-6 text-sm text-slate-500">Last updated: May 11, 2026</p>
+      <LegalPageTitle
+        eyebrow="Legal"
+        lead="We collect only what we need to run comparisons, improve the product, and keep the site secure. We do not sell your personal data."
+      >
+        Privacy Policy
+      </LegalPageTitle>
 
-      <section className={section}>
+      <LegalMeta>Last updated: May 15, 2026</LegalMeta>
+
+      <LegalSection title="Overview" id="overview">
         <p>
-          StreamWise helps you compare streaming pricing paths. This policy explains what
-          information we collect, what we do not collect, and how we use it. Questions:{" "}
+          StreamWise helps you compare streaming pricing paths. This policy describes what we
+          collect, what stays anonymous, and how to reach us at{" "}
           <a href={`mailto:${STREAMWISE_HELLO_EMAIL}`}>{STREAMWISE_HELLO_EMAIL}</a>.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">What we collect</h2>
-      <section className={section}>
-        <ul>
+      <LegalSection title="Analytics and usage data" id="analytics">
+        <p>
+          We use <strong className="font-semibold text-sw-heading">analytics</strong> to understand
+          how the product is used and where to improve it. This can include:
+        </p>
+        <LegalList>
           <li>
-            <strong className="text-sw-heading">Information you provide.</strong> If you use
-            optional sign-in, your email address is processed by our authentication provider
-            (Supabase) to deliver magic-link login. StreamWise may store preference settings
-            associated with your account.
-          </li>
-          <li>
-            <strong className="text-sw-heading">Product usage and analytics.</strong> StreamWise
-            records events to understand usage and improve the product. Events can include
-            recommendation views, outbound offer clicks, your selected service set, timestamps,
-            referrer, and a browser user-agent string. Events may be stored in our database and, when
-            configured in the deployment environment, summarized or forwarded to analytics providers
-            (for example PostHog) for product metrics. We also use{" "}
+            <strong className="text-sw-heading">Anonymous usage data</strong> such as page views and
+            general traffic patterns (via{" "}
             <a href="https://plausible.io/privacy-focused-web-analytics" rel="noopener noreferrer">
               Plausible
-            </a>{" "}
-            on the public website for privacy-friendly page analytics (no advertising cookies).
+            </a>
+            , a privacy-oriented analytics provider without advertising cookies).
           </li>
           <li>
-            <strong className="text-sw-heading">Cookies and similar technologies.</strong> We may
-            use cookies or local storage for session continuity, authentication, and basic analytics
-            behavior.
-          </li>
-        </ul>
-      </section>
-
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">
-        What we do not collect
-      </h2>
-      <section className={section}>
-        <ul>
-          <li>
-            We do <strong className="text-sw-heading">not</strong> collect passwords for streaming
-            services (Netflix, Hulu, etc.) or run checkout on your behalf.
+            Product events like recommendation views, outbound offer clicks, selected services,
+            timestamps, referrer, and browser user-agent strings.
           </li>
           <li>
-            We do <strong className="text-sw-heading">not</strong> require an account to browse
-            comparisons; sign-in is optional for saving preferences.
+            When configured, aggregated metrics may also be sent to providers such as PostHog for
+            product analytics.
           </li>
-          <li>
-            We do <strong className="text-sw-heading">not</strong> sell your personal information
-            as a standalone product. We use data to operate and improve StreamWise as described
-            here.
-          </li>
-          <li>
-            StreamWise is <strong className="text-sw-heading">not</strong> directed to children
-            under 13, and we do not knowingly collect personal information from children.
-          </li>
-        </ul>
-      </section>
-
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">
-        Affiliate and external links
-      </h2>
-      <section className={section}>
+        </LegalList>
         <p>
-          StreamWise links to third-party websites. Those sites have their own privacy practices.
-          Outbound links may include affiliate or tracking parameters where configured.{" "}
-          <Link href="/affiliate-disclosure">Read the affiliate disclosure</Link>.
+          Analytics data is used to operate and improve StreamWise—not to build advertising profiles
+          about you across unrelated sites.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Third-party services</h2>
-      <section className={section}>
+      <LegalSection title="Information you provide" id="account">
         <p>
-          StreamWise uses Supabase for authentication and data persistence when enabled. Analytics
-          or hosting providers may also process technical data as part of operating the service.
+          Optional sign-in uses our authentication provider (Supabase) to deliver magic-link login.
+          If you create an account, we may store preference settings (for example your selected
+          streaming services) linked to your email.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">
-        Data retention and deletion
-      </h2>
-      <section className={section}>
+      <LegalHighlight>
+        <p className="text-sm font-semibold text-sw-heading sm:text-base">We do not sell personal data</p>
+        <p className="mt-2 text-sm leading-relaxed text-sw-body sm:text-base">
+          StreamWise does <strong className="font-semibold text-sw-heading">not sell</strong> your
+          personal information. We do not rent or trade contact details to data brokers or marketers.
+          Data is used only as described in this policy to run and improve the service.
+        </p>
+      </LegalHighlight>
+
+      <LegalSection title="What we do not collect" id="not-collected">
+        <LegalList>
+          <li>Passwords for Netflix, Hulu, or other streaming services.</li>
+          <li>Payment card numbers or checkout actions on your behalf.</li>
+          <li>
+            An account is <strong className="text-sw-heading">not required</strong> to browse
+            comparisons.
+          </li>
+          <li>
+            We do not knowingly collect personal information from children under 13.
+          </li>
+        </LegalList>
+      </LegalSection>
+
+      <LegalSection title="Cookies and similar technologies" id="cookies">
+        <p>
+          We may use cookies or local storage for session continuity, authentication, and basic
+          analytics behavior. You can control cookies through your browser settings.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="External links and affiliate disclosures" id="links">
+        <p>
+          StreamWise links to third-party websites (streaming providers, retailers, and official
+          offer pages). Those sites have their own privacy practices.
+        </p>
+        <p>
+          Outbound links may include affiliate or tracking parameters where configured. Affiliate
+          compensation does not change recommendation ranking. See our{" "}
+          <Link href="/affiliate-disclosure">affiliate disclosure</Link>.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Third-party services" id="third-parties">
+        <p>
+          Depending on configuration, StreamWise may use Supabase (auth and data), Vercel (hosting),
+          and analytics providers as described above. Each processes data according to its own
+          policies when you interact with those features.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Retention and deletion" id="retention">
         <p>
           We retain account preferences and analytics data only as long as needed to operate and
-          improve StreamWise. You may request deletion of account-associated data by contacting us
-          at <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+          improve StreamWise. To request deletion of account-associated data, email{" "}
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Contact</h2>
-      <section className={section}>
+      <LegalSection title="Contact" id="contact">
         <p>
           Privacy questions or deletion requests:{" "}
           <a href={`mailto:${STREAMWISE_HELLO_EMAIL}`}>{STREAMWISE_HELLO_EMAIL}</a>
         </p>
-      </section>
+      </LegalSection>
+
+      <LegalPageFooter />
     </LegalArticle>
   );
 }

@@ -1,129 +1,134 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { LegalArticle, LegalPageTitle } from "@/components/legal-article";
+import {
+  LegalArticle,
+  LegalHighlight,
+  LegalList,
+  LegalMeta,
+  LegalPageFooter,
+  LegalPageTitle,
+  LegalSection,
+} from "@/components/legal-article";
 import { STREAMWISE_HELLO_EMAIL } from "@/lib/site-email";
+import { marketingMetadata } from "@/lib/marketing-metadata";
 
-export const metadata: Metadata = {
-  title: "Terms of Service | StreamWise",
-  description: "Terms for using StreamWise as an informational streaming comparison tool.",
-};
-
-const section = "mt-8 space-y-4 text-sm leading-relaxed text-sw-body sm:text-base";
+export const metadata = marketingMetadata({
+  title: "Terms of Service",
+  description:
+    "Terms for using StreamWise: informational comparisons only, pricing may change, no accuracy guarantee, and limitation of liability.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
     <LegalArticle>
-      <LegalPageTitle eyebrow="Legal">Terms of Service</LegalPageTitle>
-      <p className="mt-6 text-sm text-slate-500">Last updated: May 11, 2026</p>
+      <LegalPageTitle
+        eyebrow="Legal"
+        lead="By using StreamWise, you agree to these Terms. Please read them before relying on any comparison result."
+      >
+        Terms of Service
+      </LegalPageTitle>
 
-      <section className={section}>
+      <LegalMeta>Last updated: May 15, 2026</LegalMeta>
+
+      <LegalSection title="Agreement" id="agreement">
         <p>
-          These Terms of Service (&quot;Terms&quot;) govern your use of the StreamWise website and
-          related informational tools (collectively, the &quot;Service&quot;). By using the Service,
-          you agree to these Terms.
+          These Terms of Service (&quot;Terms&quot;) govern your use of the StreamWise website,
+          mobile experience, and related tools (collectively, the &quot;Service&quot;). If you do not
+          agree, do not use the Service.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Informational use only</h2>
-      <section className={section}>
-        <p>
+      <LegalHighlight>
+        <p className="text-sm font-semibold text-sw-heading sm:text-base">Informational purposes only</p>
+        <p className="mt-2 text-sm leading-relaxed text-sw-body sm:text-base">
           StreamWise provides <strong className="font-semibold text-sw-heading">informational</strong>{" "}
-          comparisons of streaming offers, bundles, perks, and memberships. It is a planning aid,
-          not a subscription checkout, billing system, or provider support channel.
+          comparisons of streaming offers, bundles, perks, and memberships. It is a planning aid—not
+          a subscription checkout, billing system, or provider support channel.
         </p>
-      </section>
+      </LegalHighlight>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">
-        No guarantee of pricing accuracy
-      </h2>
-      <section className={section}>
+      <LegalSection title="Pricing, offers, and accuracy" id="pricing">
         <p>
-          Pricing, promotions, eligibility, taxes, and fees can change at any time and vary by
-          region, account, and device.{" "}
+          <strong className="font-semibold text-sw-heading">Prices and offers may change</strong> at
+          any time. Promotions, taxes, fees, eligibility, and regional differences are controlled by
+          providers, not StreamWise.
+        </p>
+        <p>
           <strong className="font-semibold text-sw-heading">
-            StreamWise does not guarantee that any price, offer, or description on the Service is
-            accurate, complete, or current.
+            We do not guarantee the accuracy
+          </strong>
+          , completeness, or timeliness of any price, offer name, or description on the Service.
+          Catalog data reflects a point-in-time snapshot and may lag behind provider websites.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Your decisions" id="decisions">
+        <p>
+          <strong className="font-semibold text-sw-heading">
+            You are solely responsible for purchase decisions.
           </strong>{" "}
-          You are responsible for verifying all material details with the official provider before
-          purchasing or changing subscriptions.
+          Before subscribing, canceling, or changing any plan, verify the current price, included
+          channels, contract terms, and eligibility on the official provider&apos;s checkout page.
         </p>
-      </section>
+        <LegalList>
+          <li>StreamWise does not place orders or manage billing on your behalf.</li>
+          <li>We are not financial, legal, or tax advisors.</li>
+          <li>Consult a qualified professional when you need advice beyond comparison research.</li>
+        </LegalList>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Prices and offers may change</h2>
-      <section className={section}>
+      <LegalSection title="No warranty" id="warranty">
         <p>
-          The Service reflects a point-in-time catalog and rules. Providers may update plans
-          without notice to StreamWise. Continued use of the Service after catalog or UI updates
-          constitutes acceptance of the Service as updated.
+          THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES OF
+          ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY,
+          FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT, TO THE FULLEST EXTENT PERMITTED BY
+          LAW.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">
-        Not financial, legal, or tax advice
-      </h2>
-      <section className={section}>
+      <LegalSection title="Limitation of liability" id="liability">
         <p>
-          The Service is not financial, legal, or tax advice. If you need professional advice, consult
-          a qualified professional.
+          TO THE MAXIMUM EXTENT PERMITTED BY LAW, STREAMWISE AND ITS OPERATORS, AFFILIATES, AND
+          CONTRIBUTORS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
+          PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS, REVENUE, DATA, OR GOODWILL, ARISING FROM YOUR USE
+          OF OR RELIANCE ON THE SERVICE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
         </p>
-      </section>
-
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">No warranty</h2>
-      <section className={section}>
         <p>
-          The Service is provided &quot;as is&quot; and &quot;as available&quot; without warranties
-          of any kind, whether express or implied, including implied warranties of merchantability,
-          fitness for a particular purpose, and non-infringement, to the fullest extent permitted by
-          law.
+          IN JURISDICTIONS THAT DO NOT ALLOW CERTAIN LIMITATIONS, OUR LIABILITY IS LIMITED TO THE
+          GREATEST EXTENT PERMITTED BY LAW.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Limitation of liability</h2>
-      <section className={section}>
+      <LegalSection title="Outbound links and affiliates" id="links">
         <p>
-          To the maximum extent permitted by law, StreamWise and its operators shall not be liable
-          for any indirect, incidental, special, consequential, or punitive damages, or any loss of
-          profits or revenues, whether incurred directly or indirectly, arising from your use of the
-          Service or reliance on any information provided through the Service.
+          The Service may link to third-party websites. We do not control and are not responsible for
+          third-party content, pricing, checkout flows, or privacy practices. See our{" "}
+          <Link href="/affiliate-disclosure">affiliate disclosure</Link>.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">
-        Outbound links and third parties
-      </h2>
-      <section className={section}>
+      <LegalSection title="Acceptable use" id="use">
         <p>
-          The Service may link to third-party websites and services. We do not control and are not
-          responsible for third-party content, pricing, checkout flows, or privacy practices.{" "}
-          <Link href="/affiliate-disclosure">Affiliate disclosure</Link>.
+          You agree not to interfere with the Service, abuse APIs, attempt unauthorized access, or use
+          automation that harms platform stability or other users.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Acceptable use</h2>
-      <section className={section}>
+      <LegalSection title="Changes to these Terms" id="changes">
         <p>
-          You agree not to interfere with the operation of the Service, abuse APIs, attempt
-          unauthorized access, or use automation in a way that harms platform stability or other
-          users.
+          We may update these Terms from time to time. Continued use after changes become effective
+          constitutes acceptance of the updated Terms.
         </p>
-      </section>
+      </LegalSection>
 
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Changes to these Terms</h2>
-      <section className={section}>
-        <p>
-          We may update these Terms from time to time. If we make material changes, we will take
-          reasonable steps to notify users where appropriate. Continued use after changes become
-          effective constitutes acceptance of the updated Terms.
-        </p>
-      </section>
-
-      <h2 className="mt-10 text-lg font-semibold tracking-tight text-sw-heading">Contact</h2>
-      <section className={section}>
+      <LegalSection title="Contact" id="contact">
         <p>
           Questions about these Terms:{" "}
           <a href={`mailto:${STREAMWISE_HELLO_EMAIL}`}>{STREAMWISE_HELLO_EMAIL}</a>
         </p>
-      </section>
+      </LegalSection>
+
+      <LegalPageFooter />
     </LegalArticle>
   );
 }

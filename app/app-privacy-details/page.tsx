@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPublicContactEmail } from "@/lib/site-email";
 
 export const metadata: Metadata = {
   title: "App Privacy Details | StreamWise",
@@ -62,8 +63,7 @@ const rows: PrivacyRow[] = [
 ];
 
 export default function AppPrivacyDetailsPage() {
-  const supportEmail =
-    process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() || "support@streamwise.app";
+  const supportEmail = getPublicContactEmail();
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-16 text-slate-800">
