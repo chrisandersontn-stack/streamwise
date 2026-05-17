@@ -50,6 +50,28 @@ export async function POST(request: NextRequest) {
         { status: 503 }
       );
     }
+    if (code === "invalid_anthropic_api_key_format") {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: code,
+          hint:
+            "ANTHROPIC_API_KEY should start with sk-ant- and have no quotes. In Vercel, paste only the key value, then redeploy.",
+        },
+        { status: 503 }
+      );
+    }
+    if (code.startsWith("anthropic_http_401")) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "anthropic_invalid_api_key",
+          hint:
+            "Anthropic rejected the API key (invalid or revoked). Create a new key at console.anthropic.com → API Keys, update ANTHROPIC_API_KEY in Vercel (Production), redeploy, then try Extract again.",
+        },
+        { status: 503 }
+      );
+    }
     const clientErrors = new Set([
       "invalid_url",
       "fetch_http_404",

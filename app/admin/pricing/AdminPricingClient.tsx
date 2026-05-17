@@ -370,8 +370,10 @@ export function AdminPricingClient() {
         warnings?: string[];
       };
       if (!res.ok || !data.ok) {
-        const hint = data.hint ? ` ${data.hint}` : "";
-        setExtractError((data.error ?? `HTTP ${res.status}`) + hint);
+        const msg = data.hint
+          ? data.hint
+          : (data.error ?? `HTTP ${res.status}`);
+        setExtractError(msg);
         return;
       }
       if (rememberToken && typeof window !== "undefined") {

@@ -1,3 +1,5 @@
+import { anthropicKeyLooksValid, getAnthropicApiKey } from "@/lib/server/anthropic";
+
 /** Current Sonnet on first-party Claude API; see https://docs.anthropic.com/en/docs/about-claude/models */
 const DEFAULT_MODEL = "claude-sonnet-4-6";
 const FETCH_TIMEOUT_MS = 12_000;
@@ -85,9 +87,12 @@ export type ExtractCatalogOptionResult = {
 export async function extractCatalogOptionWithAnthropic(
   input: ExtractCatalogOptionInput
 ): Promise<ExtractCatalogOptionResult> {
-  const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
+  const apiKey = getAnthropicApiKey();
   if (!apiKey) {
     throw new Error("missing_anthropic_api_key");
+  }
+  if (!anthropicKeyLooksValid(apiKey)) {
+    throw new Error("invalid_anthropic_api_key_format");
   }
 
   const model = process.env.ANTHROPIC_MODEL?.trim() || DEFAULT_MODEL;
