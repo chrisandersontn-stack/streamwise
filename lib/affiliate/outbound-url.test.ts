@@ -36,4 +36,15 @@ describe("outbound-url", () => {
     ).toBe(true);
     expect(hasResolvableOutbound({})).toBe(false);
   });
+
+  it("uses CJ env mapping by option id when set", () => {
+    process.env.NEXT_PUBLIC_CJ_URL_FUBO = "https://example.com/fubo-cj";
+    const r = resolveOutboundSourceUrl({
+      sourceUrl: "https://www.fubo.tv/welcome",
+      optionId: "fubo_direct",
+    });
+    expect(r.href).toBe("https://example.com/fubo-cj");
+    expect(r.kind).toBe("affiliate_override");
+    delete process.env.NEXT_PUBLIC_CJ_URL_FUBO;
+  });
 });

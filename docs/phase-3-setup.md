@@ -26,13 +26,19 @@ POSTHOG_HOST=https://app.posthog.com
 # NEXT_PUBLIC_PLAUSIBLE_ENABLED=1
 # NEXT_PUBLIC_PLAUSIBLE_DISABLED=1
 
-# Affiliate helpers (optional; US-first, fast to wire)
-# Amazon Associates: adds ?tag=... to outbound amazon.com links from your catalog.
+# Affiliate (Chris: Amazon + Walmart + CJ are wired in code — set these in Vercel Production)
+# See .env.example for the full list.
+# Amazon Associates: adds ?tag=... to outbound amazon.com links (Prime, Prime Video, etc.)
 NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG=yourstore-20
 
-# Walmart: append tracking query params to walmart.com links.
-# Example format: affiliateId=YOUR_ID (can include multiple key=value pairs)
+# Walmart affiliate: append tracking query params to walmart.com links (Walmart+ benefit pages)
 NEXT_PUBLIC_WALMART_AFFILIATE_QUERY=affiliateId=YOUR_ID
+
+# CJ: NordVPN card + optional per-provider deep links (youtube_tv_*, sling_*, fubo_* option ids)
+NEXT_PUBLIC_CJ_NORDVPN_URL=https://www.dpbolvw.net/click-...
+NEXT_PUBLIC_CJ_URL_YOUTUBE_TV=
+NEXT_PUBLIC_CJ_URL_SLING=
+NEXT_PUBLIC_CJ_URL_FUBO=
 ```
 
 ## Required Supabase tables (minimum)

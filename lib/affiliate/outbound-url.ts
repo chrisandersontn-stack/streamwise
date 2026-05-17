@@ -34,6 +34,24 @@ function appendWalmartAffiliate(url: string, affiliateParam: string) {
   }
 }
 
+import { getCjAffiliateUrlForOptionId } from "@/lib/affiliate/cj-links";
+
+export type OutboundLinkKind =
+  | "affiliate_override"
+  | "amazon_associates"
+  | "walmart_affiliate"
+  | "official";
+
+export function isCompensatedOutboundKind(kind: OutboundLinkKind): boolean {
+  return kind !== "official";
+}
+
+export function outboundLinkRel(kind: OutboundLinkKind): string {
+  return isCompensatedOutboundKind(kind)
+    ? "noopener noreferrer sponsored"
+    : "noopener noreferrer";
+}
+
 function normalizeKnownBrokenSourceUrl(url: string) {
   const normalized = url.trim();
   const knownHuluFallback = "https://www.hulu.com/disney-hulu-bundle";
@@ -60,10 +78,20 @@ export function hasResolvableOutbound(input: {
 export function resolveOutboundSourceUrl(input: {
   sourceUrl?: string;
   affiliateUrl?: string;
-}): { href: string; kind: "affiliate_override" | "amazon_associates" | "walmart_affiliate" | "official" } {
+  /** Catalog option id — used for per-provider CJ env mappings. */
+  optionId?: string;
+}): { href: string; kind: OutboundLinkKind } {
   const affiliateUrl = input.affiliateUrl?.trim();
   if (affiliateUrl) {
     return { href: affiliateUrl, kind: "affiliate_override" };
+  }
+
+  const optionId = input.optionId?.trim();
+  if (optionId) {
+    const cjUrl = getCjAffiliateUrlForOptionId(optionId);
+    if (cjUrl) {
+      return { href: cjUrl, kind: "affiliate_override" };
+    }
   }
 
   const sourceUrl = input.sourceUrl

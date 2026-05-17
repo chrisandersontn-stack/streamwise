@@ -15,8 +15,10 @@ import {
 } from "./streamwise-data";
 import { calculateCombos, getComboAnnualTotal } from "./streamwise-logic";
 import { getSupabaseBrowserClient } from "@/lib/client/supabase-browser";
+import { getCjNordVpnUrl } from "@/lib/affiliate/cj-links";
 import {
   hasResolvableOutbound,
+  outboundLinkRel,
   resolveOutboundSourceUrl,
 } from "@/lib/affiliate/outbound-url";
 
@@ -40,8 +42,6 @@ type ProviderKey =
   | "amazon"
   | "hulu"
   | "philo";
-
-const NORDVPN_CJ_CLICK_URL = "https://www.dpbolvw.net/click-101740617-13914989";
 
 function nordVpnTrackStub(clickUrl: string): Option {
   return {
@@ -348,6 +348,7 @@ function renderSourceLink(item: Option) {
   const outbound = resolveOutboundSourceUrl({
     sourceUrl: item.sourceUrl,
     affiliateUrl: item.affiliateUrl,
+    optionId: item.id,
   });
 
   if (outbound.href === "#") {
@@ -358,7 +359,7 @@ function renderSourceLink(item: Option) {
     <a
       href={outbound.href}
       target="_blank"
-      rel="noopener noreferrer"
+      rel={outboundLinkRel(outbound.kind)}
       onClick={() => {
         trackOutboundClick(
           item,
@@ -437,7 +438,8 @@ function trackOutboundClick(
 }
 
 function renderNordVpnAffiliateCard() {
-  const stub = nordVpnTrackStub(NORDVPN_CJ_CLICK_URL);
+  const nordVpnUrl = getCjNordVpnUrl();
+  const stub = nordVpnTrackStub(nordVpnUrl);
 
   return (
     <div className="mt-8 rounded-2xl border border-black/5 bg-sw-section/40 p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
@@ -450,11 +452,11 @@ function renderNordVpnAffiliateCard() {
       </p>
       <div className="mt-4">
         <a
-          href={NORDVPN_CJ_CLICK_URL}
+          href={nordVpnUrl}
           target="_blank"
           rel="noopener noreferrer sponsored"
           onClick={() =>
-            trackOutboundClick(stub, NORDVPN_CJ_CLICK_URL, "affiliate", {
+            trackOutboundClick(stub, nordVpnUrl, "affiliate", {
               placement: "secondary_tools_card",
               network: "CJ",
             })
@@ -519,6 +521,7 @@ function renderComboActionLinks(
       const outbound = resolveOutboundSourceUrl({
         sourceUrl: item.sourceUrl,
         affiliateUrl: item.affiliateUrl,
+        optionId: item.id,
       });
       if (outbound.href === "#") return null;
       return { item, outbound };
@@ -549,7 +552,7 @@ function renderComboActionLinks(
             key={`${combo.id}-${item.id}`}
             href={outbound.href}
             target="_blank"
-            rel="noopener noreferrer"
+            rel={outboundLinkRel(outbound.kind)}
             onClick={() =>
               trackOutboundClick(
                 item,
@@ -574,6 +577,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
       const outbound = resolveOutboundSourceUrl({
         sourceUrl: item.sourceUrl,
         affiliateUrl: item.affiliateUrl,
+        optionId: item.id,
       });
       if (outbound.href === "#") return null;
       return { item, outbound };
@@ -592,7 +596,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
       <a
         href={firstAction.outbound.href}
         target="_blank"
-        rel="noopener noreferrer"
+        rel={outboundLinkRel(firstAction.outbound.kind)}
         onClick={() =>
           trackOutboundClick(
             firstAction.item,
