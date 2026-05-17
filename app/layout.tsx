@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PlausibleAnalytics } from "@/components/plausible-analytics";
 import { SiteFooter, SiteHeaderNav } from "@/components/site-chrome";
+import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "StreamWise | Find Better Streaming Deals",
   description:
     "Compare streaming subscriptions, bundles, and provider perks to find lower monthly and annual costs.",

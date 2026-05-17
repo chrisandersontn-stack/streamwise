@@ -13,7 +13,7 @@
  *   node --env-file=.env.local scripts/sync-supabase-from-defaults.mjs --commit
  *
  * Flags:
- *   --base <url>   API base (default https://streamwise-xi.vercel.app)
+ *   --base <url>   API base (default https://www.streamwise.media)
  *   --commit       Actually PUT to /api/catalog (default is dry-run)
  *   --verbose      Print the full payload before pushing
  *
@@ -24,7 +24,7 @@
 
 import process from "node:process";
 
-const DEFAULT_BASE = "https://streamwise-xi.vercel.app";
+const DEFAULT_BASE = "https://www.streamwise.media";
 
 function parseArgs(argv) {
   const args = { base: DEFAULT_BASE, commit: false, verbose: false };

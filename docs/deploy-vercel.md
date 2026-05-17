@@ -19,7 +19,7 @@ In the Vercel project → **Settings** → **Environment Variables**, add the sa
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `NEXT_PUBLIC_AUTH_REDIRECT_URL` (set to your production URL, e.g. `https://your-domain.com`)
+- `NEXT_PUBLIC_AUTH_REDIRECT_URL` (production: `https://www.streamwise.media`)
 - `CATALOG_ADMIN_TOKEN`
 - Optional analytics:
   - `POSTHOG_API_KEY`
@@ -29,8 +29,14 @@ In the Vercel project → **Settings** → **Environment Variables**, add the sa
 
 Click **Deploy**.
 
-## 5) Post-deploy checklist
+## 5) Custom domain (streamwise.media)
 
-- Confirm `/` loads.
+1. In Vercel → project **streamwise** → **Settings** → **Domains**, add `streamwise.media` and `www.streamwise.media`.
+2. Point DNS at Vercel (see Vercel’s DNS instructions). Prefer **www** as primary if that matches `lib/site-url.ts`.
+3. Set `NEXT_PUBLIC_AUTH_REDIRECT_URL` to `https://www.streamwise.media` for Production.
+
+## 6) Post-deploy checklist
+
+- Confirm `https://www.streamwise.media` loads (not only `*.vercel.app`).
 - Confirm `/api/catalog` returns JSON.
-- Send a magic link and confirm redirect URL matches production.
+- Send a magic link and confirm redirect URL matches `https://www.streamwise.media`.

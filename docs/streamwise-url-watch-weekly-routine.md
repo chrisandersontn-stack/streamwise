@@ -79,7 +79,7 @@ npm run catalog:diff -- catalog-before.json catalog-merged.json
 
 ```bash
 read -s CATALOG_ADMIN_TOKEN
-curl -sS -X PUT "https://streamwise-xi.vercel.app/api/catalog" \
+curl -sS -X PUT "https://www.streamwise.media/api/catalog" \
   -H "Content-Type: application/json" \
   -H "x-admin-token: $CATALOG_ADMIN_TOKEN" \
   --data-binary @catalog-merged.json

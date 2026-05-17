@@ -111,7 +111,7 @@ cd /Users/chrisanderson/streamwise-ios
 ```
 
 ```bash
-printf '%s\n' 'EXPO_PUBLIC_STREAMWISE_WEB_URL=https://streamwise-xi.vercel.app' > .env
+printf '%s\n' 'EXPO_PUBLIC_STREAMWISE_WEB_URL=https://www.streamwise.media' > .env
 ```
 
 Confirm it exists:
@@ -139,7 +139,7 @@ import { useMemo, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { WebView } from "react-native-webview";
 
-const DEFAULT_WEB_URL = "https://streamwise-xi.vercel.app";
+const DEFAULT_WEB_URL = "https://www.streamwise.media";
 
 export default function App() {
   const webUrl = useMemo(() => {

@@ -16,6 +16,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 NEXT_PUBLIC_AUTH_REDIRECT_URL=http://localhost:3000
+# Production (Vercel): https://www.streamwise.media
 
 # PostHog (optional analytics provider)
 POSTHOG_API_KEY=phc_...

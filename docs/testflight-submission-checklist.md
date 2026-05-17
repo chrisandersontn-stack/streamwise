@@ -10,7 +10,7 @@ For a **10-minute** fast pass first, see `docs/testflight-quick-start.md`.
 
 - [ ] You can sign in to [App Store Connect](https://appstoreconnect.apple.com/).
 - [ ] You can sign in to your Apple Developer account.
-- [ ] Your production web app is live at `https://streamwise-xi.vercel.app`.
+- [ ] Your production web app is live at `https://www.streamwise.media`.
 - [ ] You have 30-60 minutes uninterrupted.
 
 ## 1) Confirm release quality first (already automated in repo)
@@ -30,14 +30,14 @@ npm run build
 ```
 
 ```bash
-MOBILE_SMOKE_BASE_URL=https://streamwise-xi.vercel.app npm run qa:mobile-smoke
+MOBILE_SMOKE_BASE_URL=https://www.streamwise.media npm run qa:mobile-smoke
 ```
 
 - [ ] All four commands pass.
 
 ## 2) Manual iPhone checks (real device)
 
-Open `https://streamwise-xi.vercel.app` on iPhone and verify:
+Open `https://www.streamwise.media` on iPhone and verify:
 
 - [ ] No horizontal overflow.
 - [ ] Service cards are readable and selectable.
@@ -114,7 +114,7 @@ In App Store Connect:
 
 Open this page and keep it side-by-side while filling labels:
 
-`https://streamwise-xi.vercel.app/app-privacy-details`
+`https://www.streamwise.media/app-privacy-details`
 
 In App Store Connect:
 

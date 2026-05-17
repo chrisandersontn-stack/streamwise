@@ -19,7 +19,7 @@ npm run build
 ```
 
 ```bash
-MOBILE_SMOKE_BASE_URL=https://streamwise-xi.vercel.app npm run qa:mobile-smoke
+MOBILE_SMOKE_BASE_URL=https://www.streamwise.media npm run qa:mobile-smoke
 ```
 
 - [ ] All four finished without errors.
@@ -29,7 +29,7 @@ MOBILE_SMOKE_BASE_URL=https://streamwise-xi.vercel.app npm run qa:mobile-smoke
 Open:
 
 ```text
-https://streamwise-xi.vercel.app
+https://www.streamwise.media
 ```
 
 - [ ] Pick 2–3 services, confirm recommendation updates.
@@ -43,7 +43,7 @@ https://streamwise-xi.vercel.app
 3. **App Privacy** → fill answers using this page side-by-side:
 
 ```text
-https://streamwise-xi.vercel.app/app-privacy-details
+https://www.streamwise.media/app-privacy-details
 ```
 
 - [ ] App Privacy saved and matches that page.

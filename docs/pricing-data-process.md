@@ -101,7 +101,7 @@ Runtime catalog resolution is implemented in `lib/server/catalog-store.ts`:
 ### 8a) Pull the live catalog you’re serving
 
 ```bash
-curl -sS https://YOUR_DOMAIN/api/catalog | jq '.services,.options | length'
+curl -sS https://www.streamwise.media/api/catalog | jq '.services,.options | length'
 ```
 
 Save the full JSON locally as `catalog.export.json` while you work.
@@ -118,7 +118,7 @@ Save the full JSON locally as `catalog.export.json` while you work.
 Admin update:
 
 ```bash
-curl -sS -X PUT "https://YOUR_DOMAIN/api/catalog" \
+curl -sS -X PUT "https://www.streamwise.media/api/catalog" \
   -H "Content-Type: application/json" \
   -H "x-admin-token: $CATALOG_ADMIN_TOKEN" \
   --data-binary @catalog.export.json
