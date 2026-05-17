@@ -73,7 +73,7 @@ export function SiteFooter() {
             Affiliate disclosure
           </Link>
           <Link className={footerLinkClass} href="/app-privacy-details">
-            App privacy details
+            iOS app data
           </Link>
           <a className={footerLinkClass} href={`mailto:${contactEmail}`}>
             {contactEmail}
