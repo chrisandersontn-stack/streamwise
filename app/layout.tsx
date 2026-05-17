@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { PlausibleAnalytics } from "@/components/plausible-analytics";
 import { SiteFooter, SiteHeaderNav } from "@/components/site-chrome";
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-sw-page text-sw-body">
+        <PlausibleAnalytics />
         <header className="sticky top-0 z-50 border-b border-white/10 bg-sw-heading shadow-[0_6px_20px_-6px_rgba(0,0,0,0.35)]">
           <div className="mx-auto flex min-h-14 w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2 sm:min-h-16 sm:px-6 sm:py-0">
             <Link

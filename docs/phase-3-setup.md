@@ -5,7 +5,7 @@
 ```bash
 # Catalog admin
 CATALOG_ADMIN_TOKEN=replace_with_secure_token
-NEXT_PUBLIC_SUPPORT_EMAIL=support@yourdomain.com
+NEXT_PUBLIC_SUPPORT_EMAIL=hello@streamwise.media
 
 # Optional: show footer link "Catalog admin (pricing)" on the main app (default: dev-only)
 # NEXT_PUBLIC_SHOW_ADMIN_PRICING_LINK=1
@@ -20,6 +20,11 @@ NEXT_PUBLIC_AUTH_REDIRECT_URL=http://localhost:3000
 # PostHog (optional analytics provider)
 POSTHOG_API_KEY=phc_...
 POSTHOG_HOST=https://app.posthog.com
+
+# Plausible (optional; loads in production by default — script URL from Plausible dashboard)
+# NEXT_PUBLIC_PLAUSIBLE_SCRIPT_SRC=https://plausible.io/js/pa-....js
+# NEXT_PUBLIC_PLAUSIBLE_ENABLED=1
+# NEXT_PUBLIC_PLAUSIBLE_DISABLED=1
 
 # Affiliate helpers (optional; US-first, fast to wire)
 # Amazon Associates: adds ?tag=... to outbound amazon.com links from your catalog.

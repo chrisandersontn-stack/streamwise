@@ -41,7 +41,11 @@ export default function PrivacyPage() {
             recommendation views, outbound offer clicks, your selected service set, timestamps,
             referrer, and a browser user-agent string. Events may be stored in our database and, when
             configured in the deployment environment, summarized or forwarded to analytics providers
-            (for example PostHog) for product metrics.
+            (for example PostHog) for product metrics. We also use{" "}
+            <a href="https://plausible.io/privacy-focused-web-analytics" rel="noopener noreferrer">
+              Plausible
+            </a>{" "}
+            on the public website for privacy-friendly page analytics (no advertising cookies).
           </li>
           <li>
             <strong className="text-sw-heading">Cookies and similar technologies.</strong> We may
