@@ -107,7 +107,7 @@ export async function extractCatalogOptionWithAnthropic(
   const system = `You help maintain a streaming subscription catalog. Given plain text from a provider pricing page, output a SINGLE JSON object with fields the admin UI can use. Rules:
 - Use ONLY these exact strings for "covers" entries (streaming service names): 
 ${labelsBlock}
-- "provider" must be one of: direct, verizon, walmart_plus, tmobile, xfinity, instacart_plus, apple, amazon, hulu, philo
+- "provider" must be one of: direct, verizon, walmart_plus, tmobile, xfinity, instacart_plus, apple, amazon, hulu, philo, roku (use roku for Roku Channel / roku.com signup promos that cover an existing service—not Roku-native-only content)
 - "category" must be one of: direct, bundle, carrier, membership, promo
 - "requires" is an array of zero or more of: verizon, walmart_plus, tmobile, xfinity, instacart_plus, amazon_prime, att, spectrum_charter, apple_one
 - "includedWith" is optional; same allowed values as a single string, or null

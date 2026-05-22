@@ -45,7 +45,8 @@ type ProviderKey =
   | "apple"
   | "amazon"
   | "hulu"
-  | "philo";
+  | "philo"
+  | "roku";
 
 function nordVpnTrackStub(clickUrl: string): Option {
   return {
@@ -235,6 +236,8 @@ function getProviderDisplayName(provider: ProviderKey | undefined) {
       return "Hulu";
     case "philo":
       return "Philo";
+    case "roku":
+      return "Roku";
     default:
       return undefined;
   }
@@ -261,6 +264,8 @@ function getProviderBadgeClasses(provider: ProviderKey | undefined) {
       return "bg-lime-100 text-lime-700";
     case "philo":
       return "bg-violet-100 text-violet-700";
+    case "roku":
+      return "bg-purple-100 text-purple-800";
     default:
       return "bg-slate-100 text-slate-700";
   }

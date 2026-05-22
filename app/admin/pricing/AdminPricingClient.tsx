@@ -33,6 +33,7 @@ const PROVIDERS: Provider[] = [
   "amazon",
   "hulu",
   "philo",
+  "roku",
 ];
 
 const CATEGORIES: OptionCategory[] = ["direct", "bundle", "carrier", "membership", "promo"];

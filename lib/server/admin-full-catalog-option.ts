@@ -19,6 +19,7 @@ const PROVIDERS: readonly Provider[] = [
   "amazon",
   "hulu",
   "philo",
+  "roku",
 ] as const;
 
 const CATEGORIES: readonly OptionCategory[] = [

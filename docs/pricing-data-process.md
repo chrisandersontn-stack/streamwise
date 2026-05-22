@@ -22,7 +22,26 @@ Users interpret accuracy as:
 
 Accuracy is **not** “every user pays this exact amount” (taxes, grandfathering, regional offers, hidden fees, and account-specific promos exist).
 
-## 3) Map your research to catalog fields
+## 3) Roku deals (Phase 1 only)
+
+StreamWise does **not** add a “Roku” service tile or “I have Roku” checkbox. Roku is only a **signup path** for services you already model.
+
+For each [Roku deal](https://www.roku.com/deals) you care about:
+
+1. Decide which **existing** `covers` group it satisfies (e.g. `Hulu`, `STARZ`, `AMC+`)—not Roku-native channels.
+2. Add a catalog **option** in the `// ROKU PROMOS` section of `app/streamwise-data.ts`:
+   - `id`: `roku_<service>_<short_slug>` (e.g. `roku_hulu_3mo_promo`)
+   - `provider`: `roku`
+   - `category`: usually `promo`
+   - `sourceUrl`: the **specific** deal landing URL (not only roku.com/deals)
+   - `affiliateUrl`: optional when you have tracking
+   - `mutuallyExclusiveGroup`: same as that service’s other plans (e.g. `hulu_access`)
+   - `lastChecked` + add the id to `VERIFIED_OPTION_IDS` when verified
+3. Add a matching row in `data/url-watch-list.json` if you want weekly URL checks.
+
+Users still select **Hulu** (etc.) in step 2; if a Roku path wins, results show **via Roku** and link out to the deal.
+
+## 4) Map your research to catalog fields
 
 Use `app/streamwise-data.ts` as the schema reference (`Service`, `Option`).
 
@@ -47,7 +66,7 @@ Use `app/streamwise-data.ts` as the schema reference (`Service`, `Option`).
 - **`needs_verification`**: you are not confident, cannot find a stable official URL, or the offer is account-specific/ambiguous.
 - **`expired`**: you know the modeled offer is no longer sold as modeled (prefer removing or replacing the option rather than leaving it ranked).
 
-## 4) Source quality tiers (use this to decide confidence)
+## 5) Source quality tiers (use this to decide confidence)
 
 **Tier A (best):** official pricing/help page with explicit monthly price for the exact plan name you model.
 
@@ -55,7 +74,7 @@ Use `app/streamwise-data.ts` as the schema reference (`Service`, `Option`).
 
 **Tier C (do not use as proof):** forums, Reddit, news articles without a primary link, “I heard”, or LLM output.
 
-## 5) Per-option research record (minimum audit trail)
+## 6) Per-option research record (minimum audit trail)
 
 For each `Option.id`, keep a row (spreadsheet is fine) with:
 
@@ -73,7 +92,7 @@ For each `Option.id`, keep a row (spreadsheet is fine) with:
 
 You do **not** need to commit this sheet to git, but you should keep it somewhere durable (Google Sheet, Notion, etc.).
 
-## 6) Standard verification procedure (10–20 minutes per option)
+## 7) Standard verification procedure (10–20 minutes per option)
 
 1. Open `sourceUrl` in a clean session (incognito) and confirm region (US vs not).
 2. Confirm the **plan name** in StreamWise matches the page’s plan naming closely enough that a user won’t feel tricked.
@@ -82,7 +101,7 @@ You do **not** need to commit this sheet to git, but you should keep it somewher
 5. If the page is ambiguous, do **one** of: find a better Tier A URL, downgrade `priceStatus`, or remove the option from “best path” competitiveness by adjusting `notes` / pricing conservatively.
 6. Update `lastChecked` to today.
 
-## 7) Cadence (practical, biased toward promos changing)
+## 8) Cadence (practical, biased toward promos changing)
 
 **Weekly (Tier 1):** anything `category: "promo"`, anything with `introLengthMonths`, anything `priceStatus: "scheduled_change"`, carrier/membership bundle paths.
 
@@ -92,7 +111,7 @@ You do **not** need to commit this sheet to git, but you should keep it somewher
 
 If you miss a cycle, update `lastChecked` only when you actually re-opened the official source.
 
-## 8) Technical workflow in this repo (how data gets to users)
+## 9) Technical workflow in this repo (how data gets to users)
 
 Runtime catalog resolution is implemented in `lib/server/catalog-store.ts`:
 
@@ -300,7 +319,7 @@ Recommended manual-verification SLA for hard sources:
 - Record every completed review using `catalog:price-sources:record-manual`
 - Keep `verifiedOn` current so dashboards/reports can distinguish manual verification from failed automation
 
-## 9) “We used ChatGPT before” cleanup plan
+## 10) “We used ChatGPT before” cleanup plan
 
 Treat legacy data as **untrusted** until re-verified:
 
@@ -309,14 +328,14 @@ Treat legacy data as **untrusted** until re-verified:
 3. Fix mismatches; update `lastChecked`.
 4. Publish snapshot via `PUT` (or commit `data/catalog.json` if that’s your path).
 
-## 10) When two official sources disagree
+## 11) When two official sources disagree
 
 Prefer the page that matches the **purchase path** (checkout/plan picker) over generic marketing. If still unclear:
 
 - set `priceStatus: "needs_verification"`, and
 - explain the conflict briefly in `notes`.
 
-## 11) What I (the assistant) can and cannot do in this workflow
+## 12) What I (the assistant) can and cannot do in this workflow
 
 - **Can:** help you interpret messy pages, draft `notes`, propose JSON edits, build checklists, and sanity-check internal consistency.
 - **Cannot:** be the citation for pricing. The citation is always **your captured official URL + verification date** (and optional screenshot).

@@ -50,7 +50,8 @@ export type Provider =
   | "apple"
   | "amazon"
   | "hulu"
-  | "philo";
+  | "philo"
+  | "roku";
 
 export type Option = {
   id: string;
@@ -988,6 +989,11 @@ export const options: Option[] = [
     lastChecked: catalogLastChecked("disney_hulu_max_bundle_no_ads"),
     priceStatus: "current",
   },
+
+  // ROKU PROMOS (Phase 1)
+  // Alternate signup paths via Roku / The Roku Channel for services users already select
+  // (Hulu, STARZ, etc.). No "Roku" service card. Id prefix: roku_<service>_<deal>.
+  // See docs/pricing-data-process.md § Roku deals.
 
   // PROMOS
   {
