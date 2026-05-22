@@ -5,6 +5,46 @@ import { calculateCombos } from "@/app/streamwise-logic";
 
 import { repairCatalogOptions } from "./catalog-store";
 
+describe("repairCatalogOptions (AMC+ direct)", () => {
+  it("replaces a corrupted amcplus_direct row (wrong service) with the embedded default", () => {
+    const corrupted = defaultOptions.map((o) =>
+      o.id === "amcplus_direct"
+        ? {
+            ...o,
+            name: "Crunchyroll Fan – Ani-May Promo (May 2026)",
+            covers: ["Crunchyroll"] as typeof o.covers,
+            monthly: 1.99,
+            source: "Crunchyroll",
+            category: "promo" as const,
+            mutuallyExclusiveGroup: "crunchyroll_animay_2026",
+          }
+        : o
+    );
+
+    const fixed = repairCatalogOptions(corrupted);
+    const amc = fixed.find((o) => o.id === "amcplus_direct");
+    expect(amc?.covers).toContain("AMC+");
+    expect(amc?.monthly).toBe(7.99);
+
+    const combos = calculateCombos(
+      fixed,
+      ["AMC+"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      new Date("2026-05-22T00:00:00Z")
+    );
+    expect(combos.length).toBeGreaterThan(0);
+    expect(combos[0]?.chosen.some((c) => c.covers.includes("AMC+"))).toBe(true);
+  });
+});
+
 describe("repairCatalogOptions (STARZ promo)", () => {
   it("replaces a flat standard-rate starz_promo row with the canonical promo shape", () => {
     const broken = defaultOptions.map((o) =>

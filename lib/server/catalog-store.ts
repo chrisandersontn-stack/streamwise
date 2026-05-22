@@ -102,27 +102,44 @@ function coerceOptionNumerics(option: CatalogOption): CatalogOption {
   return next;
 }
 
+function coversOverlap(a: string[], b: string[]): boolean {
+  if (!a.length || !b.length) return false;
+  const setB = new Set(b);
+  return a.some((item) => setB.has(item));
+}
+
 /**
- * STARZ promo pricing is canonical in `streamwise-data.ts`. Supabase snapshots have been
- * saved as flat $11.99 (or missing intro fields), which ties the standard plan on 12‑month
- * math and lets `starz_direct` win tie-breakers — so users only see $11.99.
+ * Option ids that must always match `streamwise-data.ts` when served from Supabase.
  *
- * We always re-anchor `starz_promo` from embedded defaults. We only keep **lastChecked**
- * and outbound URLs from the snapshot — never `priceStatus` / `expiresAt` / `effectiveDate`,
- * because a stale `expired` or past `expiresAt` would drop the promo entirely in ranking.
- *
- * See https://www.starz.com/us/en/buy
+ * - `starz_promo`: snapshots drop intro pricing and show only $11.99.
+ * - `amcplus_direct`: a bad admin save once stored Crunchyroll promo data under this id.
  */
-function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
-  const def = defaultOptions.find((o) => o.id === "starz_promo");
+const CANONICAL_REALIGN_OPTION_IDS = new Set<string>([
+  "starz_promo",
+  "amcplus_direct",
+]);
+
+/** Promo/signup paths that may be missing from truncated snapshots but are safe to append. */
+const APPEND_IF_MISSING_OPTION_IDS = ["roku_amcplus_streaming_day_26"] as const;
+
+function reanchorOptionFromDefaults(
+  options: CatalogOption[],
+  id: string,
+  { force = false }: { force?: boolean } = {}
+): CatalogOption[] {
+  const def = defaultOptions.find((o) => o.id === id);
   if (!def) return options;
 
-  const idx = options.findIndex((o) => o.id === "starz_promo");
+  const idx = options.findIndex((o) => o.id === id);
   if (idx === -1) {
     return [...options, cloneCatalogOption(def)];
   }
 
   const cur = options[idx]!;
+  if (!force && coversOverlap(cur.covers, def.covers)) {
+    return options;
+  }
+
   const base = cloneCatalogOption(def);
   const next = [...options];
   next[idx] = {
@@ -131,6 +148,35 @@ function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
     sourceUrl: cur.sourceUrl?.trim() || base.sourceUrl,
     affiliateUrl: cur.affiliateUrl ?? base.affiliateUrl,
   };
+  return next;
+}
+
+function repairCanonicalOptionsFromDefaults(options: CatalogOption[]): CatalogOption[] {
+  let next = options;
+
+  for (const id of CANONICAL_REALIGN_OPTION_IDS) {
+    next = reanchorOptionFromDefaults(next, id, { force: true });
+  }
+
+  const defaultById = new Map(defaultOptions.map((o) => [o.id, o]));
+  for (const opt of next) {
+    if (CANONICAL_REALIGN_OPTION_IDS.has(opt.id)) continue;
+    const def = defaultById.get(opt.id);
+    if (!def || coversOverlap(opt.covers, def.covers)) continue;
+    next = reanchorOptionFromDefaults(next, opt.id, { force: true });
+  }
+
+  return next;
+}
+
+function appendMissingDefaultOptions(options: CatalogOption[]): CatalogOption[] {
+  const ids = new Set(options.map((o) => o.id));
+  let next = options;
+  for (const id of APPEND_IF_MISSING_OPTION_IDS) {
+    if (ids.has(id)) continue;
+    const def = defaultOptions.find((o) => o.id === id);
+    if (def) next = [...next, cloneCatalogOption(def)];
+  }
   return next;
 }
 
@@ -175,9 +221,9 @@ function repairLastCheckedFromDefaults(options: CatalogOption[]): CatalogOption[
 
 /** Applies snapshot repairs (e.g. STARZ promo shape) before serving catalog data. */
 export function repairCatalogOptions(options: CatalogOption[]): CatalogOption[] {
-  return repairLastCheckedFromDefaults(repairStarzPromoOption(options)).map(
-    coerceOptionNumerics
-  );
+  return repairLastCheckedFromDefaults(
+    repairCanonicalOptionsFromDefaults(appendMissingDefaultOptions(options))
+  ).map(coerceOptionNumerics);
 }
 
 async function ensureCatalogDirectory() {
