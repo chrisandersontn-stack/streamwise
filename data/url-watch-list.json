@@ -67,9 +67,24 @@
     "skipAutomation": true
   },
   {
+    "id": "opt-directv_stream_5day_trial",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Stream — 5-day free trial"
+  },
+  {
+    "id": "opt-directv_stream_entertainment_intro",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Entertainment intro (Stream app only)"
+  },
+  {
     "id": "opt-directv_stream_entertainment",
     "url": "https://www.directv.com/stream/stream-packages/",
     "label": "DirecTV Entertainment (Stream app only)"
+  },
+  {
+    "id": "opt-directv_stream_choice_intro",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Choice intro (Stream app only)"
   },
   {
     "id": "opt-directv_stream_choice",
@@ -77,9 +92,19 @@
     "label": "DirecTV Choice (Stream app only)"
   },
   {
+    "id": "opt-directv_stream_ultimate_intro",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Ultimate intro (Stream app only)"
+  },
+  {
     "id": "opt-directv_stream_ultimate",
     "url": "https://www.directv.com/stream/stream-packages/",
     "label": "DirecTV Ultimate (Stream app only)"
+  },
+  {
+    "id": "opt-directv_stream_premier_intro",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Premier intro (Stream app only)"
   },
   {
     "id": "opt-directv_stream_premier",
