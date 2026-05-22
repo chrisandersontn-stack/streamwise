@@ -174,17 +174,42 @@
   {
     "id": "opt-sling_blue_direct",
     "url": "https://www.sling.com/service/compare-plans",
-    "label": "Sling Blue"
+    "label": "Sling Blue (monthly)"
+  },
+  {
+    "id": "opt-sling_blue_3mo_prepay",
+    "url": "https://www.sling.com/service/prepay",
+    "label": "Sling Blue — 3-month prepay"
+  },
+  {
+    "id": "opt-sling_orange_blue_direct",
+    "url": "https://www.sling.com/service/sling-orange-and-blue",
+    "label": "Sling Orange & Blue (monthly)"
+  },
+  {
+    "id": "opt-sling_orange_blue_3mo_prepay",
+    "url": "https://www.sling.com/service/prepay",
+    "label": "Sling Orange & Blue — 3-month prepay"
   },
   {
     "id": "opt-sling_orange_blue_promo",
-    "url": "https://www.sling.com/channels",
-    "label": "Sling Orange & Blue promo"
+    "url": "https://www.sling.com/deals",
+    "label": "Sling Orange & Blue — first month promo"
   },
   {
     "id": "opt-sling_orange_direct",
     "url": "https://www.sling.com/service/compare-plans",
-    "label": "Sling Orange"
+    "label": "Sling Orange (monthly)"
+  },
+  {
+    "id": "opt-sling_orange_3mo_prepay",
+    "url": "https://www.sling.com/service/prepay",
+    "label": "Sling Orange — 3-month prepay"
+  },
+  {
+    "id": "opt-sling_select_3mo_prepay",
+    "url": "https://www.sling.com/service/prepay",
+    "label": "Sling Select — 3-month prepay"
   },
   {
     "id": "opt-starz_direct",
