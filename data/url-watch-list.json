@@ -132,9 +132,24 @@
     "label": "Paramount+ Essential"
   },
   {
+    "id": "opt-peacock_select_direct",
+    "url": "https://www.peacocktv.com/",
+    "label": "Peacock Select (With Ads)"
+  },
+  {
     "id": "opt-peacock_direct",
-    "url": "https://www.peacocktv.com/sports",
-    "label": "Peacock Premium"
+    "url": "https://www.peacocktv.com/",
+    "label": "Peacock Premium (With Ads)"
+  },
+  {
+    "id": "opt-peacock_premium_plus_direct",
+    "url": "https://www.peacocktv.com/",
+    "label": "Peacock Premium Plus (No Ads)"
+  },
+  {
+    "id": "opt-peacock_apple_tv_bundle",
+    "url": "https://www.peacocktv.com/",
+    "label": "Apple TV + Peacock bundle"
   },
   {
     "id": "opt-philo_bundle_plus",
