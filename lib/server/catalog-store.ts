@@ -8,6 +8,10 @@ import {
   serviceLabelsFromCatalog,
   type AdminFullOptionSaveMode,
 } from "@/lib/server/admin-full-catalog-option";
+import {
+  formatLastCheckedLabel,
+  parseLastCheckedDate,
+} from "@/lib/catalog-freshness";
 import { getSupabaseAdminClient } from "@/lib/server/supabase-admin";
 
 type Service = (typeof defaultServices)[number];
@@ -130,9 +134,50 @@ function repairStarzPromoOption(options: CatalogOption[]): CatalogOption[] {
   return next;
 }
 
+const defaultLastCheckedById = new Map(
+  defaultOptions
+    .filter((o) => o.lastChecked?.trim())
+    .map((o) => [o.id, o.lastChecked!.trim()] as const)
+);
+
+function mergeLastChecked(
+  snapshot: string | undefined,
+  fromDefault: string | undefined
+): string | undefined {
+  const candidates = [snapshot?.trim(), fromDefault?.trim()].filter(
+    (value): value is string => Boolean(value)
+  );
+  let best: { raw: string; parsed: Date } | null = null;
+
+  for (const raw of candidates) {
+    const parsed = parseLastCheckedDate(raw);
+    if (!parsed) continue;
+    if (!best || parsed.getTime() > best.parsed.getTime()) {
+      best = { raw, parsed };
+    }
+  }
+
+  return best ? formatLastCheckedLabel(best.raw) : undefined;
+}
+
+/**
+ * Supabase snapshots store stale `lastChecked` strings. On serve, merge each row
+ * with embedded defaults so deploys refresh verification dates without a manual sync.
+ */
+function repairLastCheckedFromDefaults(options: CatalogOption[]): CatalogOption[] {
+  return options.map((opt) => {
+    const fromDefault = defaultLastCheckedById.get(opt.id);
+    const merged = mergeLastChecked(opt.lastChecked, fromDefault);
+    if (!merged || merged === opt.lastChecked) return opt;
+    return { ...opt, lastChecked: merged };
+  });
+}
+
 /** Applies snapshot repairs (e.g. STARZ promo shape) before serving catalog data. */
 export function repairCatalogOptions(options: CatalogOption[]): CatalogOption[] {
-  return repairStarzPromoOption(options).map(coerceOptionNumerics);
+  return repairLastCheckedFromDefaults(repairStarzPromoOption(options)).map(
+    coerceOptionNumerics
+  );
 }
 
 async function ensureCatalogDirectory() {

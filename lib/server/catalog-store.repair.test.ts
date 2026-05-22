@@ -56,6 +56,32 @@ describe("repairCatalogOptions (STARZ promo)", () => {
     expect(fixed.find((x) => x.id === "starz_promo")?.priceStatus).toBe("current");
   });
 
+  it("merges lastChecked from embedded defaults when the snapshot is older", () => {
+    const stale = defaultOptions.map((o) => ({
+      ...o,
+      lastChecked: "2026-05-02",
+    }));
+    const fixed = repairCatalogOptions(stale);
+    expect(fixed.find((o) => o.id === "prime_video_direct")?.lastChecked).toBe(
+      "2026-05-22"
+    );
+    expect(fixed.find((o) => o.id === "disney_hulu_bundle_promo")?.lastChecked).toBe(
+      "2026-05-22"
+    );
+  });
+
+  it("keeps a snapshot lastChecked when it is newer than the embedded default", () => {
+    const withNewer = defaultOptions.map((o) =>
+      o.id === "paramount_direct"
+        ? { ...o, lastChecked: "2026-06-01" }
+        : { ...o, lastChecked: "2026-05-02" }
+    );
+    const fixed = repairCatalogOptions(withNewer);
+    expect(fixed.find((o) => o.id === "paramount_direct")?.lastChecked).toBe(
+      "2026-06-01"
+    );
+  });
+
   it("overwrites a snapshot row that looks like a valid promo but uses wrong numbers", () => {
     const wrongNumbers = defaultOptions.map((o) =>
       o.id === "starz_promo"

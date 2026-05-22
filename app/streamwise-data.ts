@@ -82,7 +82,11 @@ const VERIFIED_LAST_CHECKED = "2026-05-22";
 
 /** Option ids verified against official sources on VERIFIED_LAST_CHECKED. */
 const VERIFIED_OPTION_IDS = new Set<string>([
+  "amcplus_direct",
+  "apple_direct",
+  "apple_one_individual",
   "apple_tv_rokt_30day_promo",
+  "crunchyroll_direct",
   "directv_choice_direct",
   "directv_entertainment_direct",
   "directv_premier_direct",
@@ -96,8 +100,12 @@ const VERIFIED_OPTION_IDS = new Set<string>([
   "directv_stream_ultimate",
   "directv_stream_ultimate_intro",
   "directv_ultimate_direct",
+  "disney_direct",
+  "disney_hulu_bundle_promo",
   "disney_hulu_max_bundle",
   "disney_hulu_max_bundle_no_ads",
+  "discoveryplus_direct",
+  "instacart_peacock",
   "max_direct",
   "max_standard_direct",
   "paramount_direct",
@@ -132,6 +140,7 @@ const VERIFIED_OPTION_IDS = new Set<string>([
   "youtube_tv_sports_direct",
   "youtube_tv_sports_promo",
   "tmobile_netflix_on_us",
+  "tmobile_apple_tv_discount",
   "tmobile_netflix_premium_upgrade",
   "netflix_direct",
   "netflix_standard_direct",
@@ -160,9 +169,16 @@ const VERIFIED_OPTION_IDS = new Set<string>([
   "fubo_pro_promo",
   "philo_essential_direct",
   "philo_bundle_plus",
+  "prime_membership_video",
+  "prime_video_direct",
   "starz_direct",
   "starz_promo",
   "starz_annual_prepay",
+  "verizon_disney_bundle",
+  "verizon_netflix_max_current",
+  "verizon_netflix_max_future",
+  "walmart_paramount",
+  "walmart_peacock",
 ]);
 
 function catalogLastChecked(optionId: string): string {
