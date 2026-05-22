@@ -152,6 +152,36 @@
     "label": "Paramount+ Essential"
   },
   {
+    "id": "opt-roku_amcplus_streaming_day_26",
+    "url": "https://www.roku.com/blog/streaming-day-26",
+    "label": "AMC+ — Roku Streaming Day 2026",
+    "skipAutomation": true
+  },
+  {
+    "id": "opt-roku_apple_tv_streaming_day_26",
+    "url": "https://www.roku.com/blog/streaming-day-26",
+    "label": "Apple TV+ — Roku Streaming Day 2026",
+    "skipAutomation": true
+  },
+  {
+    "id": "opt-roku_crunchyroll_streaming_day_26",
+    "url": "https://www.roku.com/blog/streaming-day-26",
+    "label": "Crunchyroll — Roku Streaming Day 2026",
+    "skipAutomation": true
+  },
+  {
+    "id": "opt-roku_discoveryplus_streaming_day_26",
+    "url": "https://www.roku.com/blog/streaming-day-26",
+    "label": "discovery+ — Roku Streaming Day 2026",
+    "skipAutomation": true
+  },
+  {
+    "id": "opt-roku_starz_streaming_day_26",
+    "url": "https://www.roku.com/blog/streaming-day-26",
+    "label": "STARZ — Roku Streaming Day 2026",
+    "skipAutomation": true
+  },
+  {
     "id": "opt-peacock_select_direct",
     "url": "https://www.peacocktv.com/",
     "label": "Peacock Select (With Ads)"

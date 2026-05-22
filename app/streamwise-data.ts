@@ -105,6 +105,11 @@ const VERIFIED_OPTION_IDS = new Set<string>([
   "sling_orange_blue_promo",
   "sling_orange_direct",
   "sling_select_3mo_prepay",
+  "roku_amcplus_streaming_day_26",
+  "roku_apple_tv_streaming_day_26",
+  "roku_crunchyroll_streaming_day_26",
+  "roku_discoveryplus_streaming_day_26",
+  "roku_starz_streaming_day_26",
 ]);
 
 function catalogLastChecked(optionId: string): string {
@@ -994,6 +999,106 @@ export const options: Option[] = [
   // Alternate signup paths via Roku / The Roku Channel for services users already select
   // (Hulu, STARZ, etc.). No "Roku" service card. Id prefix: roku_<service>_<deal>.
   // See docs/pricing-data-process.md § Roku deals.
+  {
+    id: "roku_amcplus_streaming_day_26",
+    name: "AMC+ — Roku Streaming Day 2026",
+    provider: "roku",
+    monthly: 1.99,
+    standardMonthly: 7.99,
+    introLengthMonths: 2,
+    covers: ["AMC+"],
+    notes:
+      "Roku Streaming Day (May 15–25, 2026): $1.99/mo for 2 months via Premium Subscriptions on The Roku Channel, then standard AMC+ rate. US only; redeem on a Roku device. New/eligible subs per Roku terms.",
+    source: "Roku",
+    sourceUrl:
+      "https://therokuchannel.roku.com/browse/w.LewpyBv9QLf8QoxavlrZH2y175zoj8TK9KJbw8RWs0PaVBqNv5CrgdPlVGalta9BvrB8gmikvv3kVGbJc4AjPZ1jVriK31ZDwDJefDGbeQqgMpCmzBKegpZwIe9k6YD00JIyz5eq/amc",
+    category: "promo",
+    effectiveDate: "2026-05-15",
+    expiresAt: "2026-05-25",
+    mutuallyExclusiveGroup: "amcplus_access",
+    lastChecked: catalogLastChecked("roku_amcplus_streaming_day_26"),
+    priceStatus: "current",
+  },
+  {
+    id: "roku_apple_tv_streaming_day_26",
+    name: "Apple TV+ — Roku Streaming Day 2026",
+    provider: "roku",
+    monthly: 5.99,
+    standardMonthly: 12.99,
+    introLengthMonths: 2,
+    covers: ["Apple TV+"],
+    notes:
+      "Listed as “Apple TV” on Roku’s Streaming Day page: $5.99/mo for 2 months through The Roku Channel, then regular Apple TV+ monthly billing. US Roku device required during offer window.",
+    source: "Roku",
+    sourceUrl:
+      "https://therokuchannel.roku.com/browse/w.xdGNYBW4w8hPd97D31aLsLJvepwgM5fvBvlxe57Mh0vA69wlD3CAR9gG6wPGCGdY2jY1e8Hv22JvxkM1iZ7dA3emApuDLQzlPlRmf924kd0zjpU7V9GdQ2oZCV1oZvBGGbC0xGP1/apple-tv",
+    category: "promo",
+    effectiveDate: "2026-05-15",
+    expiresAt: "2026-05-25",
+    mutuallyExclusiveGroup: "apple_tv_access",
+    lastChecked: catalogLastChecked("roku_apple_tv_streaming_day_26"),
+    priceStatus: "current",
+  },
+  {
+    id: "roku_crunchyroll_streaming_day_26",
+    name: "Crunchyroll — Roku Streaming Day 2026",
+    provider: "roku",
+    monthly: 1.99,
+    standardMonthly: 9.99,
+    introLengthMonths: 2,
+    covers: ["Crunchyroll"],
+    notes:
+      "Roku Streaming Day: $1.99/mo for 2 months via The Roku Channel or Roku-managed Crunchyroll signup. Tier on Roku may differ from direct crunchyroll.com Fan plan—confirm in checkout.",
+    source: "Roku",
+    sourceUrl:
+      "https://therokuchannel.roku.com/browse/w.r2BADo4GwMFGV4ekdKLpiPNALm0exvIVrV4bopyYUoRl7zV2QZtwMm2Aq3lAC9ylqVlDjkc5GGk5NZa4cx3r9Z6Q5lIVQejlxmW2UJR3dQoN3RsG21W3JJgBHw91m73APAFzN6W6LDaPCDb/crunchyroll",
+    category: "promo",
+    effectiveDate: "2026-05-15",
+    expiresAt: "2026-05-25",
+    mutuallyExclusiveGroup: "crunchyroll_access",
+    lastChecked: catalogLastChecked("roku_crunchyroll_streaming_day_26"),
+    priceStatus: "current",
+  },
+  {
+    id: "roku_discoveryplus_streaming_day_26",
+    name: "discovery+ — Roku Streaming Day 2026",
+    provider: "roku",
+    monthly: 2.99,
+    standardMonthly: 5.99,
+    introLengthMonths: 3,
+    covers: ["discovery+"],
+    notes:
+      "Roku Streaming Day: $2.99/mo for 3 months on The Roku Channel, then standard discovery+ monthly rate. Offer window May 15–25, 2026; US Roku device.",
+    source: "Roku",
+    sourceUrl:
+      "https://therokuchannel.roku.com/browse/w.wBG0ZdW46btY169yjMrptWqo9b48LYIYVYQy6owLCb2PRBNqVzIPg6GJvjYJUJapQzp5ZkcNwwPNJ1x7FjBgrb7W5ZcPRL8QkLraiorMlD6DzJcvy305j94WfVKjGrMqJocAgLyVWGG2Ub0xRg/discovery",
+    category: "promo",
+    effectiveDate: "2026-05-15",
+    expiresAt: "2026-05-25",
+    mutuallyExclusiveGroup: "discoveryplus_access",
+    lastChecked: catalogLastChecked("roku_discoveryplus_streaming_day_26"),
+    priceStatus: "current",
+  },
+  {
+    id: "roku_starz_streaming_day_26",
+    name: "STARZ — Roku Streaming Day 2026",
+    provider: "roku",
+    monthly: 1.99,
+    standardMonthly: 11.99,
+    introLengthMonths: 2,
+    covers: ["STARZ"],
+    notes:
+      "Roku Streaming Day: $1.99/mo for 2 months via The Roku Channel, then standard STARZ monthly rate. Same offer window as roku.com/blog/streaming-day-26 (May 15–25, 2026).",
+    source: "Roku",
+    sourceUrl:
+      "https://therokuchannel.roku.com/browse/w.9wKL8Dq0JasxW5r18Zq9SVD2b8pZqjCl0lwradoGfwqjy25keWs24aAG8dYGi8kQZpQBA0fBmmJBkwJyFv3NlbgNzduZAJGMyrJAtjlGP6LLm5hPYrM36d9dH9pqrqeWvKfYQ/starz",
+    category: "promo",
+    effectiveDate: "2026-05-15",
+    expiresAt: "2026-05-25",
+    mutuallyExclusiveGroup: "starz_access",
+    lastChecked: catalogLastChecked("roku_starz_streaming_day_26"),
+    priceStatus: "current",
+  },
 
   // PROMOS
   {
