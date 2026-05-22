@@ -67,24 +67,44 @@
     "skipAutomation": true
   },
   {
+    "id": "opt-directv_stream_entertainment",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Entertainment (Stream app only)"
+  },
+  {
+    "id": "opt-directv_stream_choice",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Choice (Stream app only)"
+  },
+  {
+    "id": "opt-directv_stream_ultimate",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Ultimate (Stream app only)"
+  },
+  {
+    "id": "opt-directv_stream_premier",
+    "url": "https://www.directv.com/stream/stream-packages/",
+    "label": "DirecTV Premier (Stream app only)"
+  },
+  {
     "id": "opt-directv_entertainment_direct",
     "url": "https://www.directv.com/affiliates/#plancard-EntertainmentPackage",
-    "label": "DirecTV Entertainment (Signature)"
+    "label": "DirecTV Entertainment (Signature / affiliate)"
   },
   {
     "id": "opt-directv_choice_direct",
     "url": "https://www.directv.com/affiliates/#plancard-ChoicePackage",
-    "label": "DirecTV Choice (Signature)"
+    "label": "DirecTV Choice (Signature / affiliate)"
   },
   {
     "id": "opt-directv_ultimate_direct",
     "url": "https://www.directv.com/affiliates/#plancard-UltimatePackage",
-    "label": "DirecTV Ultimate (Signature)"
+    "label": "DirecTV Ultimate (Signature / affiliate)"
   },
   {
     "id": "opt-directv_premier_direct",
     "url": "https://www.directv.com/affiliates/#plancard-PremierPackage",
-    "label": "DirecTV Premier (Signature)"
+    "label": "DirecTV Premier (Signature / affiliate)"
   },
   {
     "id": "opt-fubo_direct",

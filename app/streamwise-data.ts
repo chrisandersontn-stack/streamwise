@@ -85,6 +85,10 @@ const VERIFIED_OPTION_IDS = new Set<string>([
   "directv_choice_direct",
   "directv_entertainment_direct",
   "directv_premier_direct",
+  "directv_stream_choice",
+  "directv_stream_entertainment",
+  "directv_stream_premier",
+  "directv_stream_ultimate",
   "directv_ultimate_direct",
   "disney_hulu_max_bundle",
   "disney_hulu_max_bundle_no_ads",
@@ -700,7 +704,7 @@ export const options: Option[] = [
   },
   {
     id: "directv_entertainment_direct",
-    name: "DirecTV Entertainment (Signature)",
+    name: "DirecTV Entertainment (Signature / affiliate)",
     provider: "direct",
     monthly: 94.99,
     covers: ["DirecTV"],
@@ -716,7 +720,7 @@ export const options: Option[] = [
   },
   {
     id: "directv_choice_direct",
-    name: "DirecTV Choice (Signature)",
+    name: "DirecTV Choice (Signature / affiliate)",
     provider: "direct",
     monthly: 104.98,
     standardMonthly: 112.98,
@@ -732,7 +736,7 @@ export const options: Option[] = [
   },
   {
     id: "directv_ultimate_direct",
-    name: "DirecTV Ultimate (Signature)",
+    name: "DirecTV Ultimate (Signature / affiliate)",
     provider: "direct",
     monthly: 134.98,
     standardMonthly: 137.98,
@@ -748,7 +752,7 @@ export const options: Option[] = [
   },
   {
     id: "directv_premier_direct",
-    name: "DirecTV Premier (Signature)",
+    name: "DirecTV Premier (Signature / affiliate)",
     provider: "direct",
     monthly: 177.98,
     covers: ["DirecTV"],
@@ -760,6 +764,74 @@ export const options: Option[] = [
     mutuallyExclusiveGroup: "directv_access",
     lastChecked: catalogLastChecked("directv_premier_direct"),
     priceStatus: "needs_verification",
+  },
+  {
+    id: "directv_stream_entertainment",
+    name: "DirecTV Entertainment (Stream app only)",
+    provider: "direct",
+    monthly: 94.99,
+    covers: ["DirecTV"],
+    notes:
+      "Streaming App Only via internet (no satellite dish)—90+ channels. Price includes required fees per DIRECTV; $5 off for 24 months on new accounts. No regional sports fee on Entertainment. Optional $10/mo Gemini device lease if you add hardware. Free trial may be offered for new customers.",
+    source: "DirecTV",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
+    affiliateUrl:
+      "https://www.directv.com/stream/stream-packages/?utm_medium=Affiliate&utm_source=5370367&utm_campaign=Premium&utm_audience=Prospect&utm_creative=Skimlinks&utm_content=Skimlinks+DIRECTV+App+Only+Free+Trial+Default+Link",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: catalogLastChecked("directv_stream_entertainment"),
+    priceStatus: "current",
+  },
+  {
+    id: "directv_stream_choice",
+    name: "DirecTV Choice (Stream app only)",
+    provider: "direct",
+    monthly: 114.98,
+    covers: ["DirecTV"],
+    notes:
+      "Streaming App Only Choice tier—125+ channels. Includes $10 off for 24 months; regional sports fee up to $19.99/mo may apply by ZIP. Unlimited cloud DVR included. Confirm locals and RSNs for your address.",
+    source: "DirecTV",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
+    affiliateUrl:
+      "https://www.directv.com/stream/stream-packages/?utm_medium=Affiliate&utm_source=5370367&utm_campaign=Premium&utm_audience=Prospect&utm_creative=Skimlinks&utm_content=Skimlinks+DIRECTV+App+Only+Free+Trial+Default+Link",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: catalogLastChecked("directv_stream_choice"),
+    priceStatus: "current",
+  },
+  {
+    id: "directv_stream_ultimate",
+    name: "DirecTV Ultimate (Stream app only)",
+    provider: "direct",
+    monthly: 139.98,
+    covers: ["DirecTV"],
+    notes:
+      "Streaming App Only Ultimate—160+ channels with broader sports and movie networks. $15 off for 24 months; RSN fee up to $19.99/mo may apply. Stream on supported TVs, mobile, and browsers via the DIRECTV app.",
+    source: "DirecTV",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
+    affiliateUrl:
+      "https://www.directv.com/stream/stream-packages/?utm_medium=Affiliate&utm_source=5370367&utm_campaign=Premium&utm_audience=Prospect&utm_creative=Skimlinks&utm_content=Skimlinks+DIRECTV+App+Only+Free+Trial+Default+Link",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: catalogLastChecked("directv_stream_ultimate"),
+    priceStatus: "current",
+  },
+  {
+    id: "directv_stream_premier",
+    name: "DirecTV Premier (Stream app only)",
+    provider: "direct",
+    monthly: 179.98,
+    covers: ["DirecTV"],
+    notes:
+      "Streaming App Only Premier—185+ channels including premium movie networks. $20 off for 24 months; RSN fee up to $19.99/mo may apply. Taxes and fees extra; cancel anytime.",
+    source: "DirecTV",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
+    affiliateUrl:
+      "https://www.directv.com/stream/stream-packages/?utm_medium=Affiliate&utm_source=5370367&utm_campaign=Premium&utm_audience=Prospect&utm_creative=Skimlinks&utm_content=Skimlinks+DIRECTV+App+Only+Free+Trial+Default+Link",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: catalogLastChecked("directv_stream_premier"),
+    priceStatus: "current",
   },
 
   // MEMBERSHIP / INCLUDED PATHS

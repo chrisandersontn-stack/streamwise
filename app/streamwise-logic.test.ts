@@ -520,7 +520,7 @@ describe("calculateCombos", () => {
     const directvOptions = defaultCatalogOptions.filter((opt) =>
       opt.covers.includes("DirecTV")
     );
-    expect(directvOptions.length).toBeGreaterThanOrEqual(4);
+    expect(directvOptions.length).toBeGreaterThanOrEqual(8);
 
     const results = calculateCombos(
       defaultCatalogOptions,
