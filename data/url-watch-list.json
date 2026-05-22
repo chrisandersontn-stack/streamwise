@@ -56,6 +56,26 @@
     "skipAutomation": true
   },
   {
+    "id": "opt-directv_entertainment_direct",
+    "url": "https://www.directv.com/affiliates/#plancard-EntertainmentPackage",
+    "label": "DirecTV Entertainment (Signature)"
+  },
+  {
+    "id": "opt-directv_choice_direct",
+    "url": "https://www.directv.com/affiliates/#plancard-ChoicePackage",
+    "label": "DirecTV Choice (Signature)"
+  },
+  {
+    "id": "opt-directv_ultimate_direct",
+    "url": "https://www.directv.com/affiliates/#plancard-UltimatePackage",
+    "label": "DirecTV Ultimate (Signature)"
+  },
+  {
+    "id": "opt-directv_premier_direct",
+    "url": "https://www.directv.com/affiliates/#plancard-PremierPackage",
+    "label": "DirecTV Premier (Signature)"
+  },
+  {
     "id": "opt-fubo_direct",
     "url": "https://www.fubo.tv/welcome/channels",
     "label": "Fubo Pro"

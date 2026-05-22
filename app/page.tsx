@@ -165,6 +165,7 @@ function isLiveTvService(group: string) {
     "Sling TV",
     "Fubo",
     "Philo",
+    "DirecTV",
   ].includes(group);
 }
 

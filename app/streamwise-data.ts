@@ -186,6 +186,12 @@ export const services: Service[] = [
     monthly: 25,
     group: "Philo",
   },
+  {
+    id: "directv",
+    label: "DirecTV",
+    monthly: 94.99,
+    group: "DirecTV",
+  },
 ];
 
 export const options: Option[] = [
@@ -528,6 +534,69 @@ export const options: Option[] = [
     mutuallyExclusiveGroup: "philo_bundle_plus_family",
     lastChecked: LAST_CHECKED,
     priceStatus: "current",
+  },
+  {
+    id: "directv_entertainment_direct",
+    name: "DirecTV Entertainment (Signature)",
+    provider: "direct",
+    monthly: 94.99,
+    covers: ["DirecTV"],
+    notes:
+      "Signature streaming tier with 90+ channels. Advertised price includes required fees; excludes taxes. Regional sports fee does not apply. Gemini device lease ($10/mo) and promos vary by ZIP—confirm on directv.com before signup.",
+    source: "DirecTV",
+    sourceUrl:
+      "https://www.directv.com/affiliates/#plancard-EntertainmentPackage",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: LAST_CHECKED,
+    priceStatus: "needs_verification",
+  },
+  {
+    id: "directv_choice_direct",
+    name: "DirecTV Choice (Signature)",
+    provider: "direct",
+    monthly: 104.98,
+    standardMonthly: 112.98,
+    covers: ["DirecTV"],
+    notes:
+      "Signature Choice tier with 125+ channels. Price shown is with required fees for month 1; ongoing rate often higher after promos. Regional sports network fee up to $19.99/mo may apply by ZIP. Gemini lease $10/mo extra.",
+    source: "DirecTV",
+    sourceUrl: "https://www.directv.com/affiliates/#plancard-ChoicePackage",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: LAST_CHECKED,
+    priceStatus: "needs_verification",
+  },
+  {
+    id: "directv_ultimate_direct",
+    name: "DirecTV Ultimate (Signature)",
+    provider: "direct",
+    monthly: 134.98,
+    standardMonthly: 137.98,
+    covers: ["DirecTV"],
+    notes:
+      "Signature Ultimate tier with 160+ channels. Includes broader sports and movie channels vs Choice. RSN fee up to $19.99/mo may apply. Confirm current rate and fees for your address.",
+    source: "DirecTV",
+    sourceUrl: "https://www.directv.com/affiliates/#plancard-UltimatePackage",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: LAST_CHECKED,
+    priceStatus: "needs_verification",
+  },
+  {
+    id: "directv_premier_direct",
+    name: "DirecTV Premier (Signature)",
+    provider: "direct",
+    monthly: 177.98,
+    covers: ["DirecTV"],
+    notes:
+      "Top Signature tier with 185+ channels including premium movie networks. Promotional price locks are common; standard rate with fees can exceed advertised promo. RSN and Gemini fees may apply.",
+    source: "DirecTV",
+    sourceUrl: "https://www.directv.com/affiliates/#plancard-PremierPackage",
+    category: "direct",
+    mutuallyExclusiveGroup: "directv_access",
+    lastChecked: LAST_CHECKED,
+    priceStatus: "needs_verification",
   },
 
   // MEMBERSHIP / INCLUDED PATHS

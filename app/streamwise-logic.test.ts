@@ -512,4 +512,32 @@ describe("calculateCombos", () => {
     expect(withAppleOne[0]?.total).toBe(0);
     expect(withAppleOne[0]?.savings).toBeGreaterThan(0);
   });
+
+  it("includes exactly one DirecTV Signature tier when DirecTV is selected", () => {
+    const directvOptions = defaultCatalogOptions.filter((opt) =>
+      opt.covers.includes("DirecTV")
+    );
+    expect(directvOptions.length).toBeGreaterThanOrEqual(4);
+
+    const results = calculateCombos(
+      defaultCatalogOptions,
+      ["DirecTV"],
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      new Date("2026-05-19")
+    );
+
+    expect(results.length).toBeGreaterThan(0);
+    const cheapest = results[0];
+    const directvChosen = cheapest.chosen.filter((c) => c.covers.includes("DirecTV"));
+    expect(directvChosen).toHaveLength(1);
+    expect(directvChosen[0]?.id).toMatch(/^directv_/);
+  });
 });
