@@ -119,8 +119,6 @@ const CANONICAL_REALIGN_OPTION_IDS = new Set<string>([
   "amcplus_direct",
 ]);
 
-/** Promo/signup paths that may be missing from truncated snapshots but are safe to append. */
-const APPEND_IF_MISSING_OPTION_IDS = ["roku_amcplus_streaming_day_26"] as const;
 
 function reanchorOptionFromDefaults(
   options: CatalogOption[],
@@ -169,15 +167,20 @@ function repairCanonicalOptionsFromDefaults(options: CatalogOption[]): CatalogOp
   return next;
 }
 
+/** Supabase snapshots are often truncated; append any embedded default row that is missing. */
 function appendMissingDefaultOptions(options: CatalogOption[]): CatalogOption[] {
   const ids = new Set(options.map((o) => o.id));
-  let next = options;
-  for (const id of APPEND_IF_MISSING_OPTION_IDS) {
-    if (ids.has(id)) continue;
-    const def = defaultOptions.find((o) => o.id === id);
-    if (def) next = [...next, cloneCatalogOption(def)];
-  }
-  return next;
+  const missing = defaultOptions.filter((o) => !ids.has(o.id));
+  if (!missing.length) return options;
+  return [...options, ...missing.map((o) => cloneCatalogOption(o))];
+}
+
+/** Service tiles come from `catalog.services`; missing rows hide providers (e.g. DirecTV). */
+export function repairCatalogServices(services: Service[]): Service[] {
+  const ids = new Set(services.map((s) => s.id));
+  const missing = defaultServices.filter((s) => !ids.has(s.id));
+  if (!missing.length) return services;
+  return [...services, ...missing];
 }
 
 const defaultLastCheckedById = new Map(
@@ -257,7 +260,7 @@ export async function getCatalogWithMetadata(): Promise<CatalogWithMetadata> {
 
     if (data && Array.isArray(data.services) && Array.isArray(data.options)) {
       return {
-        services: data.services as Service[],
+        services: repairCatalogServices(data.services as Service[]),
         options: repairCatalogOptions(data.options as CatalogOption[]),
         catalogUpdatedAt:
           typeof data.updated_at === "string" && data.updated_at
@@ -274,7 +277,7 @@ export async function getCatalogWithMetadata(): Promise<CatalogWithMetadata> {
     if (isValidCatalogPayload(parsed)) {
       const fileStat = await fs.stat(catalogPath);
       return {
-        services: parsed.services,
+        services: repairCatalogServices(parsed.services),
         options: repairCatalogOptions(parsed.options),
         catalogUpdatedAt: fileStat.mtime.toISOString(),
         catalogSource: "file",

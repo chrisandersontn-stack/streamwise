@@ -3,7 +3,25 @@ import { describe, expect, it } from "vitest";
 import { options as defaultOptions } from "@/app/streamwise-data";
 import { calculateCombos } from "@/app/streamwise-logic";
 
-import { repairCatalogOptions } from "./catalog-store";
+import { repairCatalogOptions, repairCatalogServices } from "./catalog-store";
+import { services as defaultServices } from "@/app/streamwise-data";
+
+describe("repairCatalogServices (DirecTV tile)", () => {
+  it("appends DirecTV when the snapshot services list omits it", () => {
+    const withoutDirectv = defaultServices.filter((s) => s.id !== "directv");
+    const fixed = repairCatalogServices(withoutDirectv);
+    expect(fixed.some((s) => s.id === "directv" && s.group === "DirecTV")).toBe(true);
+  });
+});
+
+describe("repairCatalogOptions (DirecTV plans)", () => {
+  it("appends DirecTV plan rows when missing from a truncated snapshot", () => {
+    const withoutDirectv = defaultOptions.filter((o) => !o.id.startsWith("directv_"));
+    const fixed = repairCatalogOptions(withoutDirectv);
+    expect(fixed.some((o) => o.id === "directv_stream_choice")).toBe(true);
+    expect(fixed.some((o) => o.covers.includes("DirecTV"))).toBe(true);
+  });
+});
 
 describe("repairCatalogOptions (AMC+ direct)", () => {
   it("replaces a corrupted amcplus_direct row (wrong service) with the embedded default", () => {
