@@ -37,8 +37,13 @@
   },
   {
     "id": "opt-disney_hulu_bundle",
-    "url": "https://www.hulu.com/disney-hulu-bundle",
-    "label": "Disney+, Hulu Bundle"
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "label": "Disney+, Hulu Bundle (With Ads)"
+  },
+  {
+    "id": "opt-disney_hulu_bundle_premium",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "label": "Disney+, Hulu Bundle (No Ads)"
   },
   {
     "id": "opt-disney_hulu_bundle_promo",
@@ -47,24 +52,43 @@
   },
   {
     "id": "opt-disney_hulu_espn_unlimited_bundle",
-    "url": "https://www.hulu.com/disney-hulu-espn-unlimited-bundle",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
     "label": "Disney+, Hulu, ESPN Unlimited Bundle"
   },
   {
+    "id": "opt-disney_hulu_espn_select_bundle",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "label": "Disney+, Hulu, ESPN Select Bundle"
+  },
+  {
+    "id": "opt-disney_hulu_espn_select_bundle_premium",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "label": "Disney+, Hulu, ESPN Select Bundle (No Ads)"
+  },
+  {
+    "id": "opt-disney_hulu_espn_unlimited_bundle_premium",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "label": "Disney+, Hulu, ESPN Unlimited Bundle (No Ads)"
+  },
+  {
     "id": "opt-disney_hulu_max_bundle",
-    "url": "https://www.hulu.com/disney-hulu-hbomax-bundle",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
     "label": "Disney+, Hulu, HBO Max Bundle (With Ads)"
   },
   {
     "id": "opt-disney_hulu_max_bundle_no_ads",
-    "url": "https://www.hulu.com/disney-hulu-hbomax-bundle",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
     "label": "Disney+, Hulu, HBO Max Bundle (No Ads)"
   },
   {
     "id": "opt-espn_select_direct",
-    "url": "https://support.espn.com/hc/en-us/articles/40375475974036-ESPN-Select-or-Unlimited-Plans-and-Prices",
-    "label": "ESPN Select",
-    "skipAutomation": true
+    "url": "https://plus.espn.com",
+    "label": "ESPN Select"
+  },
+  {
+    "id": "opt-espn_unlimited_direct",
+    "url": "https://plus.espn.com",
+    "label": "ESPN Unlimited"
   },
   {
     "id": "opt-directv_stream_5day_trial",
@@ -132,24 +156,64 @@
     "label": "DirecTV Premier (Signature / affiliate)"
   },
   {
+    "id": "opt-fubo_sports_news_direct",
+    "url": "https://www.fubo.tv/welcome/plans",
+    "label": "Fubo Sports + News"
+  },
+  {
     "id": "opt-fubo_direct",
-    "url": "https://www.fubo.tv/welcome/channels",
+    "url": "https://www.fubo.tv/welcome/plans",
     "label": "Fubo Pro"
   },
   {
+    "id": "opt-fubo_elite_direct",
+    "url": "https://www.fubo.tv/welcome/plans",
+    "label": "Fubo Elite"
+  },
+  {
+    "id": "opt-fubo_premier_direct",
+    "url": "https://www.fubo.tv/welcome/plans",
+    "label": "Fubo Premier"
+  },
+  {
+    "id": "opt-fubo_latino_direct",
+    "url": "https://www.fubo.tv/welcome/plans",
+    "label": "Fubo Latino"
+  },
+  {
     "id": "opt-fubo_promo",
-    "url": "https://www.fubo.tv/welcome/channels",
-    "label": "Fubo promo plan"
+    "url": "https://www.fubo.tv/welcome/plans",
+    "label": "Fubo Sports + News — first month promo"
+  },
+  {
+    "id": "opt-fubo_pro_promo",
+    "url": "https://www.fubo.tv/welcome/plans",
+    "label": "Fubo Pro — first month promo"
   },
   {
     "id": "opt-hulu_direct",
-    "url": "https://secure.hulu.com/commerce/plans?offerType=FLAGSHIP_BUNDLE&default=bundle",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
     "label": "Hulu (With Ads)"
   },
   {
+    "id": "opt-hulu_no_ads_direct",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "label": "Hulu (No Ads)"
+  },
+  {
     "id": "opt-hulu_live_tv_direct",
-    "url": "https://www.hulu.com/live-tv",
-    "label": "Hulu + Live TV"
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost#live-tv",
+    "label": "Hulu + Live TV (With Ads)"
+  },
+  {
+    "id": "opt-hulu_live_tv_no_ads_direct",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost#live-tv",
+    "label": "Hulu + Live TV (No Ads)"
+  },
+  {
+    "id": "opt-hulu_live_tv_only_direct",
+    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost#live-tv",
+    "label": "Hulu Live TV Only"
   },
   {
     "id": "opt-hulu_hbomax_addon",
@@ -163,18 +227,38 @@
   },
   {
     "id": "opt-max_direct",
-    "url": "https://help.max.com/us/Answer/Detail/000002524",
-    "label": "Max Basic with Ads"
+    "url": "https://www.hbomax.com/lapsed",
+    "label": "HBO Max Basic with Ads"
+  },
+  {
+    "id": "opt-max_standard_direct",
+    "url": "https://www.hbomax.com/lapsed",
+    "label": "HBO Max Standard"
   },
   {
     "id": "opt-netflix_direct",
-    "url": "https://help.netflix.com/en/node/24926",
+    "url": "https://www.netflix.com/signup",
     "label": "Netflix Standard with Ads"
+  },
+  {
+    "id": "opt-netflix_standard_direct",
+    "url": "https://www.netflix.com/signup",
+    "label": "Netflix Standard"
+  },
+  {
+    "id": "opt-netflix_premium_direct",
+    "url": "https://www.netflix.com/signup",
+    "label": "Netflix Premium"
   },
   {
     "id": "opt-paramount_direct",
     "url": "https://www.paramountplus.com/",
     "label": "Paramount+ Essential"
+  },
+  {
+    "id": "opt-paramount_premium_direct",
+    "url": "https://www.paramountplus.com/",
+    "label": "Paramount+ Premium (with SHOWTIME)"
   },
   {
     "id": "opt-roku_amcplus_streaming_day_26",
@@ -208,18 +292,18 @@
   },
   {
     "id": "opt-peacock_select_direct",
-    "url": "https://www.peacocktv.com/",
-    "label": "Peacock Select (With Ads)"
+    "url": "https://www.peacocktv.com/plans/all-monthly",
+    "label": "Peacock Select"
   },
   {
     "id": "opt-peacock_direct",
-    "url": "https://www.peacocktv.com/",
-    "label": "Peacock Premium (With Ads)"
+    "url": "https://www.peacocktv.com/plans/all-monthly",
+    "label": "Peacock Premium"
   },
   {
     "id": "opt-peacock_premium_plus_direct",
-    "url": "https://www.peacocktv.com/",
-    "label": "Peacock Premium Plus (No Ads)"
+    "url": "https://www.peacocktv.com/plans/all-monthly",
+    "label": "Peacock Premium Plus"
   },
   {
     "id": "opt-peacock_apple_tv_bundle",
@@ -228,12 +312,12 @@
   },
   {
     "id": "opt-philo_bundle_plus",
-    "url": "https://help.philo.com/account-billing/packages/",
+    "url": "https://www.philo.com/go/pricing",
     "label": "Philo Bundle+"
   },
   {
     "id": "opt-philo_essential_direct",
-    "url": "https://help.philo.com/account-billing/packages/",
+    "url": "https://www.philo.com/go/pricing",
     "label": "Philo Essential"
   },
   {
@@ -263,8 +347,28 @@
   },
   {
     "id": "opt-sling_orange_blue_3mo_prepay",
-    "url": "https://www.sling.com/service/prepay",
+    "url": "https://www.sling.com/service/sling-orange-and-blue",
     "label": "Sling Orange & Blue — 3-month prepay"
+  },
+  {
+    "id": "opt-sling_orange_blue_sports_extra_direct",
+    "url": "https://www.sling.com/service/sling-orange-and-blue",
+    "label": "Sling Orange & Blue + Sports Extra (monthly)"
+  },
+  {
+    "id": "opt-sling_orange_blue_sports_extra_3mo_prepay",
+    "url": "https://www.sling.com/service/sling-orange-and-blue",
+    "label": "Sling Orange & Blue + Sports Extra — 3-month prepay"
+  },
+  {
+    "id": "opt-sling_orange_blue_news_extra_direct",
+    "url": "https://www.sling.com/service/sling-orange-and-blue",
+    "label": "Sling Orange & Blue + News Extra (monthly)"
+  },
+  {
+    "id": "opt-sling_orange_blue_news_extra_3mo_prepay",
+    "url": "https://www.sling.com/service/sling-orange-and-blue",
+    "label": "Sling Orange & Blue + News Extra — 3-month prepay"
   },
   {
     "id": "opt-sling_orange_blue_promo",
@@ -289,12 +393,17 @@
   {
     "id": "opt-starz_direct",
     "url": "https://www.starz.com/us/en/buy",
-    "label": "STARZ standard monthly plan"
+    "label": "STARZ (monthly)"
   },
   {
     "id": "opt-starz_promo",
     "url": "https://www.starz.com/us/en/buy",
-    "label": "STARZ limited-time offer"
+    "label": "STARZ — 75% off monthly (3 months)"
+  },
+  {
+    "id": "opt-starz_annual_prepay",
+    "url": "https://www.starz.com/us/en/buy",
+    "label": "STARZ (annual prepay)"
   },
   {
     "id": "opt-tmobile_apple_tv_discount",
@@ -304,7 +413,12 @@
   {
     "id": "opt-tmobile_netflix_on_us",
     "url": "https://www.t-mobile.com/tv-streaming/netflix-on-us",
-    "label": "T-Mobile Netflix On Us"
+    "label": "T-Mobile Netflix Standard with Ads (On Us)"
+  },
+  {
+    "id": "opt-tmobile_netflix_premium_upgrade",
+    "url": "https://www.t-mobile.com/tv-streaming/netflix-on-us",
+    "label": "T-Mobile Netflix Premium upgrade"
   },
   {
     "id": "opt-verizon_disney_bundle",
@@ -332,18 +446,43 @@
     "label": "Peacock Premium included with Walmart+"
   },
   {
-    "id": "opt-xfinity_streamsaver",
+    "id": "opt-xfinity_streamsaver_peacock_netflix_max",
     "url": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
-    "label": "Xfinity StreamSaver"
+    "label": "Xfinity StreamSaver: Peacock, Netflix, HBO Max"
+  },
+  {
+    "id": "opt-xfinity_streamsaver_peacock_netflix_disney_hulu_max",
+    "url": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+    "label": "Xfinity StreamSaver: Peacock, Netflix, Disney+, Hulu, HBO Max"
+  },
+  {
+    "id": "opt-xfinity_streamsaver_peacock_netflix_apple_disney_hulu_max",
+    "url": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+    "label": "Xfinity StreamSaver: Peacock, Netflix, Apple TV+, Disney+, Hulu, HBO Max"
+  },
+  {
+    "id": "opt-xfinity_streamsaver_peacock_netflix_apple_max_now_tv",
+    "url": "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
+    "label": "Xfinity StreamSaver: Peacock, Netflix, Apple TV+, HBO Max, NOW TV"
   },
   {
     "id": "opt-youtube_tv_direct",
     "url": "https://tv.youtube.com/welcome/",
-    "label": "YouTube TV Base Plan"
+    "label": "YouTube TV (100+ channels)"
   },
   {
     "id": "opt-youtube_tv_promo",
     "url": "https://tv.youtube.com/welcome/",
-    "label": "YouTube TV Base Plan promo"
+    "label": "YouTube TV — new user promo (3 months)"
+  },
+  {
+    "id": "opt-youtube_tv_sports_direct",
+    "url": "https://tv.youtube.com/welcome/",
+    "label": "YouTube TV Sports Plan (30+ channels)"
+  },
+  {
+    "id": "opt-youtube_tv_sports_promo",
+    "url": "https://tv.youtube.com/welcome/",
+    "label": "YouTube TV Sports Plan — new user promo (12 months)"
   }
 ]

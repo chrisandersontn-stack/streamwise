@@ -20,7 +20,7 @@ describe("repairCatalogOptions (STARZ promo)", () => {
 
     const fixed = repairCatalogOptions(broken);
     const promo = fixed.find((o) => o.id === "starz_promo");
-    expect(promo?.monthly).toBe(4.99);
+    expect(promo?.monthly).toBe(2.99);
     expect(promo?.standardMonthly).toBe(11.99);
     expect(promo?.introLengthMonths).toBe(3);
 
@@ -38,7 +38,8 @@ describe("repairCatalogOptions (STARZ promo)", () => {
       false,
       new Date("2026-05-02T00:00:00Z")
     );
-    expect(combos[0]?.chosen.some((c) => c.id === "starz_promo")).toBe(true);
+    const starzPick = combos[0]?.chosen.find((c) => c.covers?.includes("STARZ"));
+    expect(["starz_promo", "starz_annual_prepay"]).toContain(starzPick?.id);
   });
 
   it("appends starz_promo when missing from the snapshot", () => {
@@ -68,7 +69,7 @@ describe("repairCatalogOptions (STARZ promo)", () => {
     );
     const fixed = repairCatalogOptions(wrongNumbers);
     const promo = fixed.find((o) => o.id === "starz_promo");
-    expect(promo?.monthly).toBe(4.99);
+    expect(promo?.monthly).toBe(2.99);
     expect(promo?.standardMonthly).toBe(11.99);
   });
 });
