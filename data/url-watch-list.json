@@ -10,6 +10,12 @@
     "label": "Apple TV+"
   },
   {
+    "id": "opt-apple_tv_rokt_30day_promo",
+    "url": "https://redeem.services.apple/roktappletv-amr-v2",
+    "label": "Apple TV+ — 30 days free (promo code)",
+    "skipAutomation": true
+  },
+  {
     "id": "opt-apple_one_individual",
     "url": "https://www.apple.com/apple-one/",
     "label": "Apple One Individual"

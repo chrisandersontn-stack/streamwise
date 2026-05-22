@@ -775,6 +775,25 @@ export const options: Option[] = [
     lastChecked: LAST_CHECKED,
     priceStatus: "current",
   },
+  {
+    id: "apple_tv_rokt_30day_promo",
+    name: "Apple TV+ — 30 days free (promo code)",
+    provider: "apple",
+    monthly: 0,
+    effectiveMonthly: 0,
+    standardMonthly: 12.99,
+    introLengthMonths: 1,
+    covers: ["Apple TV+"],
+    notes:
+      "Redeem at the linked Apple offer page: 30 days free, then $12.99/mo until canceled. New and qualified returning subscribers only; US only. Promotional code expires January 7, 2027. Requires Apple ID with payment method on file. Cannot be combined with other offers for the same Apple TV service.",
+    source: "Apple",
+    sourceUrl: "https://redeem.services.apple/roktappletv-amr-v2",
+    category: "promo",
+    expiresAt: "2027-01-07",
+    mutuallyExclusiveGroup: "apple_tv_access",
+    lastChecked: LAST_CHECKED,
+    priceStatus: "current",
+  },
 
   // CARRIER / TELECOM PERKS
   {

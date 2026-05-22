@@ -492,7 +492,10 @@ describe("calculateCombos", () => {
       false,
       today
     );
-    expect(withoutAppleOne[0]?.chosen.map((c) => c.id)).toEqual(["apple_direct"]);
+    expect(withoutAppleOne[0]?.chosen.map((c) => c.id)).toEqual([
+      "apple_tv_rokt_30day_promo",
+    ]);
+    expect(withoutAppleOne[0]?.total).toBe(0);
 
     const withAppleOne = calculateCombos(
       defaultCatalogOptions,
