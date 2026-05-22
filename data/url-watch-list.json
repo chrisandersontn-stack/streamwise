@@ -52,8 +52,13 @@
   },
   {
     "id": "opt-disney_hulu_max_bundle",
-    "url": "https://www.hbomax.com/bundle/disney-plus-hulu",
-    "label": "Disney+, Hulu, HBO Max Bundle"
+    "url": "https://www.hulu.com/disney-hulu-hbomax-bundle",
+    "label": "Disney+, Hulu, HBO Max Bundle (With Ads)"
+  },
+  {
+    "id": "opt-disney_hulu_max_bundle_no_ads",
+    "url": "https://www.hulu.com/disney-hulu-hbomax-bundle",
+    "label": "Disney+, Hulu, HBO Max Bundle (No Ads)"
   },
   {
     "id": "opt-espn_select_direct",

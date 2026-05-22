@@ -75,7 +75,7 @@ export type Option = {
   priceStatus?: PriceStatus;
 };
 
-const LAST_CHECKED = "2026-05-02";
+const LAST_CHECKED = "2026-05-22";
 
 export const services: Service[] = [
   {
@@ -725,13 +725,29 @@ export const options: Option[] = [
   },
   {
     id: "disney_hulu_max_bundle",
-    name: "Disney+, Hulu, HBO Max Bundle",
+    name: "Disney+, Hulu, HBO Max Bundle (With Ads)",
     provider: "hulu",
     monthly: 19.99,
     covers: ["Disney+", "Hulu", "Max"],
-    notes: "Three-service ad-supported bundle.",
+    notes:
+      "Direct-billed Disney+, Hulu, HBO Max Bundle with ads. Advertised savings vs $34.97/mo standalone retail for the three services (~42% off). Billed by Hulu; access each app separately. U.S. only, 18+.",
     source: "Hulu",
-    sourceUrl: "https://www.hbomax.com/bundle/disney-plus-hulu",
+    sourceUrl: "https://www.hulu.com/disney-hulu-hbomax-bundle",
+    category: "bundle",
+    mutuallyExclusiveGroup: "disney_hulu_max_family",
+    lastChecked: LAST_CHECKED,
+    priceStatus: "current",
+  },
+  {
+    id: "disney_hulu_max_bundle_no_ads",
+    name: "Disney+, Hulu, HBO Max Bundle (No Ads)",
+    provider: "hulu",
+    monthly: 32.99,
+    covers: ["Disney+", "Hulu", "Max"],
+    notes:
+      "Ad-free Disney+, Hulu, and HBO Max bundle. Advertised savings vs $56.47/mo standalone retail (~41% off). Ads may still appear in select live and linear content. ESPN Unlimited add-on available on the same signup page.",
+    source: "Hulu",
+    sourceUrl: "https://www.hulu.com/disney-hulu-hbomax-bundle",
     category: "bundle",
     mutuallyExclusiveGroup: "disney_hulu_max_family",
     lastChecked: LAST_CHECKED,
