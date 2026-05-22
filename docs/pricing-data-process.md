@@ -7,8 +7,10 @@ This document is the **source-of-truth playbook** for how pricing gets into Stre
 1. **Primary sources only** for numbers that affect rankings: official plan pages, official help/pricing articles, checkout flows you can reproduce, or official PDF/terms where pricing is stated clearly.
 2. **ChatGPT (or any LLM) is not a source.** It may help you *draft* notes or *reformat* text **after** you have already captured the official evidence (URL + what you saw + date).
 3. **Every catalog `Option` must be defensible from its `sourceUrl` (or an added URL in `notes` if the URL is genuinely split across pages).** If you cannot find an official page, set `priceStatus` to `needs_verification` and do not present the price as “current”.
-4. **Date everything** using `lastChecked` (ISO `YYYY-MM-DD` is fine) on each option you touch.
+4. **Date everything** using `lastChecked` (ISO `YYYY-MM-DD`) on **each catalog option** you re-verified—not a single global date for the whole file. After edits in `app/streamwise-data.ts`, add each touched option’s `id` to `VERIFIED_OPTION_IDS` (or save via `/admin/pricing`, which sets `lastChecked` per row).
 5. **Prefer “slightly conservative” modeling** over “optimistically cheap”**: if eligibility is fuzzy, raise monthly effective cost via `notes`, add requirements, or mark `needs_verification`.
+
+**Where dates show in the app:** each plan line uses that option’s `lastChecked`; service cards show the newest date among plans for that service; the catalog footer shows newest/oldest across all plans.
 
 ## 2) What “accuracy” means in StreamWise
 

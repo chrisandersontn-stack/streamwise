@@ -21,6 +21,10 @@ import {
   outboundLinkRel,
   resolveOutboundSourceUrl,
 } from "@/lib/affiliate/outbound-url";
+import {
+  getCatalogRefreshSummary,
+  getLastCheckedByServiceGroup,
+} from "@/lib/catalog-freshness";
 
 type RankingMode = "starting" | "ongoing";
 type Combo = ReturnType<typeof calculateCombos>[number];
@@ -1508,28 +1512,6 @@ function formatDateIso(value: string | null) {
   return parsed.toISOString().slice(0, 10);
 }
 
-function getCatalogRefreshSummary(optionCatalog: Option[]) {
-  const validDates = optionCatalog
-    .map((item) => item.lastChecked)
-    .filter((value): value is string => Boolean(value))
-    .map((value) => ({ raw: value, parsed: toUtcDay(value) }))
-    .filter(
-      (entry): entry is { raw: string; parsed: Date } =>
-        entry.parsed !== null
-    );
-
-  if (!validDates.length) {
-    return { latest: null as string | null, oldest: null as string | null };
-  }
-
-  validDates.sort((a, b) => a.parsed.getTime() - b.parsed.getTime());
-
-  return {
-    latest: validDates.at(-1)?.raw ?? null,
-    oldest: validDates[0]?.raw ?? null,
-  };
-}
-
 function getDataFreshnessLabel(oldestDate: string | null) {
   if (!oldestDate) {
     return {
@@ -1892,7 +1874,8 @@ function renderRankingModeToggle(
 function renderServiceCard(
   service: { group: string; monthly: number },
   active: boolean,
-  onToggle: (group: string) => void
+  onToggle: (group: string) => void,
+  plansLastChecked: string | undefined
 ) {
   return (
     <button
@@ -1912,6 +1895,13 @@ function renderServiceCard(
           <div className={`text-sm ${active ? "text-slate-200" : "text-slate-500"}`}>
             Standalone retail: {formatMoney(service.monthly)}/mo
           </div>
+          {plansLastChecked && (
+            <div
+              className={`mt-1 text-xs ${active ? "text-slate-300" : "text-slate-400"}`}
+            >
+              Plans last checked: {formatDateIso(plansLastChecked)}
+            </div>
+          )}
         </div>
 
         <span
@@ -2029,7 +2019,8 @@ function renderServiceSection(
   description: string,
   items: ServiceCard[],
   selected: string[],
-  onToggle: (group: string) => void
+  onToggle: (group: string) => void,
+  lastCheckedByServiceGroup: Map<string, string>
 ) {
   if (!items.length) {
     return null;
@@ -2044,7 +2035,12 @@ function renderServiceSection(
 
       <div className="grid gap-3 sm:grid-cols-2">
         {items.map((service) =>
-          renderServiceCard(service, selected.includes(service.group), onToggle)
+          renderServiceCard(
+            service,
+            selected.includes(service.group),
+            onToggle,
+            lastCheckedByServiceGroup.get(service.group)
+          )
         )}
       </div>
     </div>
@@ -2422,6 +2418,10 @@ export default function Page() {
     () => getCatalogRefreshSummary(optionCatalog),
     [optionCatalog]
   );
+  const lastCheckedByServiceGroup = React.useMemo(
+    () => getLastCheckedByServiceGroup(optionCatalog),
+    [optionCatalog]
+  );
   const catalogFreshnessLabel = React.useMemo(
     () => getDataFreshnessLabel(catalogRefresh.oldest),
     [catalogRefresh.oldest]
@@ -2742,7 +2742,8 @@ export default function Page() {
               "Core entertainment, premium, and niche services.",
               onDemandServices,
               selected,
-              toggleService
+              toggleService,
+              lastCheckedByServiceGroup
             )}
 
             {renderServiceSection(
@@ -2750,7 +2751,8 @@ export default function Page() {
               "Virtual cable-style services and live-TV-first packages.",
               liveTvServices,
               selected,
-              toggleService
+              toggleService,
+              lastCheckedByServiceGroup
             )}
 
             {!filteredServiceCards.length && (

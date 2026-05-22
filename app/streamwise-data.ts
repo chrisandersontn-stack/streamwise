@@ -75,7 +75,30 @@ export type Option = {
   priceStatus?: PriceStatus;
 };
 
-const LAST_CHECKED = "2026-05-22";
+/** Per-plan verification date (ISO YYYY-MM-DD). Update only options you re-checked. */
+const LEGACY_LAST_CHECKED = "2026-05-02";
+const VERIFIED_LAST_CHECKED = "2026-05-22";
+
+/** Option ids verified against official sources on VERIFIED_LAST_CHECKED. */
+const VERIFIED_OPTION_IDS = new Set<string>([
+  "apple_tv_rokt_30day_promo",
+  "directv_choice_direct",
+  "directv_entertainment_direct",
+  "directv_premier_direct",
+  "directv_ultimate_direct",
+  "disney_hulu_max_bundle",
+  "disney_hulu_max_bundle_no_ads",
+  "peacock_apple_tv_bundle",
+  "peacock_direct",
+  "peacock_premium_plus_direct",
+  "peacock_select_direct",
+]);
+
+function catalogLastChecked(optionId: string): string {
+  return VERIFIED_OPTION_IDS.has(optionId)
+    ? VERIFIED_LAST_CHECKED
+    : LEGACY_LAST_CHECKED;
+}
 
 export const services: Service[] = [
   {
@@ -207,7 +230,7 @@ export const options: Option[] = [
     sourceUrl: "https://help.netflix.com/en/node/24926",
     category: "direct",
     mutuallyExclusiveGroup: "netflix_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("netflix_direct"),
     priceStatus: "current",
   },
   {
@@ -222,7 +245,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.disneyplus.com/commerce/cadence?package=disney_duo_basic",
     category: "direct",
     mutuallyExclusiveGroup: "disney_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("disney_direct"),
     priceStatus: "current",
   },
   {
@@ -238,7 +261,7 @@ export const options: Option[] = [
       "https://secure.hulu.com/commerce/plans?offerType=FLAGSHIP_BUNDLE&default=bundle",
     category: "direct",
     mutuallyExclusiveGroup: "hulu_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("hulu_direct"),
     priceStatus: "current",
   },
   {
@@ -252,7 +275,7 @@ export const options: Option[] = [
     sourceUrl: "https://help.max.com/us/Answer/Detail/000002524",
     category: "direct",
     mutuallyExclusiveGroup: "max_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("max_direct"),
     priceStatus: "current",
   },
   {
@@ -267,7 +290,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.peacocktv.com/",
     category: "direct",
     mutuallyExclusiveGroup: "peacock_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("peacock_select_direct"),
     priceStatus: "current",
   },
   {
@@ -282,7 +305,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.peacocktv.com/",
     category: "direct",
     mutuallyExclusiveGroup: "peacock_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("peacock_direct"),
     priceStatus: "current",
   },
   {
@@ -297,7 +320,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.peacocktv.com/",
     category: "direct",
     mutuallyExclusiveGroup: "peacock_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("peacock_premium_plus_direct"),
     priceStatus: "current",
   },
   {
@@ -312,7 +335,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.peacocktv.com/",
     category: "bundle",
     mutuallyExclusiveGroup: "apple_peacock_bundle_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("peacock_apple_tv_bundle"),
     priceStatus: "current",
   },
   {
@@ -326,7 +349,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.paramountplus.com/",
     category: "direct",
     mutuallyExclusiveGroup: "paramount_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("paramount_direct"),
     priceStatus: "current",
   },
   {
@@ -340,7 +363,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.apple.com/apple-tv/",
     category: "direct",
     mutuallyExclusiveGroup: "apple_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("apple_direct"),
     priceStatus: "current",
   },
   {
@@ -355,7 +378,7 @@ export const options: Option[] = [
       "https://www.amazon.com/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
     category: "direct",
     mutuallyExclusiveGroup: "prime_video_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("prime_video_direct"),
     priceStatus: "current",
   },
   {
@@ -370,7 +393,7 @@ export const options: Option[] = [
       "https://support.espn.com/hc/en-us/articles/40375475974036-ESPN-Select-or-Unlimited-Plans-and-Prices",
     category: "direct",
     mutuallyExclusiveGroup: "espn_plus_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("espn_select_direct"),
     priceStatus: "current",
   },
   {
@@ -384,7 +407,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.amcplus.com",
     category: "direct",
     mutuallyExclusiveGroup: "amcplus_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("amcplus_direct"),
     priceStatus: "current",
   },
   {
@@ -398,7 +421,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.starz.com/us/en/buy",
     category: "direct",
     mutuallyExclusiveGroup: "starz_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("starz_direct"),
     priceStatus: "current",
   },
   {
@@ -412,7 +435,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.crunchyroll.com/premium",
     category: "direct",
     mutuallyExclusiveGroup: "crunchyroll_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("crunchyroll_direct"),
     priceStatus: "current",
   },
   {
@@ -426,7 +449,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.discoveryplus.com",
     category: "direct",
     mutuallyExclusiveGroup: "discoveryplus_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("discoveryplus_direct"),
     priceStatus: "current",
   },
 
@@ -442,7 +465,7 @@ export const options: Option[] = [
     sourceUrl: "https://tv.youtube.com/welcome/",
     category: "direct",
     mutuallyExclusiveGroup: "youtube_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("youtube_tv_direct"),
     priceStatus: "current",
   },
   {
@@ -458,7 +481,7 @@ export const options: Option[] = [
     sourceUrl: "https://tv.youtube.com/welcome/",
     category: "promo",
     mutuallyExclusiveGroup: "youtube_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("youtube_tv_promo"),
     priceStatus: "current",
   },
   {
@@ -473,7 +496,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.hulu.com/live-tv",
     category: "bundle",
     mutuallyExclusiveGroup: "hulu_live_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("hulu_live_tv_direct"),
     priceStatus: "current",
   },
   {
@@ -487,7 +510,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.sling.com/service/compare-plans",
     category: "direct",
     mutuallyExclusiveGroup: "sling_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("sling_orange_direct"),
     priceStatus: "current",
   },
   {
@@ -501,7 +524,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.sling.com/service/compare-plans",
     category: "direct",
     mutuallyExclusiveGroup: "sling_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("sling_blue_direct"),
     priceStatus: "current",
   },
   {
@@ -517,7 +540,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.sling.com/channels",
     category: "promo",
     mutuallyExclusiveGroup: "sling_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("sling_orange_blue_promo"),
     priceStatus: "current",
   },
   {
@@ -532,7 +555,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.fubo.tv/welcome/channels",
     category: "direct",
     mutuallyExclusiveGroup: "fubo_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("fubo_direct"),
     priceStatus: "current",
   },
   {
@@ -549,7 +572,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.fubo.tv/welcome/channels",
     category: "promo",
     mutuallyExclusiveGroup: "fubo_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("fubo_promo"),
     priceStatus: "current",
   },
   {
@@ -563,7 +586,7 @@ export const options: Option[] = [
     sourceUrl: "https://help.philo.com/account-billing/packages/",
     category: "direct",
     mutuallyExclusiveGroup: "philo_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("philo_essential_direct"),
     priceStatus: "current",
   },
   {
@@ -578,7 +601,7 @@ export const options: Option[] = [
     sourceUrl: "https://help.philo.com/account-billing/packages/",
     category: "bundle",
     mutuallyExclusiveGroup: "philo_bundle_plus_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("philo_bundle_plus"),
     priceStatus: "current",
   },
   {
@@ -594,7 +617,7 @@ export const options: Option[] = [
       "https://www.directv.com/affiliates/#plancard-EntertainmentPackage",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("directv_entertainment_direct"),
     priceStatus: "needs_verification",
   },
   {
@@ -610,7 +633,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.directv.com/affiliates/#plancard-ChoicePackage",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("directv_choice_direct"),
     priceStatus: "needs_verification",
   },
   {
@@ -626,7 +649,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.directv.com/affiliates/#plancard-UltimatePackage",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("directv_ultimate_direct"),
     priceStatus: "needs_verification",
   },
   {
@@ -641,7 +664,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.directv.com/affiliates/#plancard-PremierPackage",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("directv_premier_direct"),
     priceStatus: "needs_verification",
   },
 
@@ -661,7 +684,7 @@ export const options: Option[] = [
     includedWith: "amazon_prime",
     category: "membership",
     mutuallyExclusiveGroup: "prime_video_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("prime_membership_video"),
     priceStatus: "current",
   },
   {
@@ -679,7 +702,7 @@ export const options: Option[] = [
     includedWith: "apple_one",
     category: "membership",
     mutuallyExclusiveGroup: "apple_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("apple_one_individual"),
     priceStatus: "current",
   },
   {
@@ -697,7 +720,7 @@ export const options: Option[] = [
     includedWith: "instacart_plus",
     category: "carrier",
     mutuallyExclusiveGroup: "peacock_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("instacart_peacock"),
     priceStatus: "current",
   },
   {
@@ -716,7 +739,7 @@ export const options: Option[] = [
     includedWith: "walmart_plus",
     category: "membership",
     mutuallyExclusiveGroup: "walmart_streaming_choice",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("walmart_paramount"),
     priceStatus: "current",
   },
   {
@@ -735,7 +758,7 @@ export const options: Option[] = [
     includedWith: "walmart_plus",
     category: "membership",
     mutuallyExclusiveGroup: "walmart_streaming_choice",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("walmart_peacock"),
     priceStatus: "current",
   },
 
@@ -751,7 +774,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.hulu.com/disney-hulu-bundle",
     category: "bundle",
     mutuallyExclusiveGroup: "disney_hulu_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("disney_hulu_bundle"),
     priceStatus: "current",
   },
   {
@@ -766,7 +789,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.hulu.com/disney-hulu-espn-unlimited-bundle",
     category: "bundle",
     mutuallyExclusiveGroup: "disney_hulu_espn_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("disney_hulu_espn_unlimited_bundle"),
     priceStatus: "current",
   },
   {
@@ -781,7 +804,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.hulu.com/disney-hulu-hbomax-bundle",
     category: "bundle",
     mutuallyExclusiveGroup: "disney_hulu_max_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("disney_hulu_max_bundle"),
     priceStatus: "current",
   },
   {
@@ -796,7 +819,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.hulu.com/disney-hulu-hbomax-bundle",
     category: "bundle",
     mutuallyExclusiveGroup: "disney_hulu_max_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("disney_hulu_max_bundle_no_ads"),
     priceStatus: "current",
   },
 
@@ -817,7 +840,7 @@ export const options: Option[] = [
     effectiveDate: "2026-03-05",
     expiresAt: "2026-12-31",
     mutuallyExclusiveGroup: "disney_hulu_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("disney_hulu_bundle_promo"),
     priceStatus: "current",
   },
   {
@@ -834,7 +857,7 @@ export const options: Option[] = [
     sourceUrl: "https://www.starz.com/us/en/buy",
     category: "promo",
     mutuallyExclusiveGroup: "starz_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("starz_promo"),
     priceStatus: "current",
   },
   {
@@ -853,7 +876,7 @@ export const options: Option[] = [
     category: "promo",
     expiresAt: "2027-01-07",
     mutuallyExclusiveGroup: "apple_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("apple_tv_rokt_30day_promo"),
     priceStatus: "current",
   },
 
@@ -874,7 +897,7 @@ export const options: Option[] = [
     effectiveDate: "2026-04-05",
     expiresAt: "2026-05-05",
     mutuallyExclusiveGroup: "verizon_netflix_max_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("verizon_netflix_max_current"),
     priceStatus: "current",
   },
   {
@@ -891,7 +914,7 @@ export const options: Option[] = [
     category: "carrier",
     effectiveDate: "2026-05-06",
     mutuallyExclusiveGroup: "verizon_netflix_max_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("verizon_netflix_max_future"),
     priceStatus: "scheduled_change",
   },
   {
@@ -908,7 +931,7 @@ export const options: Option[] = [
     includedWith: "verizon",
     category: "carrier",
     mutuallyExclusiveGroup: "verizon_disney_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("verizon_disney_bundle"),
     priceStatus: "current",
   },
   {
@@ -926,7 +949,7 @@ export const options: Option[] = [
     includedWith: "tmobile",
     category: "carrier",
     mutuallyExclusiveGroup: "netflix_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("tmobile_netflix_on_us"),
     priceStatus: "current",
   },
   {
@@ -943,7 +966,7 @@ export const options: Option[] = [
     includedWith: "tmobile",
     category: "carrier",
     mutuallyExclusiveGroup: "apple_tv_access",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("tmobile_apple_tv_discount"),
     priceStatus: "current",
   },
   {
@@ -960,7 +983,7 @@ export const options: Option[] = [
     includedWith: "xfinity",
     category: "carrier",
     mutuallyExclusiveGroup: "xfinity_streamsaver_family",
-    lastChecked: LAST_CHECKED,
+    lastChecked: catalogLastChecked("xfinity_streamsaver"),
     priceStatus: "current",
   },
 ];
