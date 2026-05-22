@@ -523,7 +523,8 @@ function trackUiEvent(
 function renderComboActionLinks(
   combo: Combo,
   variant: "onNavy" | "onLight" = "onNavy",
-  rootMarginClass = "mt-3"
+  rootMarginClass = "mt-3",
+  placement = ""
 ) {
   const actionable = combo.chosen
     .map((item) => {
@@ -567,7 +568,8 @@ function renderComboActionLinks(
               trackOutboundClick(
                 item,
                 outbound.href,
-                normalizeOutboundLinkKindForTracking(outbound.kind)
+                normalizeOutboundLinkKindForTracking(outbound.kind),
+                { placement }
               )
             }
             className={linkClass}
@@ -611,7 +613,8 @@ function renderPrimaryRecommendationCta(combo: Combo) {
           trackOutboundClick(
             firstAction.item,
             firstAction.outbound.href,
-            normalizeOutboundLinkKindForTracking(firstAction.outbound.kind)
+            normalizeOutboundLinkKindForTracking(firstAction.outbound.kind),
+            { placement: "primary_recommendation" }
           )
         }
         className="inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
@@ -1683,7 +1686,7 @@ function renderBestSummary(
       {renderPrimaryRecommendationCta(combo)}
 
       <div className="mt-7">
-        {renderComboActionLinks(combo, "onNavy", "mt-0")}
+        {renderComboActionLinks(combo, "onNavy", "mt-0", "recommendation_panel")}
       </div>
 
       <div className="mt-4 text-slate-200">
@@ -1836,7 +1839,7 @@ function renderCheapestCard(
         {combo.chosen.map((item) => item.name).join(" + ")}
       </div>
 
-      {renderComboActionLinks(combo, "onLight")}
+      {renderComboActionLinks(combo, "onLight", "mt-3", "strategy_card")}
     </div>
   );
 }
@@ -3135,6 +3138,12 @@ export default function Page() {
                         <span>{combo.chosen.map((item) => item.name).join(" + ")}</span>
                       </div>
                       {renderComboMeta(combo)}
+                      {renderComboActionLinks(
+                        combo,
+                        "onLight",
+                        "mt-2",
+                        "comparison_table"
+                      )}
                     </div>
 
                     <div>{getComboCoverage(combo)}</div>
