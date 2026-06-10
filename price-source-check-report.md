@@ -1,8 +1,8 @@
 ## Price source check report
 
-Generated at: 2026-04-30T03:58:33.648Z
+Generated at: 2026-06-09T23:59:09.744Z
 Adapters run: 14
-Detected changes: 15
+Detected changes: 16
 Unknown checks (manual review): 0
 Manual review task groups: 5
 Fetch failures: 1
@@ -68,7 +68,7 @@ Failure breakdown:
   - Signals: fetchOk=yes, checksDetected=3, manualTasks=0
 
 - **Fubo** (`fubo_pricing`): verified_automated
-  - Signals: fetchOk=yes, checksDetected=2, manualTasks=0
+  - Signals: fetchOk=yes, checksDetected=3, manualTasks=0
 
 - **Philo** (`philo_pricing`): verified_automated
   - Signals: fetchOk=yes, checksDetected=2, manualTasks=0
@@ -218,32 +218,39 @@ Failure breakdown:
 - **Sling TV** · Sling Orange
   - Field: `sling_orange_direct.monthly`
   - Expected: $45.99
-  - Detected: $4.99
-  - Delta: $-41.00
+  - Detected: $19.99
+  - Delta: $-26.00
   - Source: https://www.sling.com/
 
 - **Sling TV** · Sling Blue
   - Field: `sling_blue_direct.monthly`
   - Expected: $45.99
-  - Detected: $4.99
-  - Delta: $-41.00
+  - Detected: $19.99
+  - Delta: $-26.00
   - Source: https://www.sling.com/
 
 - **Sling TV** · Sling Orange & Blue promo
   - Field: `sling_orange_blue_promo.monthly`
   - Expected: $29.99
-  - Detected: $4.99
-  - Delta: $-25.00
+  - Detected: $19.99
+  - Delta: $-10.00
   - Source: https://www.sling.com/
 
-- **Fubo** · Fubo promo plan
+- **Fubo** · Fubo Pro (ongoing)
+  - Field: `fubo_direct.monthly`
+  - Expected: $84.99
+  - Detected: $0.00
+  - Delta: $-84.99
+  - Source: https://www.fubo.tv/
+
+- **Fubo** · Fubo Sports + News first month promo
   - Field: `fubo_promo.monthly`
   - Expected: $45.99
   - Detected: $0.00
   - Delta: $-45.99
   - Source: https://www.fubo.tv/
 
-- **Fubo** · Fubo standard monthly after promo
+- **Fubo** · Fubo Sports + News ongoing
   - Field: `fubo_promo.standardMonthly`
   - Expected: $55.99
   - Detected: $0.00

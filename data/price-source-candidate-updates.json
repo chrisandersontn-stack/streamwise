@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-30T03:58:33.648Z",
+  "generatedAt": "2026-06-09T23:59:09.744Z",
   "adaptersRun": 14,
   "checksDetectedCount": 9,
-  "changeCount": 15,
+  "changeCount": 16,
   "unknownCount": 0,
   "manualReviewCount": 5,
   "fetchFailureCount": 1,
@@ -123,7 +123,7 @@
       "provider": "Fubo",
       "state": "verified_automated",
       "fetchOk": true,
-      "checksDetected": 2,
+      "checksDetected": 3,
       "manualTasks": 0,
       "manualVerifiedOn": null
     },
@@ -242,8 +242,8 @@
       "field": "sling_orange_direct.monthly",
       "label": "Sling Orange",
       "expectedPrice": 45.99,
-      "detectedPrice": 4.99,
-      "delta": -41,
+      "detectedPrice": 19.99,
+      "delta": -26,
       "url": "https://www.sling.com/"
     },
     {
@@ -252,8 +252,8 @@
       "field": "sling_blue_direct.monthly",
       "label": "Sling Blue",
       "expectedPrice": 45.99,
-      "detectedPrice": 4.99,
-      "delta": -41,
+      "detectedPrice": 19.99,
+      "delta": -26,
       "url": "https://www.sling.com/"
     },
     {
@@ -262,15 +262,25 @@
       "field": "sling_orange_blue_promo.monthly",
       "label": "Sling Orange & Blue promo",
       "expectedPrice": 29.99,
-      "detectedPrice": 4.99,
-      "delta": -25,
+      "detectedPrice": 19.99,
+      "delta": -10,
       "url": "https://www.sling.com/"
     },
     {
       "sourceId": "fubo_pricing",
       "provider": "Fubo",
+      "field": "fubo_direct.monthly",
+      "label": "Fubo Pro (ongoing)",
+      "expectedPrice": 84.99,
+      "detectedPrice": 0,
+      "delta": -84.99,
+      "url": "https://www.fubo.tv/"
+    },
+    {
+      "sourceId": "fubo_pricing",
+      "provider": "Fubo",
       "field": "fubo_promo.monthly",
-      "label": "Fubo promo plan",
+      "label": "Fubo Sports + News first month promo",
       "expectedPrice": 45.99,
       "detectedPrice": 0,
       "delta": -45.99,
@@ -280,7 +290,7 @@
       "sourceId": "fubo_pricing",
       "provider": "Fubo",
       "field": "fubo_promo.standardMonthly",
-      "label": "Fubo standard monthly after promo",
+      "label": "Fubo Sports + News ongoing",
       "expectedPrice": 55.99,
       "detectedPrice": 0,
       "delta": -55.99,
@@ -373,7 +383,7 @@
       "sourceId": "netflix_signup",
       "provider": "Netflix",
       "url": "https://www.netflix.com/signup",
-      "checkedAt": "2026-04-30T03:58:28.700Z",
+      "checkedAt": "2026-06-09T23:59:04.423Z",
       "checks": [
         {
           "field": "netflix_direct.monthly",
@@ -401,7 +411,7 @@
       "sourceId": "hulu_start",
       "provider": "Hulu",
       "url": "https://www.hulu.com/start",
-      "checkedAt": "2026-04-30T03:58:29.146Z",
+      "checkedAt": "2026-06-09T23:59:05.243Z",
       "checks": [
         {
           "field": "hulu_direct.monthly",
@@ -436,7 +446,7 @@
       "sourceId": "disneyplus_pricing",
       "provider": "Disney+",
       "url": "https://www.disneyplus.com/",
-      "checkedAt": "2026-04-30T03:58:29.291Z",
+      "checkedAt": "2026-06-09T23:59:05.434Z",
       "checks": [
         {
           "field": "disney_direct.monthly",
@@ -471,7 +481,7 @@
       "sourceId": "peacock_pricing",
       "provider": "Peacock",
       "url": "https://www.peacocktv.com/",
-      "checkedAt": "2026-04-30T03:58:29.453Z",
+      "checkedAt": "2026-06-09T23:59:05.512Z",
       "checks": [
         {
           "field": "peacock_direct.monthly",
@@ -493,7 +503,7 @@
       "sourceId": "max_pricing",
       "provider": "Max (HBO)",
       "url": "https://www.max.com/",
-      "checkedAt": "2026-04-30T03:58:29.824Z",
+      "checkedAt": "2026-06-09T23:59:06.076Z",
       "checks": [
         {
           "field": "max_direct.monthly",
@@ -515,7 +525,7 @@
       "sourceId": "walmart_plus",
       "provider": "Walmart+",
       "url": "https://www.walmart.com/plus",
-      "checkedAt": "2026-04-30T03:58:30.354Z",
+      "checkedAt": "2026-06-09T23:59:06.560Z",
       "checks": [],
       "notes": [
         "Walmart+ member benefits can change by account and campaign.",
@@ -536,7 +546,7 @@
       "sourceId": "instacart_plus",
       "provider": "Instacart+",
       "url": "https://www.instacart.com/plus",
-      "checkedAt": "2026-04-30T03:58:32.054Z",
+      "checkedAt": "2026-06-09T23:59:07.991Z",
       "checks": [],
       "notes": [
         "Instacart+ benefits and Peacock inclusion can vary by plan/region and campaign.",
@@ -557,7 +567,7 @@
       "sourceId": "verizon_unlimited_bundles",
       "provider": "Verizon",
       "url": "https://www.verizon.com/plans/unlimited/",
-      "checkedAt": "2026-04-30T03:58:32.156Z",
+      "checkedAt": "2026-06-09T23:59:08.093Z",
       "checks": [],
       "notes": [
         "Carrier-gated pricing often varies by plan eligibility and account state.",
@@ -578,7 +588,7 @@
       "sourceId": "tmobile_offers",
       "provider": "T-Mobile",
       "url": "https://www.t-mobile.com/offers",
-      "checkedAt": "2026-04-30T03:58:32.475Z",
+      "checkedAt": "2026-06-09T23:59:08.530Z",
       "checks": [],
       "notes": [
         "T-Mobile perks are highly plan-dependent and may require logged-in account context.",
@@ -599,7 +609,7 @@
       "sourceId": "xfinity_offers",
       "provider": "Xfinity",
       "url": "https://www.xfinity.com/learn/offers",
-      "checkedAt": "2026-04-30T03:58:32.536Z",
+      "checkedAt": "2026-06-09T23:59:08.613Z",
       "checks": [],
       "notes": [
         "Xfinity StreamSaver access can depend on account type and regional availability.",
@@ -620,7 +630,7 @@
       "sourceId": "youtube_tv_pricing",
       "provider": "YouTube TV",
       "url": "https://tv.youtube.com/",
-      "checkedAt": "2026-04-30T03:58:32.735Z",
+      "checkedAt": "2026-06-09T23:59:08.867Z",
       "checks": [
         {
           "field": "youtube_tv_direct.monthly",
@@ -648,24 +658,24 @@
       "sourceId": "sling_pricing",
       "provider": "Sling TV",
       "url": "https://www.sling.com/",
-      "checkedAt": "2026-04-30T03:58:32.970Z",
+      "checkedAt": "2026-06-09T23:59:09.081Z",
       "checks": [
         {
           "field": "sling_orange_direct.monthly",
           "label": "Sling Orange",
-          "detectedPrice": 4.99,
+          "detectedPrice": 19.99,
           "expectedPrice": 45.99
         },
         {
           "field": "sling_blue_direct.monthly",
           "label": "Sling Blue",
-          "detectedPrice": 4.99,
+          "detectedPrice": 19.99,
           "expectedPrice": 45.99
         },
         {
           "field": "sling_orange_blue_promo.monthly",
           "label": "Sling Orange & Blue promo",
-          "detectedPrice": 4.99,
+          "detectedPrice": 19.99,
           "expectedPrice": 29.99
         }
       ],
@@ -682,17 +692,23 @@
       "sourceId": "fubo_pricing",
       "provider": "Fubo",
       "url": "https://www.fubo.tv/",
-      "checkedAt": "2026-04-30T03:58:33.336Z",
+      "checkedAt": "2026-06-09T23:59:09.456Z",
       "checks": [
         {
+          "field": "fubo_direct.monthly",
+          "label": "Fubo Pro (ongoing)",
+          "detectedPrice": 0,
+          "expectedPrice": 84.99
+        },
+        {
           "field": "fubo_promo.monthly",
-          "label": "Fubo promo plan",
+          "label": "Fubo Sports + News first month promo",
           "detectedPrice": 0,
           "expectedPrice": 45.99
         },
         {
           "field": "fubo_promo.standardMonthly",
-          "label": "Fubo standard monthly after promo",
+          "label": "Fubo Sports + News ongoing",
           "detectedPrice": 0,
           "expectedPrice": 55.99
         }
@@ -710,7 +726,7 @@
       "sourceId": "philo_pricing",
       "provider": "Philo",
       "url": "https://www.philo.com/",
-      "checkedAt": "2026-04-30T03:58:33.647Z",
+      "checkedAt": "2026-06-09T23:59:09.743Z",
       "checks": [
         {
           "field": "philo_essential_direct.monthly",

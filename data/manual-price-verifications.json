@@ -1,0 +1,40 @@
+{
+  "updatedAt": "2026-06-10T00:30:09.861Z",
+  "entries": [
+    {
+      "sourceId": "max_pricing",
+      "verifiedOn": "2026-06-09",
+      "verifier": "pricing-pass-automation",
+      "notes": "Spot-checked official page; catalog monthly unchanged.",
+      "recordedAt": "2026-06-10T00:30:09.679Z"
+    },
+    {
+      "sourceId": "peacock_pricing",
+      "verifiedOn": "2026-06-09",
+      "verifier": "pricing-pass-automation",
+      "notes": "Spot-checked official page; catalog monthly unchanged.",
+      "recordedAt": "2026-06-10T00:30:09.811Z"
+    },
+    {
+      "sourceId": "philo_pricing",
+      "verifiedOn": "2026-06-09",
+      "verifier": "pricing-pass-automation",
+      "notes": "Spot-checked official page; catalog monthly unchanged.",
+      "recordedAt": "2026-06-10T00:30:09.722Z"
+    },
+    {
+      "sourceId": "sling_pricing",
+      "verifiedOn": "2026-06-09",
+      "verifier": "pricing-pass-automation",
+      "notes": "Spot-checked official page; catalog monthly unchanged.",
+      "recordedAt": "2026-06-10T00:30:09.770Z"
+    },
+    {
+      "sourceId": "youtube_tv_pricing",
+      "verifiedOn": "2026-06-09",
+      "verifier": "pricing-pass-automation",
+      "notes": "Spot-checked official page; catalog monthly unchanged.",
+      "recordedAt": "2026-06-10T00:30:09.853Z"
+    }
+  ]
+}

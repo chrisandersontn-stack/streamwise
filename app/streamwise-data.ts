@@ -181,7 +181,26 @@ const VERIFIED_OPTION_IDS = new Set<string>([
   "walmart_peacock",
 ]);
 
+/** Re-spot-checked 2026-06-09; catalog prices matched official pages (scrapers not auto-applied). */
+const PRICING_PASS_LAST_CHECKED = "2026-06-09";
+const PRICING_PASS_VERIFIED_OPTION_IDS = new Set<string>([
+  "apple_direct",
+  "max_direct",
+  "peacock_direct",
+  "philo_bundle_plus",
+  "philo_essential_direct",
+  "sling_blue_direct",
+  "sling_orange_blue_direct",
+  "sling_orange_direct",
+  "starz_direct",
+  "youtube_tv_direct",
+  "youtube_tv_promo",
+]);
+
 function catalogLastChecked(optionId: string): string {
+  if (PRICING_PASS_VERIFIED_OPTION_IDS.has(optionId)) {
+    return PRICING_PASS_LAST_CHECKED;
+  }
   return VERIFIED_OPTION_IDS.has(optionId)
     ? VERIFIED_LAST_CHECKED
     : LEGACY_LAST_CHECKED;
