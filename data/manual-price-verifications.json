@@ -1,12 +1,33 @@
 {
-  "updatedAt": "2026-06-10T00:30:09.861Z",
+  "updatedAt": "2026-06-10T03:07:09.984Z",
   "entries": [
+    {
+      "sourceId": "disneyplus_pricing",
+      "verifiedOn": "2026-06-10",
+      "verifier": "chris",
+      "notes": "Disney+Hulu $12.99 ongoing; $9.99/3mo intro; Disney+Hulu+Max $19.99; Disney+Hulu+ESPN Unlimited $35.99 on disneyplus.com",
+      "recordedAt": "2026-06-10T03:03:02.481Z"
+    },
+    {
+      "sourceId": "hulu_welcome",
+      "verifiedOn": "2026-06-10",
+      "verifier": "chris",
+      "notes": "Hulu standalone $11.99; Disney+Hulu $12.99/$19.99 premium; ESPN Select $19.99/$29.99; ESPN Unlimited $35.99/$44.99; Max bundle $19.99; Live TV $89.99 w/ ESPN Unlimited on hulu.com/welcome. Bundle intro $9.99 first month (terms ended 2026-02-17).",
+      "recordedAt": "2026-06-10T03:07:09.975Z"
+    },
     {
       "sourceId": "max_pricing",
       "verifiedOn": "2026-06-09",
       "verifier": "pricing-pass-automation",
       "notes": "Spot-checked official page; catalog monthly unchanged.",
       "recordedAt": "2026-06-10T00:30:09.679Z"
+    },
+    {
+      "sourceId": "netflix_signup",
+      "verifiedOn": "2026-06-10",
+      "verifier": "chris",
+      "notes": "Netflix Standard with ads confirmed at $8.99/mo on https://www.netflix.com/ads-plan",
+      "recordedAt": "2026-06-10T02:58:23.968Z"
     },
     {
       "sourceId": "peacock_pricing",

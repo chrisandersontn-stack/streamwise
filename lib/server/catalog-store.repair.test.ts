@@ -124,7 +124,7 @@ describe("repairCatalogOptions (STARZ promo)", () => {
       "2026-05-22"
     );
     expect(fixed.find((o) => o.id === "disney_hulu_bundle_promo")?.lastChecked).toBe(
-      "2026-05-22"
+      "2026-06-09"
     );
   });
 

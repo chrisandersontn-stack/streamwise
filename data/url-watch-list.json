@@ -37,42 +37,42 @@
   },
   {
     "id": "opt-disney_hulu_bundle",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu Bundle (With Ads)"
   },
   {
     "id": "opt-disney_hulu_bundle_premium",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu Bundle (No Ads)"
   },
   {
     "id": "opt-disney_hulu_bundle_promo",
-    "url": "https://help.hulu.com/article/hulu-offer-2026",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu Bundle promo"
   },
   {
     "id": "opt-disney_hulu_espn_unlimited_bundle",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu, ESPN Unlimited Bundle"
   },
   {
     "id": "opt-disney_hulu_espn_select_bundle",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu, ESPN Select Bundle"
   },
   {
     "id": "opt-disney_hulu_espn_select_bundle_premium",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu, ESPN Select Bundle (No Ads)"
   },
   {
     "id": "opt-disney_hulu_espn_unlimited_bundle_premium",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu, ESPN Unlimited Bundle (No Ads)"
   },
   {
     "id": "opt-disney_hulu_max_bundle",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Disney+, Hulu, HBO Max Bundle (With Ads)"
   },
   {
@@ -192,7 +192,7 @@
   },
   {
     "id": "opt-hulu_direct",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+    "url": "https://www.hulu.com/welcome",
     "label": "Hulu (With Ads)"
   },
   {
@@ -202,7 +202,7 @@
   },
   {
     "id": "opt-hulu_live_tv_direct",
-    "url": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost#live-tv",
+    "url": "https://www.hulu.com/welcome",
     "label": "Hulu + Live TV (With Ads)"
   },
   {
@@ -237,7 +237,7 @@
   },
   {
     "id": "opt-netflix_direct",
-    "url": "https://www.netflix.com/signup",
+    "url": "https://www.netflix.com/ads-plan",
     "label": "Netflix Standard with Ads"
   },
   {
