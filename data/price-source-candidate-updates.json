@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T23:59:09.744Z",
+  "generatedAt": "2026-07-09T23:32:43.473Z",
   "adaptersRun": 14,
   "checksDetectedCount": 9,
   "changeCount": 16,
@@ -13,11 +13,11 @@
     {
       "sourceId": "netflix_signup",
       "provider": "Netflix",
-      "state": "verified_automated",
+      "state": "verified_manual",
       "fetchOk": true,
       "checksDetected": 2,
       "manualTasks": 0,
-      "manualVerifiedOn": null
+      "manualVerifiedOn": "2026-06-10"
     },
     {
       "sourceId": "hulu_start",
@@ -31,29 +31,29 @@
     {
       "sourceId": "disneyplus_pricing",
       "provider": "Disney+",
-      "state": "verified_automated",
+      "state": "verified_manual",
       "fetchOk": true,
       "checksDetected": 3,
       "manualTasks": 0,
-      "manualVerifiedOn": null
+      "manualVerifiedOn": "2026-06-10"
     },
     {
       "sourceId": "peacock_pricing",
       "provider": "Peacock",
-      "state": "verified_automated",
+      "state": "verified_manual",
       "fetchOk": true,
       "checksDetected": 1,
       "manualTasks": 0,
-      "manualVerifiedOn": null
+      "manualVerifiedOn": "2026-06-09"
     },
     {
       "sourceId": "max_pricing",
       "provider": "Max (HBO)",
-      "state": "verified_automated",
+      "state": "verified_manual",
       "fetchOk": true,
       "checksDetected": 1,
       "manualTasks": 0,
-      "manualVerifiedOn": null
+      "manualVerifiedOn": "2026-06-09"
     },
     {
       "sourceId": "walmart_plus",
@@ -103,20 +103,20 @@
     {
       "sourceId": "youtube_tv_pricing",
       "provider": "YouTube TV",
-      "state": "verified_automated",
+      "state": "verified_manual",
       "fetchOk": true,
       "checksDetected": 2,
       "manualTasks": 0,
-      "manualVerifiedOn": null
+      "manualVerifiedOn": "2026-06-09"
     },
     {
       "sourceId": "sling_pricing",
       "provider": "Sling TV",
-      "state": "verified_automated",
+      "state": "verified_manual",
       "fetchOk": true,
       "checksDetected": 3,
       "manualTasks": 0,
-      "manualVerifiedOn": null
+      "manualVerifiedOn": "2026-06-09"
     },
     {
       "sourceId": "fubo_pricing",
@@ -130,16 +130,16 @@
     {
       "sourceId": "philo_pricing",
       "provider": "Philo",
-      "state": "verified_automated",
+      "state": "verified_manual",
       "fetchOk": true,
       "checksDetected": 2,
       "manualTasks": 0,
-      "manualVerifiedOn": null
+      "manualVerifiedOn": "2026-06-09"
     }
   ],
   "sourceVerificationStateCounts": {
-    "verified_automated": 9,
-    "verified_manual": 0,
+    "verified_automated": 2,
+    "verified_manual": 7,
     "failed_fetch": 0,
     "manual_required": 5
   },
@@ -222,8 +222,8 @@
       "field": "max_direct.monthly",
       "label": "Max Basic with Ads",
       "expectedPrice": 10.99,
-      "detectedPrice": 14.98,
-      "delta": 3.99,
+      "detectedPrice": 78.99,
+      "delta": 68,
       "url": "https://www.max.com/"
     },
     {
@@ -383,7 +383,7 @@
       "sourceId": "netflix_signup",
       "provider": "Netflix",
       "url": "https://www.netflix.com/signup",
-      "checkedAt": "2026-06-09T23:59:04.423Z",
+      "checkedAt": "2026-07-09T23:32:39.061Z",
       "checks": [
         {
           "field": "netflix_direct.monthly",
@@ -411,7 +411,7 @@
       "sourceId": "hulu_start",
       "provider": "Hulu",
       "url": "https://www.hulu.com/start",
-      "checkedAt": "2026-06-09T23:59:05.243Z",
+      "checkedAt": "2026-07-09T23:32:39.556Z",
       "checks": [
         {
           "field": "hulu_direct.monthly",
@@ -446,7 +446,7 @@
       "sourceId": "disneyplus_pricing",
       "provider": "Disney+",
       "url": "https://www.disneyplus.com/",
-      "checkedAt": "2026-06-09T23:59:05.434Z",
+      "checkedAt": "2026-07-09T23:32:39.793Z",
       "checks": [
         {
           "field": "disney_direct.monthly",
@@ -481,7 +481,7 @@
       "sourceId": "peacock_pricing",
       "provider": "Peacock",
       "url": "https://www.peacocktv.com/",
-      "checkedAt": "2026-06-09T23:59:05.512Z",
+      "checkedAt": "2026-07-09T23:32:39.884Z",
       "checks": [
         {
           "field": "peacock_direct.monthly",
@@ -503,12 +503,12 @@
       "sourceId": "max_pricing",
       "provider": "Max (HBO)",
       "url": "https://www.max.com/",
-      "checkedAt": "2026-06-09T23:59:06.076Z",
+      "checkedAt": "2026-07-09T23:32:40.129Z",
       "checks": [
         {
           "field": "max_direct.monthly",
           "label": "Max Basic with Ads",
-          "detectedPrice": 14.98,
+          "detectedPrice": 78.99,
           "expectedPrice": 10.99
         }
       ],
@@ -525,7 +525,7 @@
       "sourceId": "walmart_plus",
       "provider": "Walmart+",
       "url": "https://www.walmart.com/plus",
-      "checkedAt": "2026-06-09T23:59:06.560Z",
+      "checkedAt": "2026-07-09T23:32:41.095Z",
       "checks": [],
       "notes": [
         "Walmart+ member benefits can change by account and campaign.",
@@ -546,7 +546,7 @@
       "sourceId": "instacart_plus",
       "provider": "Instacart+",
       "url": "https://www.instacart.com/plus",
-      "checkedAt": "2026-06-09T23:59:07.991Z",
+      "checkedAt": "2026-07-09T23:32:42.015Z",
       "checks": [],
       "notes": [
         "Instacart+ benefits and Peacock inclusion can vary by plan/region and campaign.",
@@ -567,7 +567,7 @@
       "sourceId": "verizon_unlimited_bundles",
       "provider": "Verizon",
       "url": "https://www.verizon.com/plans/unlimited/",
-      "checkedAt": "2026-06-09T23:59:08.093Z",
+      "checkedAt": "2026-07-09T23:32:42.162Z",
       "checks": [],
       "notes": [
         "Carrier-gated pricing often varies by plan eligibility and account state.",
@@ -588,7 +588,7 @@
       "sourceId": "tmobile_offers",
       "provider": "T-Mobile",
       "url": "https://www.t-mobile.com/offers",
-      "checkedAt": "2026-06-09T23:59:08.530Z",
+      "checkedAt": "2026-07-09T23:32:42.275Z",
       "checks": [],
       "notes": [
         "T-Mobile perks are highly plan-dependent and may require logged-in account context.",
@@ -609,7 +609,7 @@
       "sourceId": "xfinity_offers",
       "provider": "Xfinity",
       "url": "https://www.xfinity.com/learn/offers",
-      "checkedAt": "2026-06-09T23:59:08.613Z",
+      "checkedAt": "2026-07-09T23:32:42.353Z",
       "checks": [],
       "notes": [
         "Xfinity StreamSaver access can depend on account type and regional availability.",
@@ -630,7 +630,7 @@
       "sourceId": "youtube_tv_pricing",
       "provider": "YouTube TV",
       "url": "https://tv.youtube.com/",
-      "checkedAt": "2026-06-09T23:59:08.867Z",
+      "checkedAt": "2026-07-09T23:32:42.576Z",
       "checks": [
         {
           "field": "youtube_tv_direct.monthly",
@@ -658,7 +658,7 @@
       "sourceId": "sling_pricing",
       "provider": "Sling TV",
       "url": "https://www.sling.com/",
-      "checkedAt": "2026-06-09T23:59:09.081Z",
+      "checkedAt": "2026-07-09T23:32:42.778Z",
       "checks": [
         {
           "field": "sling_orange_direct.monthly",
@@ -692,7 +692,7 @@
       "sourceId": "fubo_pricing",
       "provider": "Fubo",
       "url": "https://www.fubo.tv/",
-      "checkedAt": "2026-06-09T23:59:09.456Z",
+      "checkedAt": "2026-07-09T23:32:43.203Z",
       "checks": [
         {
           "field": "fubo_direct.monthly",
@@ -726,7 +726,7 @@
       "sourceId": "philo_pricing",
       "provider": "Philo",
       "url": "https://www.philo.com/",
-      "checkedAt": "2026-06-09T23:59:09.743Z",
+      "checkedAt": "2026-07-09T23:32:43.472Z",
       "checks": [
         {
           "field": "philo_essential_direct.monthly",

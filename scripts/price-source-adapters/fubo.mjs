@@ -29,19 +29,19 @@ export async function runFuboAdapter(source) {
         field: "fubo_direct.monthly",
         label: "Fubo Pro (ongoing)",
         detectedPrice: standard,
-        expectedPrice: 84.99,
+        expectedPrice: 88.99,
       },
       {
         field: "fubo_promo.monthly",
         label: "Fubo Sports + News first month promo",
         detectedPrice: promo,
-        expectedPrice: 45.99,
+        expectedPrice: 54.99,
       },
       {
         field: "fubo_promo.standardMonthly",
         label: "Fubo Sports + News ongoing",
         detectedPrice: standard,
-        expectedPrice: 55.99,
+        expectedPrice: 64.99,
       },
     ],
     notes: [

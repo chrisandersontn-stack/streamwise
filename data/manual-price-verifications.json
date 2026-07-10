@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-10T03:07:09.984Z",
+  "updatedAt": "2026-07-09T23:38:21.079Z",
   "entries": [
     {
       "sourceId": "disneyplus_pricing",
@@ -7,6 +7,13 @@
       "verifier": "chris",
       "notes": "Disney+Hulu $12.99 ongoing; $9.99/3mo intro; Disney+Hulu+Max $19.99; Disney+Hulu+ESPN Unlimited $35.99 on disneyplus.com",
       "recordedAt": "2026-06-10T03:03:02.481Z"
+    },
+    {
+      "sourceId": "fubo_pricing",
+      "verifiedOn": "2026-07-09",
+      "verifier": "chris",
+      "notes": "Sports+News $64.99 (promo $54.99 first mo); Pro $88.99 (promo $63.99); Elite $98.99 (promo $68.99); Latino $19.99 (promo $9.99). Premier not listed on welcome/plans.",
+      "recordedAt": "2026-07-09T23:38:20.523Z"
     },
     {
       "sourceId": "hulu_welcome",
@@ -17,10 +24,10 @@
     },
     {
       "sourceId": "max_pricing",
-      "verifiedOn": "2026-06-09",
-      "verifier": "pricing-pass-automation",
-      "notes": "Spot-checked official page; catalog monthly unchanged.",
-      "recordedAt": "2026-06-10T00:30:09.679Z"
+      "verifiedOn": "2026-07-09",
+      "verifier": "chris",
+      "notes": "Basic with Ads $10.99; Standard $18.49; Premium $22.99; Disney+Hulu Max bundles $19.99/$32.99 on hbomax.com/lapsed",
+      "recordedAt": "2026-07-09T23:38:20.935Z"
     },
     {
       "sourceId": "netflix_signup",
@@ -31,31 +38,31 @@
     },
     {
       "sourceId": "peacock_pricing",
-      "verifiedOn": "2026-06-09",
-      "verifier": "pricing-pass-automation",
-      "notes": "Spot-checked official page; catalog monthly unchanged.",
-      "recordedAt": "2026-06-10T00:30:09.811Z"
+      "verifiedOn": "2026-07-09",
+      "verifier": "chris",
+      "notes": "Select $7.99; Premium $10.99; Premium Plus $16.99 on peacocktv.com/plans/all-monthly",
+      "recordedAt": "2026-07-09T23:38:20.800Z"
     },
     {
       "sourceId": "philo_pricing",
-      "verifiedOn": "2026-06-09",
-      "verifier": "pricing-pass-automation",
-      "notes": "Spot-checked official page; catalog monthly unchanged.",
-      "recordedAt": "2026-06-10T00:30:09.722Z"
+      "verifiedOn": "2026-07-09",
+      "verifier": "chris",
+      "notes": "Essential $25; Bundle+ $33 on philo.com/go/pricing",
+      "recordedAt": "2026-07-09T23:38:20.665Z"
     },
     {
       "sourceId": "sling_pricing",
-      "verifiedOn": "2026-06-09",
-      "verifier": "pricing-pass-automation",
-      "notes": "Spot-checked official page; catalog monthly unchanged.",
-      "recordedAt": "2026-06-10T00:30:09.770Z"
+      "verifiedOn": "2026-07-09",
+      "verifier": "chris",
+      "notes": "Orange/Blue $45.99; Orange&Blue $60.99; Essentials/Select $19.99 on sling.com/service/compare-plans",
+      "recordedAt": "2026-07-09T23:38:21.071Z"
     },
     {
       "sourceId": "youtube_tv_pricing",
-      "verifiedOn": "2026-06-09",
-      "verifier": "pricing-pass-automation",
-      "notes": "Spot-checked official page; catalog monthly unchanged.",
-      "recordedAt": "2026-06-10T00:30:09.853Z"
+      "verifiedOn": "2026-07-09",
+      "verifier": "chris",
+      "notes": "Main $82.99; promo $67.99/3mo ends 2026-08-26; Sports $64.99; Sports promo $54.99/12mo ends 2026-08-26 on tv.youtube.com/welcome/",
+      "recordedAt": "2026-07-09T23:38:20.352Z"
     }
   ]
 }

@@ -1,6 +1,6 @@
 ## Price source check report
 
-Generated at: 2026-06-09T23:59:09.744Z
+Generated at: 2026-07-09T23:32:43.473Z
 Adapters run: 14
 Detected changes: 16
 Unknown checks (manual review): 0
@@ -10,7 +10,7 @@ Verification status: degraded
 Browser fallback attempted: 0
 Browser fallback recovered: 0
 Browser fallback skipped: 0
-Source states (automated/manual/failed/manual-required): 9/0/0/5
+Source states (automated/manual/failed/manual-required): 2/7/0/5
 
 ### Adapter coverage
 
@@ -31,19 +31,23 @@ Failure breakdown:
 
 ### Per-source verification state
 
-- **Netflix** (`netflix_signup`): verified_automated
+- **Netflix** (`netflix_signup`): verified_manual
+  - Manual verified on: 2026-06-10
   - Signals: fetchOk=yes, checksDetected=2, manualTasks=0
 
 - **Hulu** (`hulu_start`): verified_automated
   - Signals: fetchOk=yes, checksDetected=3, manualTasks=0
 
-- **Disney+** (`disneyplus_pricing`): verified_automated
+- **Disney+** (`disneyplus_pricing`): verified_manual
+  - Manual verified on: 2026-06-10
   - Signals: fetchOk=yes, checksDetected=3, manualTasks=0
 
-- **Peacock** (`peacock_pricing`): verified_automated
+- **Peacock** (`peacock_pricing`): verified_manual
+  - Manual verified on: 2026-06-09
   - Signals: fetchOk=yes, checksDetected=1, manualTasks=0
 
-- **Max (HBO)** (`max_pricing`): verified_automated
+- **Max (HBO)** (`max_pricing`): verified_manual
+  - Manual verified on: 2026-06-09
   - Signals: fetchOk=yes, checksDetected=1, manualTasks=0
 
 - **Walmart+** (`walmart_plus`): manual_required
@@ -61,16 +65,19 @@ Failure breakdown:
 - **Xfinity** (`xfinity_offers`): manual_required
   - Signals: fetchOk=no, checksDetected=0, manualTasks=3
 
-- **YouTube TV** (`youtube_tv_pricing`): verified_automated
+- **YouTube TV** (`youtube_tv_pricing`): verified_manual
+  - Manual verified on: 2026-06-09
   - Signals: fetchOk=yes, checksDetected=2, manualTasks=0
 
-- **Sling TV** (`sling_pricing`): verified_automated
+- **Sling TV** (`sling_pricing`): verified_manual
+  - Manual verified on: 2026-06-09
   - Signals: fetchOk=yes, checksDetected=3, manualTasks=0
 
 - **Fubo** (`fubo_pricing`): verified_automated
   - Signals: fetchOk=yes, checksDetected=3, manualTasks=0
 
-- **Philo** (`philo_pricing`): verified_automated
+- **Philo** (`philo_pricing`): verified_manual
+  - Manual verified on: 2026-06-09
   - Signals: fetchOk=yes, checksDetected=2, manualTasks=0
 
 - **Netflix** (`netflix_signup`)
@@ -204,8 +211,8 @@ Failure breakdown:
 - **Max (HBO)** · Max Basic with Ads
   - Field: `max_direct.monthly`
   - Expected: $10.99
-  - Detected: $14.98
-  - Delta: +$3.99
+  - Detected: $78.99
+  - Delta: +$68.00
   - Source: https://www.max.com/
 
 - **YouTube TV** · YouTube TV Base Plan
