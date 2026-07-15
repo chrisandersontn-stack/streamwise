@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-09T23:38:21.079Z",
+  "updatedAt": "2026-07-15T23:44:22.262Z",
   "entries": [
     {
       "sourceId": "disneyplus_pricing",
@@ -49,6 +49,13 @@
       "verifier": "chris",
       "notes": "Essential $25; Bundle+ $33 on philo.com/go/pricing",
       "recordedAt": "2026-07-09T23:38:20.665Z"
+    },
+    {
+      "sourceId": "pricing_hygiene_2026_07_15",
+      "verifiedOn": "2026-07-15",
+      "verifier": "chris",
+      "notes": "Fubo Premier expired (not listed). Sling Orange&Blue $29.99 first-mo promo expired (absent on deals). DirecTV Signature aligned to Stream with-fees: Ent $94.99, Choice $114.98, Ultimate $139.98, Premier $179.98. Disney+Hulu $9.99 intro remains expired (ended 2026-02-17).",
+      "recordedAt": "2026-07-15T23:44:22.254Z"
     },
     {
       "sourceId": "sling_pricing",

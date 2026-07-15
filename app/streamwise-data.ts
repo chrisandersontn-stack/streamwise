@@ -181,8 +181,8 @@ const VERIFIED_OPTION_IDS = new Set<string>([
   "walmart_peacock",
 ]);
 
-/** Re-spot-checked 2026-07-09; catalog prices matched official pages (scrapers not auto-applied). */
-const PRICING_PASS_LAST_CHECKED = "2026-07-09";
+/** Re-spot-checked 2026-07-15; catalog prices matched official pages (scrapers not auto-applied). */
+const PRICING_PASS_LAST_CHECKED = "2026-07-15";
 const PRICING_PASS_VERIFIED_OPTION_IDS = new Set<string>([
   "apple_direct",
   "max_direct",
@@ -207,6 +207,7 @@ const PRICING_PASS_VERIFIED_OPTION_IDS = new Set<string>([
   "sling_blue_direct",
   "sling_orange_blue_direct",
   "sling_orange_direct",
+  "sling_orange_blue_promo",
   "starz_direct",
   "youtube_tv_direct",
   "youtube_tv_promo",
@@ -219,6 +220,10 @@ const PRICING_PASS_VERIFIED_OPTION_IDS = new Set<string>([
   "fubo_promo",
   "fubo_pro_promo",
   "fubo_premier_direct",
+  "directv_entertainment_direct",
+  "directv_choice_direct",
+  "directv_ultimate_direct",
+  "directv_premier_direct",
 ]);
 
 function catalogLastChecked(optionId: string): string {
@@ -991,13 +996,13 @@ export const options: Option[] = [
     introLengthMonths: 1,
     covers: ["Sling TV"],
     notes:
-      "Half-off first month for Orange & Blue when offered on sling.com/deals or channels promos—not the 3-month prepay path.",
+      "Former half-off first month for Orange & Blue. Not found on sling.com/deals or sling.com as of 2026-07-15 (page is mostly app-rendered; $29.99 promo text absent in HTML). Orange & Blue ongoing remains $60.99/mo on compare-plans. Kept for history; excluded from rankings while expired.",
     source: "Sling TV",
     sourceUrl: "https://www.sling.com/deals",
     category: "promo",
     mutuallyExclusiveGroup: "sling_tv_access",
     lastChecked: catalogLastChecked("sling_orange_blue_promo"),
-    priceStatus: "needs_verification",
+    priceStatus: "expired",
   },
   {
     id: "fubo_sports_news_direct",
@@ -1051,13 +1056,13 @@ export const options: Option[] = [
     monthly: 104.99,
     covers: ["Fubo"],
     notes:
-      "Premier was not listed on fubo.tv/welcome/plans as of 2026-07-09 (Live TV plans shown: Pro, Elite, Latino). Kept for historical/account continuity; confirm availability at signup before relying on this tier.",
+      "Premier is no longer listed on fubo.tv/welcome/plans as of 2026-07-09 (Live TV plans shown: Pro, Elite, Latino). Marked expired so it cannot win rankings; confirm Fubo checkout if an account still has this legacy tier.",
     source: "Fubo",
     sourceUrl: "https://www.fubo.tv/welcome/plans",
     category: "direct",
     mutuallyExclusiveGroup: "fubo_access",
     lastChecked: catalogLastChecked("fubo_premier_direct"),
-    priceStatus: "needs_verification",
+    priceStatus: "expired",
   },
   {
     id: "fubo_latino_direct",
@@ -1145,61 +1150,58 @@ export const options: Option[] = [
     monthly: 94.99,
     covers: ["DirecTV"],
     notes:
-      "Signature streaming tier with 90+ channels. Advertised price includes required fees; excludes taxes. Regional sports fee does not apply. Gemini device lease ($10/mo) and promos vary by ZIP—confirm on directv.com before signup.",
+      "Aligned to Stream Entertainment with-fees list price ($94.99/mo) from directv.com/stream/stream-packages. Signature/affiliate path may still differ by ZIP and hardware (Gemini lease). No RSN fee on Entertainment.",
     source: "DirecTV",
-    sourceUrl:
-      "https://www.directv.com/affiliates/#plancard-EntertainmentPackage",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
     lastChecked: catalogLastChecked("directv_entertainment_direct"),
-    priceStatus: "needs_verification",
+    priceStatus: "current",
   },
   {
     id: "directv_choice_direct",
     name: "DirecTV Choice (Signature / affiliate)",
     provider: "direct",
-    monthly: 104.98,
-    standardMonthly: 112.98,
+    monthly: 114.98,
     covers: ["DirecTV"],
     notes:
-      "Signature Choice tier with 125+ channels. Price shown is with required fees for month 1; ongoing rate often higher after promos. Regional sports network fee up to $19.99/mo may apply by ZIP. Gemini lease $10/mo extra.",
+      "Aligned to Stream Choice with-fees list price ($114.98/mo) from directv.com/stream/stream-packages. RSN fee up to $19.99/mo and Gemini lease may apply by ZIP on Signature/affiliate checkout.",
     source: "DirecTV",
-    sourceUrl: "https://www.directv.com/affiliates/#plancard-ChoicePackage",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
     lastChecked: catalogLastChecked("directv_choice_direct"),
-    priceStatus: "needs_verification",
+    priceStatus: "current",
   },
   {
     id: "directv_ultimate_direct",
     name: "DirecTV Ultimate (Signature / affiliate)",
     provider: "direct",
-    monthly: 134.98,
-    standardMonthly: 137.98,
+    monthly: 139.98,
     covers: ["DirecTV"],
     notes:
-      "Signature Ultimate tier with 160+ channels. Includes broader sports and movie channels vs Choice. RSN fee up to $19.99/mo may apply. Confirm current rate and fees for your address.",
+      "Aligned to Stream Ultimate with-fees list price ($139.98/mo) from directv.com/stream/stream-packages. RSN fee up to $19.99/mo may apply; confirm Signature/affiliate checkout for your address.",
     source: "DirecTV",
-    sourceUrl: "https://www.directv.com/affiliates/#plancard-UltimatePackage",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
     lastChecked: catalogLastChecked("directv_ultimate_direct"),
-    priceStatus: "needs_verification",
+    priceStatus: "current",
   },
   {
     id: "directv_premier_direct",
     name: "DirecTV Premier (Signature / affiliate)",
     provider: "direct",
-    monthly: 177.98,
+    monthly: 179.98,
     covers: ["DirecTV"],
     notes:
-      "Top Signature tier with 185+ channels including premium movie networks. Promotional price locks are common; standard rate with fees can exceed advertised promo. RSN and Gemini fees may apply.",
+      "Aligned to Stream Premier with-fees list price ($179.98/mo) from directv.com/stream/stream-packages. Includes premium movie nets on Stream; Signature/affiliate promos and RSN/Gemini fees may differ by ZIP.",
     source: "DirecTV",
-    sourceUrl: "https://www.directv.com/affiliates/#plancard-PremierPackage",
+    sourceUrl: "https://www.directv.com/stream/stream-packages/",
     category: "direct",
     mutuallyExclusiveGroup: "directv_access",
     lastChecked: catalogLastChecked("directv_premier_direct"),
-    priceStatus: "needs_verification",
+    priceStatus: "current",
   },
   {
     id: "directv_stream_5day_trial",
@@ -1697,11 +1699,10 @@ export const options: Option[] = [
     introLengthMonths: 1,
     covers: ["Disney+", "Hulu"],
     notes:
-      "Ad-supported Disney+, Hulu Bundle: $9.99/mo for first month on hulu.com/welcome, then $12.99/mo (or then-current regular price). Hulu terms listed offer end 2026-02-17; confirm current intro on signup.",
+      "Expired intro: Hulu previously advertised $9.99 for the first month then $12.99/mo. Offer terms ended 2026-02-17. Ongoing Disney+, Hulu Bundle remains $12.99/mo (disney_hulu_bundle). Excluded from rankings.",
     source: "Disney / Hulu",
     sourceUrl: "https://www.hulu.com/welcome",
     category: "promo",
-    effectiveDate: "2026-03-05",
     expiresAt: "2026-02-17",
     mutuallyExclusiveGroup: "disney_hulu_family",
     lastChecked: catalogLastChecked("disney_hulu_bundle_promo"),

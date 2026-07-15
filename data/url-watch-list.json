@@ -137,22 +137,22 @@
   },
   {
     "id": "opt-directv_entertainment_direct",
-    "url": "https://www.directv.com/affiliates/#plancard-EntertainmentPackage",
+    "url": "https://www.directv.com/stream/stream-packages/",
     "label": "DirecTV Entertainment (Signature / affiliate)"
   },
   {
     "id": "opt-directv_choice_direct",
-    "url": "https://www.directv.com/affiliates/#plancard-ChoicePackage",
+    "url": "https://www.directv.com/stream/stream-packages/",
     "label": "DirecTV Choice (Signature / affiliate)"
   },
   {
     "id": "opt-directv_ultimate_direct",
-    "url": "https://www.directv.com/affiliates/#plancard-UltimatePackage",
+    "url": "https://www.directv.com/stream/stream-packages/",
     "label": "DirecTV Ultimate (Signature / affiliate)"
   },
   {
     "id": "opt-directv_premier_direct",
-    "url": "https://www.directv.com/affiliates/#plancard-PremierPackage",
+    "url": "https://www.directv.com/stream/stream-packages/",
     "label": "DirecTV Premier (Signature / affiliate)"
   },
   {
