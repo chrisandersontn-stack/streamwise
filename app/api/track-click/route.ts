@@ -1,64 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import {
+  normalizeOutboundLinkKindForTracking,
+  parseTrackClickPayload,
+} from "@/lib/affiliate/click-tracking";
 import { appendEvent } from "@/lib/server/event-store";
 import { getPostHogServerClient } from "@/lib/server/posthog";
-
-type ClickEvent = {
-  optionId?: string;
-  optionName?: string;
-  provider?: string;
-  sourceUrl?: string;
-  resolvedUrl?: string;
-  linkKind?: string;
-  placement?: string;
-  network?: string;
-};
-
-function parseClickEvent(request: NextRequest, body: unknown): ClickEvent | null {
-  const contentType = request.headers.get("content-type") ?? "";
-
-  if (typeof body === "string") {
-    if (!body.trim()) {
-      return null;
-    }
-
-    if (contentType.includes("application/json")) {
-      try {
-        return JSON.parse(body) as ClickEvent;
-      } catch {
-        return null;
-      }
-    }
-
-    if (
-      contentType.includes("application/x-www-form-urlencoded") ||
-      contentType.includes("multipart/form-data")
-    ) {
-      return null;
-    }
-
-    try {
-      return JSON.parse(body) as ClickEvent;
-    } catch {
-      return null;
-    }
-  }
-
-  if (body instanceof FormData) {
-    return {
-      optionId: body.get("optionId")?.toString(),
-      optionName: body.get("optionName")?.toString(),
-      provider: body.get("provider")?.toString(),
-      sourceUrl: body.get("sourceUrl")?.toString(),
-      resolvedUrl: body.get("resolvedUrl")?.toString(),
-      linkKind: body.get("linkKind")?.toString(),
-      placement: body.get("placement")?.toString(),
-      network: body.get("network")?.toString(),
-    };
-  }
-
-  return null;
-}
 
 export async function GET() {
   // Simple health response so opening the URL in a browser isn't "blank".
@@ -66,15 +13,11 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  let payload: ClickEvent = {};
-
   const contentType = request.headers.get("content-type") ?? "";
   let rawBody: unknown;
 
   try {
-    if (contentType.includes("application/json")) {
-      rawBody = await request.text();
-    } else if (
+    if (
       contentType.includes("application/x-www-form-urlencoded") ||
       contentType.includes("multipart/form-data")
     ) {
@@ -86,22 +29,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "invalid_body" }, { status: 400 });
   }
 
-  const parsed = parseClickEvent(request, rawBody);
+  const parsed = parseTrackClickPayload(rawBody, contentType);
   if (!parsed) {
     return NextResponse.json({ ok: false, error: "invalid_payload" }, { status: 400 });
   }
 
-  payload = parsed;
+  const rawKind = parsed.linkKind || parsed.resolvedKind;
+  const linkKind = normalizeOutboundLinkKindForTracking(rawKind);
 
   await appendEvent("outbound_click", {
-    optionId: payload.optionId ?? null,
-    optionName: payload.optionName ?? null,
-    provider: payload.provider ?? null,
-    sourceUrl: payload.sourceUrl ?? null,
-    resolvedUrl: payload.resolvedUrl ?? null,
-    linkKind: payload.linkKind ?? null,
-    placement: payload.placement ?? null,
-    network: payload.network ?? null,
+    optionId: parsed.optionId || null,
+    optionName: parsed.optionName || null,
+    provider: parsed.provider || null,
+    sourceUrl: parsed.sourceUrl || null,
+    resolvedUrl: parsed.resolvedUrl || null,
+    linkKind,
+    resolvedKind: parsed.resolvedKind || rawKind || null,
+    placement: parsed.placement || null,
+    network: parsed.network || null,
     referrer: request.headers.get("referer"),
     userAgent: request.headers.get("user-agent"),
   });
@@ -112,14 +57,15 @@ export async function POST(request: NextRequest) {
       distinctId: "server",
       event: "outbound_click",
       properties: {
-        optionId: payload.optionId ?? null,
-        optionName: payload.optionName ?? null,
-        provider: payload.provider ?? null,
-        sourceUrl: payload.sourceUrl ?? null,
-        resolvedUrl: payload.resolvedUrl ?? null,
-        linkKind: payload.linkKind ?? null,
-        placement: payload.placement ?? null,
-        network: payload.network ?? null,
+        optionId: parsed.optionId || null,
+        optionName: parsed.optionName || null,
+        provider: parsed.provider || null,
+        sourceUrl: parsed.sourceUrl || null,
+        resolvedUrl: parsed.resolvedUrl || null,
+        linkKind,
+        resolvedKind: parsed.resolvedKind || rawKind || null,
+        placement: parsed.placement || null,
+        network: parsed.network || null,
         referrer: request.headers.get("referer"),
       },
     });

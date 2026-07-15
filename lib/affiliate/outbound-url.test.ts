@@ -47,4 +47,15 @@ describe("outbound-url", () => {
     expect(r.kind).toBe("affiliate_override");
     delete process.env.NEXT_PUBLIC_CJ_URL_FUBO;
   });
+
+  it("uses Hulu CJ mapping for Disney+, Hulu bundle option ids", () => {
+    process.env.NEXT_PUBLIC_CJ_URL_HULU = "https://example.com/hulu-cj";
+    const r = resolveOutboundSourceUrl({
+      sourceUrl: "https://www.hulu.com/welcome",
+      optionId: "disney_hulu_bundle",
+    });
+    expect(r.href).toBe("https://example.com/hulu-cj");
+    expect(r.kind).toBe("affiliate_override");
+    delete process.env.NEXT_PUBLIC_CJ_URL_HULU;
+  });
 });

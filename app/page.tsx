@@ -17,6 +17,10 @@ import { calculateCombos, getComboAnnualTotal } from "./streamwise-logic";
 import { getSupabaseBrowserClient } from "@/lib/client/supabase-browser";
 import { getCjNordVpnUrl } from "@/lib/affiliate/cj-links";
 import {
+  inferAffiliateNetwork,
+  normalizeOutboundLinkKindForTracking,
+} from "@/lib/affiliate/click-tracking";
+import {
   hasResolvableOutbound,
   outboundLinkRel,
   resolveOutboundSourceUrl,
@@ -371,11 +375,7 @@ function renderSourceLink(item: Option) {
       target="_blank"
       rel={outboundLinkRel(outbound.kind)}
       onClick={() => {
-        trackOutboundClick(
-          item,
-          outbound.href,
-          normalizeOutboundLinkKindForTracking(outbound.kind)
-        );
+        trackOutboundClick(item, outbound.href, outbound.kind);
       }}
       className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
     >
@@ -386,54 +386,43 @@ function renderSourceLink(item: Option) {
 
 type OutboundResolvedKind = ReturnType<typeof resolveOutboundSourceUrl>["kind"];
 
-function normalizeOutboundLinkKindForTracking(
-  kind: OutboundResolvedKind
-): "affiliate" | "source" {
-  return kind === "official" ? "source" : "affiliate";
-}
-
 function trackOutboundClick(
   item: Option,
   resolvedUrl: string,
   linkKind:
     | "affiliate"
     | "source"
-    | ReturnType<typeof resolveOutboundSourceUrl>["kind"],
+    | OutboundResolvedKind,
   metadata?: {
     placement?: string;
     network?: string;
   }
 ) {
-  const normalizedLinkKind =
-    linkKind === "official"
-      ? "source"
-      : linkKind === "affiliate" || linkKind === "source"
-        ? linkKind
-        : "affiliate";
+  const normalizedLinkKind = normalizeOutboundLinkKindForTracking(linkKind);
+  const network = inferAffiliateNetwork({
+    kind: linkKind,
+    resolvedUrl,
+    explicitNetwork: metadata?.network,
+  });
 
   const payload = {
     optionId: item.id,
     optionName: item.name,
     provider: getItemProviderKey(item) ?? "direct",
-    sourceUrl: item.sourceUrl,
+    sourceUrl: item.sourceUrl ?? "",
     resolvedUrl,
     linkKind: normalizedLinkKind,
+    resolvedKind: String(linkKind),
     placement: metadata?.placement ?? "",
-    network: metadata?.network ?? "",
+    network,
   };
 
   try {
-    const params = new URLSearchParams({
-      optionId: payload.optionId,
-      optionName: payload.optionName,
-      provider: payload.provider,
-      sourceUrl: payload.sourceUrl ?? "",
-      resolvedUrl: payload.resolvedUrl,
-      linkKind: payload.linkKind,
-      placement: payload.placement,
-      network: payload.network,
+    // JSON Blob is more reliable across browsers than URLSearchParams for sendBeacon.
+    const blob = new Blob([JSON.stringify(payload)], {
+      type: "application/json",
     });
-    const ok = navigator.sendBeacon("/api/track-click", params);
+    const ok = navigator.sendBeacon("/api/track-click", blob);
     if (ok) return;
   } catch {
     // Fall back to fetch below.
@@ -495,18 +484,16 @@ function trackUiEvent(
         : "",
     resolvedUrl: typeof window !== "undefined" ? window.location.pathname : "/",
     linkKind: "ui_event",
+    resolvedKind: "ui_event",
+    placement: "",
+    network: "",
   };
 
   try {
-    const params = new URLSearchParams({
-      optionId: payload.optionId,
-      optionName: payload.optionName,
-      provider: payload.provider,
-      sourceUrl: payload.sourceUrl,
-      resolvedUrl: payload.resolvedUrl,
-      linkKind: payload.linkKind,
+    const blob = new Blob([JSON.stringify(payload)], {
+      type: "application/json",
     });
-    const ok = navigator.sendBeacon("/api/track-click", params);
+    const ok = navigator.sendBeacon("/api/track-click", blob);
     if (ok) return;
   } catch {
     // Fall back to fetch below.
@@ -568,7 +555,7 @@ function renderComboActionLinks(
               trackOutboundClick(
                 item,
                 outbound.href,
-                normalizeOutboundLinkKindForTracking(outbound.kind),
+                outbound.kind,
                 { placement }
               )
             }
@@ -613,7 +600,7 @@ function renderPrimaryRecommendationCta(combo: Combo) {
           trackOutboundClick(
             firstAction.item,
             firstAction.outbound.href,
-            normalizeOutboundLinkKindForTracking(firstAction.outbound.kind),
+            firstAction.outbound.kind,
             { placement: "primary_recommendation" }
           )
         }

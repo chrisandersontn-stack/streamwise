@@ -3,6 +3,10 @@ import path from "node:path";
 
 import { NextRequest, NextResponse } from "next/server";
 
+import {
+  isAffiliateTrackedLinkKind,
+  isSourceTrackedLinkKind,
+} from "@/lib/affiliate/click-tracking";
 import { getSupabaseAdminClient } from "@/lib/server/supabase-admin";
 
 type StoredEvent = {
@@ -16,6 +20,8 @@ type StoredEvent = {
   option_name?: string;
   linkKind?: string;
   link_kind?: string;
+  resolvedKind?: string;
+  resolved_kind?: string;
   payload?: Record<string, unknown>;
 };
 
@@ -29,6 +35,16 @@ type Summary = {
 };
 
 const eventPath = path.join(process.cwd(), "data", "events.ndjson");
+
+function eventLinkKind(event: StoredEvent) {
+  return (
+    event.linkKind ??
+    event.link_kind ??
+    event.resolvedKind ??
+    event.resolved_kind ??
+    null
+  );
+}
 
 function toSummary(events: StoredEvent[]): Summary {
   const recommendationViews = events.filter(
@@ -44,11 +60,11 @@ function toSummary(events: StoredEvent[]): Summary {
   });
 
   const outboundClicks = outboundEvents.length;
-  const affiliateClicks = outboundEvents.filter(
-    (event) => (event.linkKind ?? event.link_kind) === "affiliate"
+  const affiliateClicks = outboundEvents.filter((event) =>
+    isAffiliateTrackedLinkKind(eventLinkKind(event))
   ).length;
-  const sourceClicks = outboundEvents.filter(
-    (event) => (event.linkKind ?? event.link_kind) === "source"
+  const sourceClicks = outboundEvents.filter((event) =>
+    isSourceTrackedLinkKind(eventLinkKind(event))
   ).length;
 
   const clicksByOption = new Map<string, number>();

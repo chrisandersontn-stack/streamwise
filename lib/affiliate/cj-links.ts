@@ -8,12 +8,15 @@ export function getCjNordVpnUrl(): string {
 
 /** When set in Vercel, applies to all catalog options whose id starts with the prefix. */
 const CJ_PREFIX_ENV: Array<{ prefix: string; envKey: string }> = [
+  // More specific prefixes first.
+  { prefix: "disney_hulu_", envKey: "NEXT_PUBLIC_CJ_URL_HULU" },
   { prefix: "youtube_tv_", envKey: "NEXT_PUBLIC_CJ_URL_YOUTUBE_TV" },
   { prefix: "sling_", envKey: "NEXT_PUBLIC_CJ_URL_SLING" },
   { prefix: "fubo_", envKey: "NEXT_PUBLIC_CJ_URL_FUBO" },
   { prefix: "hulu_", envKey: "NEXT_PUBLIC_CJ_URL_HULU" },
   { prefix: "philo_", envKey: "NEXT_PUBLIC_CJ_URL_PHILO" },
   { prefix: "directv_", envKey: "NEXT_PUBLIC_CJ_URL_DIRECTV" },
+  { prefix: "roku_", envKey: "NEXT_PUBLIC_CJ_URL_ROKU" },
 ];
 
 /**

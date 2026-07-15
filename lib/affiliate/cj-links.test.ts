@@ -16,6 +16,7 @@ describe("getCjAffiliateUrlForOptionId", () => {
   afterEach(() => {
     delete process.env.NEXT_PUBLIC_CJ_URL_SLING;
     delete process.env.NEXT_PUBLIC_CJ_URL_DIRECTV;
+    delete process.env.NEXT_PUBLIC_CJ_URL_HULU;
   });
 
   it("maps sling options when env is set", () => {
@@ -28,6 +29,19 @@ describe("getCjAffiliateUrlForOptionId", () => {
     process.env.NEXT_PUBLIC_CJ_URL_DIRECTV = "https://example.com/directv";
     expect(getCjAffiliateUrlForOptionId("directv_choice_direct")).toBe(
       "https://example.com/directv"
+    );
+  });
+
+  it("maps disney_hulu_* options to the Hulu CJ URL when set", () => {
+    process.env.NEXT_PUBLIC_CJ_URL_HULU = "https://example.com/hulu-cj";
+    expect(getCjAffiliateUrlForOptionId("disney_hulu_bundle")).toBe(
+      "https://example.com/hulu-cj"
+    );
+    expect(getCjAffiliateUrlForOptionId("disney_hulu_espn_unlimited_bundle")).toBe(
+      "https://example.com/hulu-cj"
+    );
+    expect(getCjAffiliateUrlForOptionId("hulu_live_tv_direct")).toBe(
+      "https://example.com/hulu-cj"
     );
   });
 });

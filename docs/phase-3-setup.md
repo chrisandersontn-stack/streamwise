@@ -35,11 +35,15 @@ NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG=yourstore-20
 # Walmart affiliate: append tracking query params to walmart.com links (Walmart+ benefit pages)
 NEXT_PUBLIC_WALMART_AFFILIATE_QUERY=affiliateId=YOUR_ID
 
-# CJ: NordVPN card + optional per-provider deep links (youtube_tv_*, sling_*, fubo_* option ids)
+# CJ: NordVPN card + optional per-provider deep links (youtube_tv_*, sling_*, fubo_*, hulu_*, disney_hulu_*)
 NEXT_PUBLIC_CJ_NORDVPN_URL=https://www.dpbolvw.net/click-...
 NEXT_PUBLIC_CJ_URL_YOUTUBE_TV=
 NEXT_PUBLIC_CJ_URL_SLING=
 NEXT_PUBLIC_CJ_URL_FUBO=
+NEXT_PUBLIC_CJ_URL_HULU=
+NEXT_PUBLIC_CJ_URL_PHILO=
+NEXT_PUBLIC_CJ_URL_DIRECTV=
+NEXT_PUBLIC_CJ_URL_ROKU=
 ```
 
 ## Required Supabase tables (minimum)
