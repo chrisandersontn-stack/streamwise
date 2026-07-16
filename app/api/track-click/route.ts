@@ -69,6 +69,8 @@ export async function POST(request: NextRequest) {
         referrer: request.headers.get("referer"),
       },
     });
+    // Serverless freezes after the response; flush so capture actually leaves the isolate.
+    await posthog.flush();
   }
 
   return NextResponse.json({ ok: true });
