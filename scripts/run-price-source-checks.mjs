@@ -17,6 +17,7 @@ import { runVerizonAdapter } from "./price-source-adapters/verizon.mjs";
 import { runWalmartPlusAdapter } from "./price-source-adapters/walmart-plus.mjs";
 import { runXfinityAdapter } from "./price-source-adapters/xfinity.mjs";
 import { runYoutubeTvAdapter } from "./price-source-adapters/youtube-tv.mjs";
+import { assessDetectedPriceChange } from "./price-source-adapters/utils.mjs";
 
 const DEFAULT_REGISTRY_PATH = "data/price-source-registry.json";
 const DEFAULT_OUTPUT_PATH = "data/price-source-candidate-updates.json";
@@ -232,18 +233,41 @@ function evaluateChecks(adapterResults, manualVerificationsBySourceId) {
 
       if (typeof check.expectedPrice === "number") {
         const delta = Number((check.detectedPrice - check.expectedPrice).toFixed(2));
-        if (Math.abs(delta) >= 0.01) {
-          changes.push({
+        if (Math.abs(delta) < 0.01) {
+          return;
+        }
+
+        const assessment = assessDetectedPriceChange({
+          detectedPrice: check.detectedPrice,
+          expectedPrice: check.expectedPrice,
+          label: check.label,
+          field: check.field,
+          hints: Array.isArray(check.hints) ? check.hints : [],
+        });
+
+        if (!assessment.accept) {
+          unknown.push({
             sourceId: result.sourceId,
-            provider: result.provider,
             field: check.field,
             label: check.label,
+            reason: assessment.reason ?? "absurd_detection",
             expectedPrice: check.expectedPrice,
             detectedPrice: check.detectedPrice,
             delta,
-            url: result.url,
           });
+          return;
         }
+
+        changes.push({
+          sourceId: result.sourceId,
+          provider: result.provider,
+          field: check.field,
+          label: check.label,
+          expectedPrice: check.expectedPrice,
+          detectedPrice: check.detectedPrice,
+          delta,
+          url: result.url,
+        });
       }
     });
   });

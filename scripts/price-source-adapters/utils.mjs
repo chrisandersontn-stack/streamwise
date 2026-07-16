@@ -328,6 +328,115 @@ export function pickBestPrice(html, hints) {
   return pickPriceByHints(html, hints);
 }
 
+/** Absolute monthly price floors used to reject scrape noise ($0 / $1). */
+export const ABSURD_LOW_MONTHLY_PRICE = 1.01;
+/** Reject candidate deltas larger than this fraction of expected (unless allowed). */
+export const MAX_RELATIVE_PRICE_DELTA = 0.6;
+/** Monthly prices above this often mean an annual figure was scraped as monthly. */
+export const SUSPECT_ANNUAL_AS_MONTHLY_MIN = 50;
+
+function textBlob(...parts) {
+  return parts
+    .filter((part) => part != null && part !== "")
+    .map((part) => String(part).toLowerCase())
+    .join(" ");
+}
+
+function mentionsAnnualBilling(text) {
+  return /\b(annual|annually|\/\s*year|per\s*year|yearly|billed\s+yearly|12[\s-]*month)\b/i.test(
+    text
+  );
+}
+
+function mentionsFreeOrIntro(text) {
+  return /\b(free|\$0|no\s+extra|included|on\s+us|intro|trial|first\s+month)\b/i.test(
+    text
+  );
+}
+
+function relativeDelta(expected, detected) {
+  if (!(expected > 0)) return Infinity;
+  return Math.abs(detected - expected) / expected;
+}
+
+/**
+ * Classify a detected vs expected price pair so absurd scrape hits become
+ * manual review instead of auto "changes".
+ *
+ * @returns {{ accept: boolean, reason?: string }}
+ */
+export function assessDetectedPriceChange({
+  detectedPrice,
+  expectedPrice,
+  label = "",
+  field = "",
+  hints = [],
+  maxRelativeDelta = MAX_RELATIVE_PRICE_DELTA,
+}) {
+  if (typeof detectedPrice !== "number" || Number.isNaN(detectedPrice)) {
+    return { accept: false, reason: "no_price_detected" };
+  }
+  if (typeof expectedPrice !== "number" || Number.isNaN(expectedPrice)) {
+    return { accept: true };
+  }
+
+  const delta = Number((detectedPrice - expectedPrice).toFixed(2));
+  if (Math.abs(delta) < 0.01) {
+    return { accept: true };
+  }
+
+  const context = textBlob(label, field, ...(Array.isArray(hints) ? hints : []));
+  const allowTinyPrices =
+    expectedPrice <= ABSURD_LOW_MONTHLY_PRICE || mentionsFreeOrIntro(context);
+
+  // Netflix $1 / YouTube TV $0 style false positives against a normal plan price.
+  if (
+    !allowTinyPrices &&
+    expectedPrice >= 5 &&
+    detectedPrice < ABSURD_LOW_MONTHLY_PRICE
+  ) {
+    return {
+      accept: false,
+      reason: "absurd_low_price",
+    };
+  }
+
+  // Annual sticker ($78.99/yr) scraped as a monthly plan price.
+  if (
+    detectedPrice >= SUSPECT_ANNUAL_AS_MONTHLY_MIN &&
+    expectedPrice > 0 &&
+    expectedPrice < SUSPECT_ANNUAL_AS_MONTHLY_MIN &&
+    detectedPrice >= expectedPrice * 4 &&
+    !mentionsAnnualBilling(context)
+  ) {
+    return {
+      accept: false,
+      reason: "suspect_annual_as_monthly",
+    };
+  }
+
+  const rel = relativeDelta(expectedPrice, detectedPrice);
+  if (rel > maxRelativeDelta) {
+    // Allow when the surrounding text clearly names an annual/yearly figure and
+    // the ratio is near 12x (convertibility cue for humans, still not auto-apply).
+    if (
+      mentionsAnnualBilling(context) &&
+      Math.abs(detectedPrice / Math.max(expectedPrice, 0.01) - 12) <= 1.5
+    ) {
+      return {
+        accept: false,
+        reason: "annual_price_needs_manual_review",
+      };
+    }
+    return {
+      accept: false,
+      reason: "delta_exceeds_sanity_bound",
+    };
+  }
+
+  return { accept: true };
+}
+
 export function buildResult({
   sourceId,
   provider,

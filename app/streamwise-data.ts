@@ -224,6 +224,16 @@ const PRICING_PASS_VERIFIED_OPTION_IDS = new Set<string>([
   "directv_choice_direct",
   "directv_ultimate_direct",
   "directv_premier_direct",
+  "verizon_netflix_max_future",
+  "verizon_disney_bundle",
+  "tmobile_netflix_on_us",
+  "tmobile_netflix_premium_upgrade",
+  "tmobile_apple_tv_discount",
+  "instacart_peacock",
+  "xfinity_streamsaver_peacock_netflix_max",
+  "xfinity_streamsaver_peacock_netflix_disney_hulu_max",
+  "xfinity_streamsaver_peacock_netflix_apple_disney_hulu_max",
+  "xfinity_streamsaver_peacock_netflix_apple_max_now_tv",
 ]);
 
 function catalogLastChecked(optionId: string): string {
@@ -1413,7 +1423,7 @@ export const options: Option[] = [
     effectiveMonthly: 0,
     covers: ["Peacock"],
     notes:
-      "Peacock Premium is included with Instacart+. Membership cost is not included in this comparison.",
+      "Peacock Premium is included with Instacart+ (Instacart lists Peacock at about $109.99/year value). Membership cost is not included in this comparison. Confirmed on instacart.com/instacart-plus (2026-07-15).",
     source: "Instacart+",
     sourceUrl: "https://www.instacart.com/instacart-plus",
     requires: ["instacart_plus"],
@@ -1431,7 +1441,7 @@ export const options: Option[] = [
     effectiveMonthly: 0,
     covers: ["Paramount+"],
     notes:
-      "Walmart+ members can choose Paramount+ Essential at no extra streaming cost.",
+      "Walmart+ members can choose Paramount+ Essential at no extra streaming cost. Automated fetch of Walmart+ help/plus pages returned blocked/junk HTML on 2026-07-15 — prices need manual confirmation.",
     source: "Walmart+",
     sourceUrl:
       "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
@@ -1440,7 +1450,7 @@ export const options: Option[] = [
     category: "membership",
     mutuallyExclusiveGroup: "walmart_streaming_choice",
     lastChecked: catalogLastChecked("walmart_paramount"),
-    priceStatus: "current",
+    priceStatus: "needs_verification",
   },
   {
     id: "walmart_peacock",
@@ -1450,7 +1460,7 @@ export const options: Option[] = [
     effectiveMonthly: 0,
     covers: ["Peacock"],
     notes:
-      "Walmart+ members can choose Peacock Premium with ads at no extra streaming cost. Only one Walmart+ streaming benefit can be active at a time.",
+      "Walmart+ members can choose Peacock Premium with ads at no extra streaming cost. Only one Walmart+ streaming benefit can be active at a time. Automated fetch of Walmart+ help/plus pages returned blocked/junk HTML on 2026-07-15 — prices need manual confirmation.",
     source: "Walmart+",
     sourceUrl:
       "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779",
@@ -1459,7 +1469,7 @@ export const options: Option[] = [
     category: "membership",
     mutuallyExclusiveGroup: "walmart_streaming_choice",
     lastChecked: catalogLastChecked("walmart_peacock"),
-    priceStatus: "current",
+    priceStatus: "needs_verification",
   },
 
   // CORE BUNDLES
@@ -1753,7 +1763,7 @@ export const options: Option[] = [
     monthly: 10,
     covers: ["Netflix", "Max"],
     notes:
-      "Current Verizon streaming perk price before the scheduled increase.",
+      "Expired legacy Verizon Netflix + Max perk price ($10/mo). Replaced by the $13/mo rate effective May 6, 2026 (confirmed 2026-07-15).",
     source: "Verizon",
     sourceUrl: "https://www.verizon.com/support/netflix-max-perk-faqs/",
     requires: ["verizon"],
@@ -1763,7 +1773,7 @@ export const options: Option[] = [
     expiresAt: "2026-05-05",
     mutuallyExclusiveGroup: "verizon_netflix_max_family",
     lastChecked: catalogLastChecked("verizon_netflix_max_current"),
-    priceStatus: "current",
+    priceStatus: "expired",
   },
   {
     id: "verizon_netflix_max_future",
@@ -1771,7 +1781,8 @@ export const options: Option[] = [
     provider: "verizon",
     monthly: 13,
     covers: ["Netflix", "Max"],
-    notes: "Scheduled Verizon perk price beginning May 6, 2026.",
+    notes:
+      "Current Verizon Netflix + Max perk at $13/mo (effective May 6, 2026). Confirmed on Verizon FAQs 2026-07-15.",
     source: "Verizon",
     sourceUrl: "https://www.verizon.com/support/netflix-max-perk-faqs/",
     requires: ["verizon"],
@@ -1780,7 +1791,7 @@ export const options: Option[] = [
     effectiveDate: "2026-05-06",
     mutuallyExclusiveGroup: "verizon_netflix_max_family",
     lastChecked: catalogLastChecked("verizon_netflix_max_future"),
-    priceStatus: "scheduled_change",
+    priceStatus: "current",
   },
   {
     id: "verizon_disney_bundle",
@@ -1789,7 +1800,7 @@ export const options: Option[] = [
     monthly: 10,
     covers: ["Disney+", "Hulu", "ESPN+"],
     notes:
-      "Verizon perk includes Disney+, Hulu, and ESPN+ with ads on eligible plans.",
+      "Verizon perk includes Disney+, Hulu, and ESPN+ with ads on eligible plans at $10/mo. Confirmed on Verizon FAQs 2026-07-15.",
     source: "Verizon",
     sourceUrl: "https://www.verizon.com/support/disney-bundle-perk-faqs/",
     requires: ["verizon"],
@@ -1807,7 +1818,7 @@ export const options: Option[] = [
     effectiveMonthly: 0,
     covers: ["Netflix"],
     notes:
-      "Netflix Standard with ads (valued up to $8.99/mo) at no extra streaming cost while you keep a qualifying line in good standing. Eligible: Experience More, Experience Beyond, Go5G Next, Go5G Plus, or Magenta MAX (1+ line); or any Go5G or Magenta plan with 2+ voice lines (incl. Military, 55+, First Responder). Activate in T-Life: Manage → See plans → Manage add-ons → Netflix. One offer per T-Mobile account; existing Netflix may take 1–2 bill cycles to move billing. Offer subject to change.",
+      "Netflix Standard with ads (valued up to $8.99/mo) at no extra streaming cost while you keep a qualifying line in good standing. Eligible: Experience More, Experience Beyond, Go5G Next, Go5G Plus, or Magenta MAX (1+ line); or any Go5G or Magenta plan with 2+ voice lines (incl. Military, 55+, First Responder). Activate in T-Life: Manage → See plans → Manage add-ons → Netflix. One offer per T-Mobile account; existing Netflix may take 1–2 bill cycles to move billing. Confirmed 2026-07-15.",
     source: "T-Mobile",
     sourceUrl: "https://www.t-mobile.com/tv-streaming/netflix-on-us",
     requires: ["tmobile"],
@@ -1824,7 +1835,7 @@ export const options: Option[] = [
     monthly: 20,
     covers: ["Netflix"],
     notes:
-      "For eligible Netflix On Us customers: upgrade to Netflix Premium billed through T-Mobile at a discounted $20/mo (up to 4 streams in one household). Requires qualifying T-Mobile plan and activation of the Netflix benefit first. Alternative discounts may apply toward other Netflix tiers; confirm in T-Life or at checkout.",
+      "For eligible Netflix On Us customers: upgrade to Netflix Premium billed through T-Mobile at a discounted $20/mo (up to 4 streams in one household). Requires qualifying T-Mobile plan and activation of the Netflix benefit first. Alternative discounts may apply toward other Netflix tiers; confirm in T-Life or at checkout. Confirmed 2026-07-15.",
     source: "T-Mobile",
     sourceUrl: "https://www.t-mobile.com/tv-streaming/netflix-on-us",
     requires: ["tmobile"],
@@ -1841,7 +1852,7 @@ export const options: Option[] = [
     monthly: 3,
     covers: ["Apple TV+"],
     notes:
-      "Eligible T-Mobile plans can get Apple TV billed through T-Mobile for $3/month.",
+      "Eligible T-Mobile plans can get Apple TV billed through T-Mobile for $3/month. Confirmed 2026-07-15.",
     source: "T-Mobile",
     sourceUrl: "https://www.t-mobile.com/tv-streaming/apple-tv-plus-deal/faq",
     requires: ["tmobile"],
@@ -1858,7 +1869,7 @@ export const options: Option[] = [
     monthly: 22,
     covers: ["Peacock", "Netflix", "Max"],
     notes:
-      "StreamStore bundle (~29% vs $30.97/mo retail). Requires Xfinity Internet or TV; check “I have Xfinity.” Peacock Premium with ads included. Use same email at activation to keep profiles. Pricing subject to change.",
+      "StreamStore bundle (~29% vs $30.97/mo retail). Requires Xfinity Internet or TV; check “I have Xfinity.” Peacock Premium with ads included. Use same email at activation to keep profiles. Confirmed via Xfinity StreamStore screenshot 2026-07-15.",
     source: "Xfinity StreamStore",
     sourceUrl: "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
     requires: ["xfinity"],
@@ -1875,7 +1886,7 @@ export const options: Option[] = [
     monthly: 30,
     covers: ["Peacock", "Netflix", "Disney+", "Hulu", "Max"],
     notes:
-      "StreamStore bundle (~32% vs $43.96/mo retail). Disney+, Hulu Bundle tier as sold by Xfinity. May need to cancel separate Disney/Hulu subs to avoid duplicate billing.",
+      "StreamStore bundle (~32% vs $43.96/mo retail). Disney+, Hulu Bundle tier as sold by Xfinity. May need to cancel separate Disney/Hulu subs to avoid duplicate billing. Confirmed via Xfinity StreamStore screenshot 2026-07-15.",
     source: "Xfinity StreamStore",
     sourceUrl: "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
     requires: ["xfinity"],
@@ -1892,7 +1903,7 @@ export const options: Option[] = [
     monthly: 35,
     covers: ["Peacock", "Netflix", "Apple TV+", "Disney+", "Hulu", "Max"],
     notes:
-      "StreamStore bundle (~39% vs $56.95/mo retail). Includes Apple TV+ and Disney+, Hulu Bundle. Activation fee waiver for first 4K stream box with streaming sub (Apple TV exception per Xfinity).",
+      "StreamStore bundle (~39% vs $56.95/mo retail). Includes Apple TV+ and Disney+, Hulu Bundle. Activation fee waiver for first 4K stream box with streaming sub (Apple TV exception per Xfinity). Confirmed via Xfinity StreamStore screenshot 2026-07-15.",
     source: "Xfinity StreamStore",
     sourceUrl: "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
     requires: ["xfinity"],
@@ -1909,7 +1920,7 @@ export const options: Option[] = [
     monthly: 35,
     covers: ["Peacock", "Netflix", "Apple TV+", "Max"],
     notes:
-      "StreamStore bundle at $35/mo also includes NOW TV (270+ live channels + Peacock Premium with ads per Xfinity). NOW TV is not a separate StreamWise service tile—value is in the bundle price. Confirm channels for your address.",
+      "StreamStore bundle at $35/mo also includes NOW TV (270+ live channels + Peacock Premium with ads per Xfinity). NOW TV is not a separate StreamWise service tile—value is in the bundle price. Confirm channels for your address. Confirmed via Xfinity StreamStore screenshot 2026-07-15.",
     source: "Xfinity StreamStore",
     sourceUrl: "https://www.xfinity.com/learn/digital-cable-tv/streaming-services",
     requires: ["xfinity"],
